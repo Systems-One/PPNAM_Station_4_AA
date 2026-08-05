@@ -31,9 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ppnam.station4aa.domain.model.MachineCatalog
 import com.ppnam.station4aa.domain.model.WasteTypeCatalog
-import com.ppnam.station4aa.domain.validation.WasteCollectionValidator
+import com.ppnam.station4aa.domain.wizard.WizardStep
 import com.ppnam.station4aa.ui.components.AppScaffold
 import com.ppnam.station4aa.ui.theme.AmberPrimary
 import com.ppnam.station4aa.ui.theme.GraphiteBorder
@@ -51,39 +50,29 @@ fun WasteGatheringScreen(
     val pendingCount by viewModel.pendingCount.collectAsState()
     val session by viewModel.session.collectAsState()
     val collectedBy by viewModel.collectedBy.collectAsState()
-    val machineOperatorUserId by viewModel.machineOperatorUserId.collectAsState()
+    val step by viewModel.step.collectAsState()
+    val draft by viewModel.draft.collectAsState()
+    val stepError by viewModel.stepError.collectAsState()
     val lastQueuedMessage by viewModel.lastQueuedMessage.collectAsState()
 
-    var machine by remember { mutableStateOf(MachineCatalog.EXTRUDER_4) }
-    var wasteType by remember { mutableStateOf(WasteTypeCatalog.GENERAL) }
-    var showConfirm by remember { mutableStateOf(false) }
-
-    // collectedBy comes from the logged-in session (see WasteGatheringViewModel), so this is a
-    // defensive check for a malformed session, not something an operator can normally trigger.
-    val collectedByError = WasteCollectionValidator.validateCollectedBy(collectedBy)
-    val machineOperatorError = WasteCollectionValidator.validateMachineOperatorUserId(machineOperatorUserId)
-    val canSubmit = collectedByError == null && machineOperatorError == null
-
-    if (showConfirm) {
+    if (step == WizardStep.REVIEW) {
         AlertDialog(
-            onDismissRequest = { showConfirm = false },
+            onDismissRequest = { viewModel.onCancelTransaction() },
             title = { Text("Confirm waste collection", color = TextPrimary) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    ConfirmRow("Machine", machine.machineName)
-                    ConfirmRow("Waste type", wasteType.display)
+                    ConfirmRow("Machine", draft.machineCode.orEmpty())
+                    ConfirmRow("Waste type", draft.wasteType?.display.orEmpty())
                     ConfirmRow("Wastage operator", collectedBy)
-                    ConfirmRow("Machine operator ID", machineOperatorUserId)
+                    ConfirmRow("Machine operator ID", draft.machineOperatorUserId.orEmpty())
+                    ConfirmRow("Bag code", draft.bagCode.orEmpty())
                 }
             },
             confirmButton = {
-                TextButton(onClick = {
-                    showConfirm = false
-                    viewModel.submit(machine, wasteType)
-                }) { Text("Confirm") }
+                TextButton(onClick = { viewModel.onReviewConfirmed() }) { Text("Confirm") }
             },
             dismissButton = {
-                TextButton(onClick = { showConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { viewModel.onCancelTransaction() }) { Text("Cancel") }
             },
             containerColor = GraphiteSurface
         )
@@ -115,35 +104,123 @@ fun WasteGatheringScreen(
                 Text(it, style = MaterialTheme.typography.labelMedium, color = TextMuted)
             }
 
-            EnumDropdownSelector(
-                label = "Machine",
-                options = MachineCatalog.entries,
-                selected = machine,
-                display = { "${it.machineName} (${it.machineCode})" },
-                onSelected = { machine = it },
-            )
-            EnumDropdownSelector(
-                label = "Waste Type",
-                options = WasteTypeCatalog.entries,
-                selected = wasteType,
-                display = { it.display },
-                onSelected = { wasteType = it },
-            )
+            StepIndicator(step)
 
-            IdentityField(
-                label = "Machine Operator ID",
-                value = machineOperatorUserId,
-                onValueChange = viewModel::onMachineOperatorUserIdChanged,
-                errorMessage = machineOperatorError,
-            )
-
-            Button(
-                onClick = { showConfirm = true },
-                enabled = canSubmit,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text("Submit")
+            when (step) {
+                WizardStep.SCAN_MACHINE -> ScanStep(
+                    label = "Scan machine code",
+                    errorMessage = stepError,
+                    onSubmit = viewModel::onMachineCodeSubmitted,
+                )
+                WizardStep.SCAN_OPERATOR -> ScanStep(
+                    label = "Scan machine operator code",
+                    errorMessage = stepError,
+                    onSubmit = viewModel::onOperatorIdSubmitted,
+                )
+                WizardStep.SELECT_WASTE_TYPE -> WasteTypeStep(
+                    onConfirm = viewModel::onWasteTypeConfirmed,
+                )
+                WizardStep.SCAN_BAG -> ScanStep(
+                    label = "Scan bag code",
+                    errorMessage = stepError,
+                    onSubmit = viewModel::onBagCodeSubmitted,
+                )
+                WizardStep.REVIEW -> Unit // rendered as the AlertDialog above
             }
+
+            TextButton(onClick = { viewModel.onCancelTransaction() }) {
+                Text("Cancel transaction", color = WarningOrange)
+            }
+        }
+    }
+}
+
+private val WIZARD_STEP_ORDINALS = mapOf(
+    WizardStep.SCAN_MACHINE to 1,
+    WizardStep.SCAN_OPERATOR to 2,
+    WizardStep.SELECT_WASTE_TYPE to 3,
+    WizardStep.SCAN_BAG to 4,
+    WizardStep.REVIEW to 4,
+)
+
+@Composable
+private fun StepIndicator(step: WizardStep) {
+    val label = when (step) {
+        WizardStep.SCAN_MACHINE -> "Scan machine code"
+        WizardStep.SCAN_OPERATOR -> "Scan machine operator code"
+        WizardStep.SELECT_WASTE_TYPE -> "Select waste type"
+        WizardStep.SCAN_BAG -> "Scan bag code"
+        WizardStep.REVIEW -> "Review and confirm"
+    }
+    Text(
+        "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 4 — $label",
+        style = MaterialTheme.typography.labelLarge,
+        color = AmberPrimary,
+    )
+}
+
+@Composable
+private fun ScanStep(
+    label: String,
+    errorMessage: String?,
+    onSubmit: (String) -> Unit,
+) {
+    var manualValue by remember(label) { mutableStateOf("") }
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(label, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+        Text(
+            "Scan the barcode, or enter it manually below.",
+            style = MaterialTheme.typography.labelMedium,
+            color = TextMuted,
+        )
+        OutlinedTextField(
+            value = manualValue,
+            onValueChange = { manualValue = it },
+            label = { Text("Manual entry") },
+            singleLine = true,
+            isError = errorMessage != null,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AmberPrimary,
+                focusedLabelColor = AmberPrimary,
+                cursorColor = AmberPrimary,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        if (errorMessage != null) {
+            Text(errorMessage, style = MaterialTheme.typography.labelSmall, color = WarningOrange)
+        }
+        Button(
+            onClick = {
+                onSubmit(manualValue)
+                manualValue = ""
+            },
+            enabled = manualValue.isNotBlank(),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Submit")
+        }
+    }
+}
+
+@Composable
+private fun WasteTypeStep(onConfirm: (WasteTypeCatalog) -> Unit) {
+    var selected by remember { mutableStateOf(WasteTypeCatalog.GENERAL) }
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Select waste type", style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+        EnumDropdownSelector(
+            label = "Waste Type",
+            options = WasteTypeCatalog.entries,
+            selected = selected,
+            display = { it.display },
+            onSelected = { selected = it },
+        )
+        Button(
+            onClick = { onConfirm(selected) },
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Confirm")
         }
     }
 }
@@ -153,33 +230,6 @@ private fun ConfirmRow(label: String, value: String) {
     Column {
         Text(label, style = MaterialTheme.typography.labelSmall, color = TextMuted)
         Text(value, style = MaterialTheme.typography.bodyLarge, color = TextPrimary)
-    }
-}
-
-@Composable
-private fun IdentityField(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    errorMessage: String?,
-) {
-    Column {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = { Text(label) },
-            singleLine = true,
-            isError = errorMessage != null && value.isNotEmpty(),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AmberPrimary,
-                focusedLabelColor = AmberPrimary,
-                cursorColor = AmberPrimary,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-        )
-        if (errorMessage != null && value.isNotEmpty()) {
-            Text(errorMessage, style = MaterialTheme.typography.labelSmall, color = WarningOrange)
-        }
     }
 }
 
