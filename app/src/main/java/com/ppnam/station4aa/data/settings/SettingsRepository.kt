@@ -28,26 +28,28 @@ class SettingsRepository(
     private val credentialStore: SecureCredentialStore,
 ) {
     private object Keys {
-        val DEVICE_ID          = stringPreferencesKey("device_id")
-        val MQTT_HOST          = stringPreferencesKey("mqtt_host")
-        val MQTT_PORT          = intPreferencesKey("mqtt_port")
-        val MQTT_USE_WEBSOCKET = booleanPreferencesKey("mqtt_use_websocket")
-        val MQTT_USE_TLS       = booleanPreferencesKey("mqtt_use_tls")
-        val MQTT_USERNAME      = stringPreferencesKey("mqtt_username")
+        val DEVICE_ID              = stringPreferencesKey("device_id")
+        val WASTE_COLLECTION_TOPIC = stringPreferencesKey("waste_collection_topic")
+        val MQTT_HOST              = stringPreferencesKey("mqtt_host")
+        val MQTT_PORT              = intPreferencesKey("mqtt_port")
+        val MQTT_USE_WEBSOCKET     = booleanPreferencesKey("mqtt_use_websocket")
+        val MQTT_USE_TLS           = booleanPreferencesKey("mqtt_use_tls")
+        val MQTT_USERNAME          = stringPreferencesKey("mqtt_username")
     }
 
     val settingsFlow: Flow<AppSettings> = context.dataStore.data.map { prefs ->
         val defaults = AppSettings()
         AppSettings(
-            deviceId         = prefs[Keys.DEVICE_ID]          ?: defaults.deviceId,
-            mqttHost         = prefs[Keys.MQTT_HOST]          ?: defaults.mqttHost,
-            mqttPort         = prefs[Keys.MQTT_PORT]          ?: defaults.mqttPort,
-            mqttUseWebSocket = prefs[Keys.MQTT_USE_WEBSOCKET] ?: defaults.mqttUseWebSocket,
-            mqttUseTls       = prefs[Keys.MQTT_USE_TLS]       ?: defaults.mqttUseTls,
+            deviceId             = prefs[Keys.DEVICE_ID]              ?: defaults.deviceId,
+            wasteCollectionTopic = prefs[Keys.WASTE_COLLECTION_TOPIC] ?: defaults.wasteCollectionTopic,
+            mqttHost             = prefs[Keys.MQTT_HOST]              ?: defaults.mqttHost,
+            mqttPort             = prefs[Keys.MQTT_PORT]              ?: defaults.mqttPort,
+            mqttUseWebSocket     = prefs[Keys.MQTT_USE_WEBSOCKET]     ?: defaults.mqttUseWebSocket,
+            mqttUseTls           = prefs[Keys.MQTT_USE_TLS]           ?: defaults.mqttUseTls,
             // No `?: "admin"`. An unprovisioned handheld reports no credential rather than
             // silently presenting a shared one — see AppSettings.hasBrokerCredential.
-            mqttUsername     = prefs[Keys.MQTT_USERNAME].orEmpty(),
-            mqttPassword     = credentialStore.retrieve().orEmpty(),
+            mqttUsername         = prefs[Keys.MQTT_USERNAME].orEmpty(),
+            mqttPassword         = credentialStore.retrieve().orEmpty(),
         )
     }
 
@@ -60,12 +62,13 @@ class SettingsRepository(
             credentialStore.store(settings.mqttPassword)
         }
         context.dataStore.edit { prefs ->
-            prefs[Keys.DEVICE_ID]          = settings.deviceId
-            prefs[Keys.MQTT_HOST]          = settings.mqttHost
-            prefs[Keys.MQTT_PORT]          = settings.mqttPort
-            prefs[Keys.MQTT_USE_WEBSOCKET] = settings.mqttUseWebSocket
-            prefs[Keys.MQTT_USE_TLS]       = settings.mqttUseTls
-            prefs[Keys.MQTT_USERNAME]      = settings.mqttUsername
+            prefs[Keys.DEVICE_ID]              = settings.deviceId
+            prefs[Keys.WASTE_COLLECTION_TOPIC] = settings.wasteCollectionTopic
+            prefs[Keys.MQTT_HOST]              = settings.mqttHost
+            prefs[Keys.MQTT_PORT]              = settings.mqttPort
+            prefs[Keys.MQTT_USE_WEBSOCKET]     = settings.mqttUseWebSocket
+            prefs[Keys.MQTT_USE_TLS]           = settings.mqttUseTls
+            prefs[Keys.MQTT_USERNAME]          = settings.mqttUsername
         }
     }
 

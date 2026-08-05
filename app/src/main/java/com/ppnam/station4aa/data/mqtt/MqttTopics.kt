@@ -31,6 +31,14 @@ object MqttTopics {
         return "PPNAM/$deviceId/res/+"
     }
 
+    /** The `waste_collection_result` response topic (contract §3/§12), validated the same way
+     * every other deviceId-derived topic in this file is — [deviceId] is operator-editable Settings
+     * input and must not be allowed to smuggle an MQTT wildcard segment into a subscription. */
+    fun wasteCollectionResult(deviceId: String): String {
+        validateSegment(deviceId, "deviceId")
+        return "PPNAM/station4/$deviceId/res/waste_collection_result"
+    }
+
     private fun validateSegment(value: String, name: String) {
         require(value.isNotBlank()) { "$name must not be blank" }
         require(value.none { it == '/' || it == '+' || it == '#' }) {

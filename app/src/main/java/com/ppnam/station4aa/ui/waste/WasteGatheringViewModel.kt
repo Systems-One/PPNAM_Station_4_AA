@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
+import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import com.ppnam.station4aa.data.rfid.ScanEvent
 import com.ppnam.station4aa.data.rfid.ScanEventBus
 import com.ppnam.station4aa.data.session.OperatorSession
@@ -80,6 +81,11 @@ class WasteGatheringViewModel(
     private val _lastQueuedMessage = MutableStateFlow<String?>(null)
     val lastQueuedMessage: StateFlow<String?> = _lastQueuedMessage.asStateFlow()
 
+    /** Whether [lastQueuedMessage] is currently showing a rejection (vs. the routine "Queued ..."
+     * confirmation) — lets the UI style the two differently so a rejection doesn't blend in. */
+    private val _lastMessageIsError = MutableStateFlow(false)
+    val lastMessageIsError: StateFlow<Boolean> = _lastMessageIsError.asStateFlow()
+
     /** True from the moment [onReviewConfirmed] commits to a publish until that publish's
      * coroutine finishes (success or failure). Guards against a double-tap on the REVIEW dialog's
      * Confirm button minting two events for one physical bag while `publisher.submit` — a full
@@ -104,6 +110,19 @@ class WasteGatheringViewModel(
                     is ScanDispatchResult.Applied -> syncFromController(result.error)
                     ScanDispatchResult.Ignored -> Unit
                 }
+            }
+        }
+        viewModelScope.launch {
+            publisher.results.collect { result ->
+                if (!result.accepted) {
+                    _lastQueuedMessage.value = "Bag ${result.bagCode} was rejected: " +
+                        (result.reason ?: result.errorCode ?: "unknown reason") +
+                        " (${result.nextAction})"
+                    _lastMessageIsError.value = true
+                }
+                // An accepted result needs no new operator-visible message — "Queued ..." already
+                // shown at publish time already told them the transaction is in motion, and the
+                // wizard has already moved on to the next one.
             }
         }
     }
@@ -191,6 +210,7 @@ class WasteGatheringViewModel(
                 // Acceptance criterion 20: a PUBACK (or even just a durable local write) is never
                 // presented as Station 4 business acceptance — "Queued", not "Submitted"/"Accepted".
                 _lastQueuedMessage.value = "Queued ${event.collectionId} for delivery"
+                _lastMessageIsError.value = false
             } finally {
                 _isSubmitting.value = false
             }
@@ -205,6 +225,7 @@ class WasteGatheringViewModel(
 
     fun dismissLastQueuedMessage() {
         _lastQueuedMessage.value = null
+        _lastMessageIsError.value = false
     }
 
     /** SessionWatcher (mounted at the nav-graph root) handles the actual navigation back to

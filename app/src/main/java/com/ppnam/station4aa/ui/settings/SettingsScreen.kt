@@ -180,6 +180,11 @@ fun SettingsScreen(
                             label = "Device ID",
                             onValueChange = { viewModel.updateDraft(draft.copy(deviceId = it)) }
                         )
+                        SettingsTextField(
+                            value = draft.wasteCollectionTopic,
+                            label = "Collection Topic",
+                            onValueChange = { viewModel.updateDraft(draft.copy(wasteCollectionTopic = it)) }
+                        )
                     }
 
                     ConfigSection(title = "Connection") {
