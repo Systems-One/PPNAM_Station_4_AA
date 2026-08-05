@@ -18,6 +18,7 @@ class WasteCollectionEventTest {
             wasteTypeCode = " WT-01 ",
             collectedBy = " WO-00112 ",
             machineOperatorUserId = " MO-00427 ",
+            bagCode = " BAG-00931 ",
             now = fixedInstant,
         )
 
@@ -26,6 +27,7 @@ class WasteCollectionEventTest {
         assertEquals("WT-01", event.wasteTypeCode)
         assertEquals("WO-00112", event.collectedBy)
         assertEquals("MO-00427", event.machineOperatorUserId)
+        assertEquals("BAG-00931", event.bagCode)
         assertEquals("2026-07-30T10:15:30.000Z", event.collectedAtUtc)
         assertEquals(2, event.toWireMessage().schemaVersion)
     }
@@ -38,19 +40,21 @@ class WasteCollectionEventTest {
             wasteTypeCode = "WT-01",
             collectedBy = "WO-00112",
             machineOperatorUserId = "MO-00427",
+            bagCode = "BAG-00931",
             now = fixedInstant,
         )
         assertTrue(event.collectionId.matches(Regex("WC-20260730-\\d{6}")))
     }
 
     @Test
-    fun `wire JSON uses the exact camelCase property names the contract requires`() {
+    fun `wire JSON uses the exact camelCase property names the contract requires, plus bagCode`() {
         val event = WasteCollectionEvent.create(
             machineCode = "EXT-04",
             machineName = "Extruder 4",
             wasteTypeCode = "WT-01",
             collectedBy = "WO-00112",
             machineOperatorUserId = "MO-00427",
+            bagCode = "BAG-00931",
             now = fixedInstant,
         )
         val json = Gson().toJson(event.toWireMessage())
@@ -65,6 +69,7 @@ class WasteCollectionEventTest {
             "\"collectedBy\":\"WO-00112\"",
             "\"machineOperatorUserId\":\"MO-00427\"",
             "\"collectedAtUtc\":\"2026-07-30T10:15:30.000Z\"",
+            "\"bagCode\":\"BAG-00931\"",
         ).forEach { expectedFragment ->
             assertTrue("Expected JSON to contain $expectedFragment but was $json", json.contains(expectedFragment))
         }
@@ -72,8 +77,8 @@ class WasteCollectionEventTest {
 
     @Test
     fun `two events created back to back get different messageIds`() {
-        val first = WasteCollectionEvent.create("EXT-04", "Extruder 4", "WT-01", "WO-00112", "MO-00427", fixedInstant)
-        val second = WasteCollectionEvent.create("EXT-04", "Extruder 4", "WT-01", "WO-00112", "MO-00427", fixedInstant)
+        val first = WasteCollectionEvent.create("EXT-04", "Extruder 4", "WT-01", "WO-00112", "MO-00427", "BAG-001", fixedInstant)
+        val second = WasteCollectionEvent.create("EXT-04", "Extruder 4", "WT-01", "WO-00112", "MO-00427", "BAG-001", fixedInstant)
         assertTrue(first.messageId != second.messageId)
     }
 }

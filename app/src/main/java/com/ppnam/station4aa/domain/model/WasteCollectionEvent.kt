@@ -25,6 +25,7 @@ data class WasteCollectionEvent(
     val collectedBy: String,
     val machineOperatorUserId: String,
     val collectedAtUtc: String,
+    val bagCode: String = "",
 ) {
     companion object {
         /** The only schema version this app publishes. */
@@ -51,6 +52,7 @@ data class WasteCollectionEvent(
             wasteTypeCode: String,
             collectedBy: String,
             machineOperatorUserId: String,
+            bagCode: String = "",
             now: Instant = Instant.now(),
         ): WasteCollectionEvent = WasteCollectionEvent(
             messageId = UUID.randomUUID().toString(),
@@ -61,6 +63,7 @@ data class WasteCollectionEvent(
             collectedBy = collectedBy.trim(),
             machineOperatorUserId = machineOperatorUserId.trim(),
             collectedAtUtc = TIMESTAMP_FORMATTER.format(now),
+            bagCode = bagCode.trim(),
         )
 
         private fun generateCollectionId(now: Instant): String {
@@ -80,5 +83,6 @@ data class WasteCollectionEvent(
         collectedBy = collectedBy,
         machineOperatorUserId = machineOperatorUserId,
         collectedAtUtc = collectedAtUtc,
+        bagCode = bagCode,
     )
 }

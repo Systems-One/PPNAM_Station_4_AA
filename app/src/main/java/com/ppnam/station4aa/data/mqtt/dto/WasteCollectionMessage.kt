@@ -19,4 +19,5 @@ data class WasteCollectionMessage(
     val collectedBy: String,
     val machineOperatorUserId: String,
     val collectedAtUtc: String,
+    val bagCode: String,
 )
