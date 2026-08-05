@@ -24,6 +24,8 @@ object WasteCollectionValidator {
 
     private const val COLLECTED_BY_MAX_LENGTH = 200
     private const val MACHINE_OPERATOR_ID_MAX_LENGTH = 100
+    private const val MACHINE_CODE_MAX_LENGTH = 100
+    private const val BAG_CODE_MAX_LENGTH = 100
 
     /** `machineOperatorUserId`: entered/scanned fresh for every transaction, so placeholder
      * values are checked — a scanner default or a bored double-tap must not slip through. */
@@ -35,6 +37,19 @@ object WasteCollectionValidator {
      * per transaction the way the machine-operator ID is. */
     fun validateCollectedBy(raw: String): String? =
         validateRequiredIdentity(raw, COLLECTED_BY_MAX_LENGTH, rejectPlaceholders = false)
+
+    /** `machineCode`: scanned fresh at the start of every transaction. Not placeholder-checked —
+     * unlike `machineOperatorUserId` it isn't a freely typed identity field under the handheld's
+     * identity rules, it's whatever a real machine's printed barcode contains. */
+    fun validateMachineCode(raw: String): String? =
+        validateRequiredIdentity(raw, MACHINE_CODE_MAX_LENGTH, rejectPlaceholders = false)
+
+    /** `bagCode`: scanned fresh for every transaction. Not placeholder-checked — Station4's own
+     * server-side `WastageBagCodePolicy.TryNormalize` only rejects blank/over-length/control-
+     * character bag codes, never placeholder values, so client-side rejection here would only
+     * create false positives against a legitimately configured code. */
+    fun validateBagCode(raw: String): String? =
+        validateRequiredIdentity(raw, BAG_CODE_MAX_LENGTH, rejectPlaceholders = false)
 
     private fun validateRequiredIdentity(
         raw: String,

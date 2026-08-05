@@ -61,4 +61,65 @@ class WasteCollectionValidatorTest {
         val tooLong = "A".repeat(201)
         assertNotNull(WasteCollectionValidator.validateCollectedBy(tooLong))
     }
+
+    @Test
+    fun `blank machine code is rejected`() {
+        assertEquals("Required.", WasteCollectionValidator.validateMachineCode(""))
+        assertEquals("Required.", WasteCollectionValidator.validateMachineCode("   "))
+    }
+
+    @Test
+    fun `machine code is not placeholder-checked`() {
+        // A real machine could plausibly be labeled with a code that collides with the
+        // placeholder denylist; unlike machineOperatorUserId this isn't freshly typed per
+        // transaction under identity rules, so it isn't placeholder-checked.
+        assertNull(WasteCollectionValidator.validateMachineCode("UNKNOWN"))
+    }
+
+    @Test
+    fun `control characters in machine code are rejected`() {
+        val bell = 7.toChar()
+        assertNotNull(WasteCollectionValidator.validateMachineCode("EXT-04$bell"))
+    }
+
+    @Test
+    fun `machine code over 100 characters is rejected`() {
+        assertNotNull(WasteCollectionValidator.validateMachineCode("A".repeat(101)))
+    }
+
+    @Test
+    fun `valid machine code is accepted`() {
+        assertNull(WasteCollectionValidator.validateMachineCode("EXT-04"))
+    }
+
+    @Test
+    fun `blank bag code is rejected`() {
+        assertEquals("Required.", WasteCollectionValidator.validateBagCode(""))
+        assertEquals("Required.", WasteCollectionValidator.validateBagCode("   "))
+    }
+
+    @Test
+    fun `bag code is not placeholder-checked`() {
+        // WastageBagCodePolicy.TryNormalize (Station4's server-side allow-list check) only
+        // rejects blank, over-length, or control-character bag codes — never placeholder values.
+        // A real configured bag code could plausibly look like a short denylist word.
+        assertNull(WasteCollectionValidator.validateBagCode("UNKNOWN"))
+        assertNull(WasteCollectionValidator.validateBagCode("n/a"))
+    }
+
+    @Test
+    fun `control characters in bag code are rejected`() {
+        val bell = 7.toChar()
+        assertNotNull(WasteCollectionValidator.validateBagCode("BAG-001$bell"))
+    }
+
+    @Test
+    fun `bag code over 100 characters is rejected`() {
+        assertNotNull(WasteCollectionValidator.validateBagCode("A".repeat(101)))
+    }
+
+    @Test
+    fun `valid bag code is accepted`() {
+        assertNull(WasteCollectionValidator.validateBagCode("BAG-00931"))
+    }
 }
