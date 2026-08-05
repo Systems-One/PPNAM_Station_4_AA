@@ -44,10 +44,12 @@ object WasteCollectionValidator {
     fun validateMachineCode(raw: String): String? =
         validateRequiredIdentity(raw, MACHINE_CODE_MAX_LENGTH, rejectPlaceholders = false)
 
-    /** `bagCode`: scanned fresh for every transaction, same placeholder-rejection posture as
-     * `machineOperatorUserId` since it's the same kind of freshly-scanned opaque identifier. */
+    /** `bagCode`: scanned fresh for every transaction. Not placeholder-checked — Station4's own
+     * server-side `WastageBagCodePolicy.TryNormalize` only rejects blank/over-length/control-
+     * character bag codes, never placeholder values, so client-side rejection here would only
+     * create false positives against a legitimately configured code. */
     fun validateBagCode(raw: String): String? =
-        validateRequiredIdentity(raw, BAG_CODE_MAX_LENGTH, rejectPlaceholders = true)
+        validateRequiredIdentity(raw, BAG_CODE_MAX_LENGTH, rejectPlaceholders = false)
 
     private fun validateRequiredIdentity(
         raw: String,

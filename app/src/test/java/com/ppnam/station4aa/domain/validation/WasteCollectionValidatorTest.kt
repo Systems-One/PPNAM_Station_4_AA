@@ -99,9 +99,12 @@ class WasteCollectionValidatorTest {
     }
 
     @Test
-    fun `placeholder bag code is rejected case-insensitively`() {
-        assertNotNull(WasteCollectionValidator.validateBagCode("UNKNOWN"))
-        assertNotNull(WasteCollectionValidator.validateBagCode("n/a"))
+    fun `bag code is not placeholder-checked`() {
+        // WastageBagCodePolicy.TryNormalize (Station4's server-side allow-list check) only
+        // rejects blank, over-length, or control-character bag codes — never placeholder values.
+        // A real configured bag code could plausibly look like a short denylist word.
+        assertNull(WasteCollectionValidator.validateBagCode("UNKNOWN"))
+        assertNull(WasteCollectionValidator.validateBagCode("n/a"))
     }
 
     @Test
