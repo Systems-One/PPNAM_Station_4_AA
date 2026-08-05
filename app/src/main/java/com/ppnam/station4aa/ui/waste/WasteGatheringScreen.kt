@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ppnam.station4aa.domain.model.WasteTypeCatalog
@@ -54,6 +56,7 @@ fun WasteGatheringScreen(
     val draft by viewModel.draft.collectAsState()
     val stepError by viewModel.stepError.collectAsState()
     val lastQueuedMessage by viewModel.lastQueuedMessage.collectAsState()
+    val lastMessageIsError by viewModel.lastMessageIsError.collectAsState()
     val isSubmitting by viewModel.isSubmitting.collectAsState()
 
     if (step == WizardStep.REVIEW) {
@@ -107,7 +110,20 @@ fun WasteGatheringScreen(
                 )
             }
             lastQueuedMessage?.let {
-                Text(it, style = MaterialTheme.typography.labelMedium, color = TextMuted)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = if (lastMessageIsError) WarningOrange else TextMuted,
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = { viewModel.dismissLastQueuedMessage() }) {
+                        Text("Dismiss")
+                    }
+                }
             }
 
             StepIndicator(step)
