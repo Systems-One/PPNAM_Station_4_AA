@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
+import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import com.ppnam.station4aa.data.rfid.ScanEvent
 import com.ppnam.station4aa.data.rfid.ScanEventBus
 import com.ppnam.station4aa.data.session.OperatorSession
@@ -104,6 +105,18 @@ class WasteGatheringViewModel(
                     is ScanDispatchResult.Applied -> syncFromController(result.error)
                     ScanDispatchResult.Ignored -> Unit
                 }
+            }
+        }
+        viewModelScope.launch {
+            publisher.results.collect { result ->
+                if (!result.accepted) {
+                    _lastQueuedMessage.value = "Bag ${result.bagCode} was rejected: " +
+                        (result.reason ?: result.errorCode ?: "unknown reason") +
+                        " (${result.nextAction})"
+                }
+                // An accepted result needs no new operator-visible message — "Queued ..." already
+                // shown at publish time already told them the transaction is in motion, and the
+                // wizard has already moved on to the next one.
             }
         }
     }
