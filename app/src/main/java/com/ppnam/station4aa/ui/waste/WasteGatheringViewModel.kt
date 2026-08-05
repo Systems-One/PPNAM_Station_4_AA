@@ -13,6 +13,7 @@ import com.ppnam.station4aa.data.settings.SettingsRepository
 import com.ppnam.station4aa.domain.model.WasteCollectionEvent
 import com.ppnam.station4aa.domain.model.WasteTypeCatalog
 import com.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.ppnam.station4aa.domain.validation.WasteCollectionValidator
 import com.ppnam.station4aa.domain.wizard.ScanDispatchResult
 import com.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.ppnam.station4aa.domain.wizard.WasteWizardController
@@ -70,13 +71,22 @@ class WasteGatheringViewModel(
     private val _draft = MutableStateFlow(wizardController.draft)
     val draft: StateFlow<WasteTransactionDraft> = _draft.asStateFlow()
 
-    /** Set by a failed scan or manual-entry attempt on the active step; cleared on every new
-     * attempt, successful advance, or cancel. */
+    /** Set by a failed scan or manual-entry attempt on the active step, or by a failed
+     * [WasteCollectionValidator.validateCollectedBy] check on REVIEW's Confirm; cleared on every
+     * new attempt, successful advance, or cancel. */
     private val _stepError = MutableStateFlow<String?>(null)
     val stepError: StateFlow<String?> = _stepError.asStateFlow()
 
     private val _lastQueuedMessage = MutableStateFlow<String?>(null)
     val lastQueuedMessage: StateFlow<String?> = _lastQueuedMessage.asStateFlow()
+
+    /** True from the moment [onReviewConfirmed] commits to a publish until that publish's
+     * coroutine finishes (success or failure). Guards against a double-tap on the REVIEW dialog's
+     * Confirm button minting two events for one physical bag while `publisher.submit` — a full
+     * QoS-1 round trip with no timeout — is still in flight; see the wizard design doc's "exactly
+     * one MQTT publish per completed transaction" constraint. */
+    private val _isSubmitting = MutableStateFlow(false)
+    val isSubmitting: StateFlow<Boolean> = _isSubmitting.asStateFlow()
 
     init {
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
@@ -127,8 +137,17 @@ class WasteGatheringViewModel(
      * complete event from the finished draft plus the session's [collectedBy], durably queues it
      * exactly like the previous single-page form did (see [WasteCollectionPublisher.submit]),
      * then resets the wizard for the next transaction.
+     *
+     * Re-entrancy guard: [_isSubmitting] covers both a second tap arriving before the launched
+     * coroutine is even scheduled (the early `return` below) and one arriving while the publish
+     * round-trip is still in flight (the button is disabled off [isSubmitting] in
+     * `WasteGatheringScreen`). Without it, a stalled-but-connected broker link leaves the dialog
+     * open and unchanged for the full duration of `publisher.submit`'s no-timeout QoS-1 round
+     * trip, and every tap in that window would mint and publish a fresh event for the same bag.
      */
     fun onReviewConfirmed() {
+        if (_isSubmitting.value) return
+
         val current = wizardController.draft
         val machineCode = requireNotNull(current.machineCode) { "REVIEW reached without machineCode" }
         val machineOperatorUserId = requireNotNull(current.machineOperatorUserId) {
@@ -140,26 +159,41 @@ class WasteGatheringViewModel(
             "REVIEW reached without an active operator session"
         }
 
-        // requireNotNull guards above fail fast, synchronously, before a coroutine is even
-        // launched. `settingsRepository.current()` is `suspend`, so event construction itself
+        // Station4 rejects a blank collectedBy with required_field_missing, but PUBACK only
+        // confirms broker receipt, not that acceptance — so this must be caught here, before
+        // publish, the same way the old single-page form gated Submit on it.
+        val collectedByValue = collectedBy.value
+        val collectedByError = WasteCollectionValidator.validateCollectedBy(collectedByValue)
+        if (collectedByError != null) {
+            _stepError.value = collectedByError
+            return
+        }
+
+        _isSubmitting.value = true
+        // requireNotNull/validation guards above fail fast, synchronously, before a coroutine is
+        // even launched. `settingsRepository.current()` is `suspend`, so event construction itself
         // moves inside the launch — it cannot run on the synchronous path above.
         viewModelScope.launch {
-            val event = WasteCollectionEvent.create(
-                machineCode = machineCode,
-                machineName = machineCode,
-                wasteTypeCode = wasteType.code,
-                collectedBy = collectedBy.value,
-                machineOperatorUserId = machineOperatorUserId,
-                bagCode = bagCode,
-                deviceId = settingsRepository.current().deviceId,
-                operatorSessionId = operatorSessionId,
-            )
-            publisher.submit(event)
-            wizardController.cancel()
-            syncFromController(null)
-            // Acceptance criterion 20: a PUBACK (or even just a durable local write) is never
-            // presented as Station 4 business acceptance — "Queued", not "Submitted"/"Accepted".
-            _lastQueuedMessage.value = "Queued ${event.collectionId} for delivery"
+            try {
+                val event = WasteCollectionEvent.create(
+                    machineCode = machineCode,
+                    machineName = machineCode,
+                    wasteTypeCode = wasteType.code,
+                    collectedBy = collectedByValue,
+                    machineOperatorUserId = machineOperatorUserId,
+                    bagCode = bagCode,
+                    deviceId = settingsRepository.current().deviceId,
+                    operatorSessionId = operatorSessionId,
+                )
+                publisher.submit(event)
+                wizardController.cancel()
+                syncFromController(null)
+                // Acceptance criterion 20: a PUBACK (or even just a durable local write) is never
+                // presented as Station 4 business acceptance — "Queued", not "Submitted"/"Accepted".
+                _lastQueuedMessage.value = "Queued ${event.collectionId} for delivery"
+            } finally {
+                _isSubmitting.value = false
+            }
         }
     }
 

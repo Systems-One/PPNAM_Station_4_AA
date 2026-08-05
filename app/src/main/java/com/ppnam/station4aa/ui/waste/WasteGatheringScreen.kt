@@ -54,6 +54,7 @@ fun WasteGatheringScreen(
     val draft by viewModel.draft.collectAsState()
     val stepError by viewModel.stepError.collectAsState()
     val lastQueuedMessage by viewModel.lastQueuedMessage.collectAsState()
+    val isSubmitting by viewModel.isSubmitting.collectAsState()
 
     if (step == WizardStep.REVIEW) {
         AlertDialog(
@@ -66,10 +67,15 @@ fun WasteGatheringScreen(
                     ConfirmRow("Wastage operator", collectedBy)
                     ConfirmRow("Machine operator ID", draft.machineOperatorUserId.orEmpty())
                     ConfirmRow("Bag code", draft.bagCode.orEmpty())
+                    if (stepError != null) {
+                        Text(stepError!!, style = MaterialTheme.typography.labelSmall, color = WarningOrange)
+                    }
                 }
             },
             confirmButton = {
-                TextButton(onClick = { viewModel.onReviewConfirmed() }) { Text("Confirm") }
+                TextButton(onClick = { viewModel.onReviewConfirmed() }, enabled = !isSubmitting) {
+                    Text("Confirm")
+                }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.onCancelTransaction() }) { Text("Cancel") }
