@@ -6,6 +6,7 @@ import com.ppnam.station4aa.data.local.WasteOutboxDatabase
 import com.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.ppnam.station4aa.data.mqtt.MqttRequestChannel
 import com.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
+import com.ppnam.station4aa.data.mqtt.WasteCollectionResultChannel
 import com.ppnam.station4aa.data.rfid.DataWedgeReceiver
 import com.ppnam.station4aa.data.rfid.ScanEventBus
 import com.ppnam.station4aa.data.security.SecureCredentialStore
@@ -28,9 +29,15 @@ class AppContainer(context: Context) {
     val connectionManager = MqttConnectionManager()
 
     private val outboxDatabase = WasteOutboxDatabase.create(appContext)
+    private val wasteCollectionResultChannel = WasteCollectionResultChannel(
+        outboxDao = outboxDatabase.wasteOutboxDao(),
+        connectionManager = connectionManager,
+    )
     val wasteCollectionPublisher = WasteCollectionPublisher(
         outboxDao = outboxDatabase.wasteOutboxDao(),
         connectionManager = connectionManager,
+        resultChannel = wasteCollectionResultChannel,
+        settingsRepository = settingsRepository,
     )
 
     // Login exchange, mirrored from Station 2 AA — see MqttTopics' class doc for why this talks
