@@ -21,12 +21,21 @@ interface WasteOutboxDao {
     @Query("SELECT COUNT(*) FROM waste_outbox WHERE status = 'PENDING'")
     fun pendingCount(): Flow<Int>
 
+    @Query("SELECT * FROM waste_outbox WHERE messageId = :messageId LIMIT 1")
+    suspend fun findByMessageId(messageId: String): WasteOutboxEntity?
+
     @Query(
         "UPDATE waste_outbox SET attemptCount = attemptCount + 1, lastAttemptEpochMs = :nowEpochMs " +
             "WHERE messageId = :messageId"
     )
     suspend fun recordAttempt(messageId: String, nowEpochMs: Long)
 
-    @Query("UPDATE waste_outbox SET status = 'DELIVERED' WHERE messageId = :messageId")
-    suspend fun markDelivered(messageId: String)
+    @Query("UPDATE waste_outbox SET status = 'ACCEPTED' WHERE messageId = :messageId")
+    suspend fun markAccepted(messageId: String)
+
+    @Query(
+        "UPDATE waste_outbox SET status = 'REJECTED', errorCode = :errorCode, reason = :reason, " +
+            "nextAction = :nextAction WHERE messageId = :messageId"
+    )
+    suspend fun markRejected(messageId: String, errorCode: String?, reason: String?, nextAction: String?)
 }
