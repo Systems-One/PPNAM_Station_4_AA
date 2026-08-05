@@ -5,6 +5,7 @@ import com.ppnam.station4aa.data.local.WasteOutboxEntity
 import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -56,10 +57,18 @@ class WasteCollectionResultChannel(
     private val connectionManager: MqttConnectionManager,
 ) {
     private val gson = WireJson.gson
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    // Defense-in-depth: this is a best-effort background correlation path — a dropped result
+    // (whether from a malformed payload or an unexpected outboxDao failure, e.g. closed DB/disk
+    // full) is recovered by the normal retry mechanism, not a fatal condition, so an uncaught
+    // exception here must never crash the process.
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO + exceptionHandler)
     private val subscribedDeviceIds = ConcurrentHashMap.newKeySet<String>()
 
-    private val _results = MutableSharedFlow<WasteCollectionResultMessage>(extraBufferCapacity = 16)
+    // replay = 1: a ViewModel that (re)starts collecting after the result already arrived (e.g.
+    // the screen was briefly not composed) still sees the most recent terminal result instead of
+    // missing it entirely.
+    private val _results = MutableSharedFlow<WasteCollectionResultMessage>(replay = 1, extraBufferCapacity = 16)
     val results: SharedFlow<WasteCollectionResultMessage> = _results.asSharedFlow()
 
     /** Idempotent — safe to call before every publish attempt (see `WasteCollectionPublisher`).
@@ -67,19 +76,29 @@ class WasteCollectionResultChannel(
      * itself re-applies it across reconnects. */
     suspend fun ensureSubscribed(deviceId: String) {
         if (!subscribedDeviceIds.add(deviceId)) return
-        val topic = "PPNAM/station4/$deviceId/res/waste_collection_result"
+        val topic = MqttTopics.wasteCollectionResult(deviceId)
         connectionManager.subscribe(topic) { _, bytes ->
             scope.launch { handleIncoming(String(bytes, StandardCharsets.UTF_8)) }
         }
     }
 
-    private suspend fun handleIncoming(raw: String) {
+    internal suspend fun handleIncoming(raw: String) {
+        // Gson.fromJson returns null (does not throw) on an empty/zero-length input or a JSON
+        // `null` literal — the catch alone would not stop a null result from being dereferenced
+        // below, so the null-parse case is folded into the same "drop it" path via `?: return`.
         val result = try {
             gson.fromJson(raw, WasteCollectionResultMessage::class.java)
         } catch (e: Exception) {
-            return
-        }
+            null
+        } ?: return
         val stored = outboxDao.findByMessageId(result.inResponseToMessageId) ?: return
+        // Terminal rows (ACCEPTED/REJECTED) must never change status again, and a late/duplicate/
+        // replayed result for one must not re-emit on `results` either — that would show the
+        // operator a stale/wrong banner for a message that changed nothing. The DAO's own
+        // "AND status = 'PENDING'" guard (WasteOutboxDao.markAccepted/markRejected) is the
+        // race-free defense against a genuine concurrent update; this check just avoids the
+        // wrong-banner side effect in the common, non-racing case.
+        if (stored.status != WasteOutboxEntity.Status.PENDING) return
 
         when (val outcome = evaluateOutcome(result, stored)) {
             ResultOutcome.Accepted -> {
