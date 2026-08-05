@@ -11,7 +11,11 @@
 ## Global Constraints
 
 - Wire contract: `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md` — exactly one MQTT publish per completed transaction; no partial/incremental publishes; `messageId`/`collectionId`/`collectedAtUtc` generated only once, at transaction completion.
-- `bagCode` is an additive JSON property (10th field, after the 9 contract-defined fields) — Station 4 may ignore it; it is never a substitute for a required field.
+- **2026-08-05 contract update (document version 3.0.0):** the contract's own §9 ("Waste-collection schema v2" — payload example, JSON Schema, field table) was left unedited during this bump and still shows `schemaVersion` as the integer `2` with 10 fields including a merged bag/collection identity. That section is **stale relative to the actual Station4 implementation** in the sibling repo, confirmed by reading the real validator: `C:\Dev\PPNAM-Station-4\PPNAM.Station4.Core\Services\MqttMessageValidator.cs` requires `schemaVersion == 3` (line ~94) and lists `bagCode` as its own required string (`RequiredStrings`, line ~20), distinct from `collectionId` — matching the contract's §1 intro/identity table (which the edit *did* update) rather than its §9 body. Treat the code + §1 as authoritative; §9's literal payload/JSON-Schema text is an editing artifact of the version bump, not a second, older wire format.
+- `schemaVersion` MUST be the JSON integer `3`, not `2` — `WasteCollectionEvent.SCHEMA_VERSION` and every "schema v2" doc comment/test in this codebase predates the 2026-08-05 bump and needs correcting (Task 3 below).
+- `bagCode` is a **required** contract field, not an additive/ignorable one — Station4's `WastageBagCodePolicy` (`C:\Dev\PPNAM-Station-4\PPNAM.Station4.Core\Services\WastageBagCodePolicy.cs`) validates it as non-blank, ≤100 chars, no control characters (no placeholder-value rule — unlike `machineOperatorUserId`, `WastageBagCodePolicy.TryNormalize` never checks for `UNKNOWN`/`N/A`/etc.), then matches it ordinally against a server-side Settings allow-list and enforces one `AwaitingWeight` collection per bag code. The handheld cannot see that allow-list and MUST NOT try to replicate it — it only needs to publish a well-formed, trimmed value; Station4 quarantines an unconfigured or already-pending bag code on its own.
+- `collectionId` remains its own separate, handheld-generated globally-unique transaction ID (unchanged from before this update) — it is NOT the same value as `bagCode`. The two are distinct required fields on the wire, per the actual validator's `RequiredStrings` list (`collectionId` then `bagCode` back to back) and per §1's identity table, which describes them as two separate identities with two separate lifecycles.
+- **Pre-existing gap found while reading the contract for this revision, unrelated to the 2026-08-05 bump:** `WasteCollectionEvent`/`WasteCollectionMessage` have never carried `deviceId` or `operatorSessionId`, even though both have always been required fields (present in every version of `MqttMessageValidator.RequiredStrings`, and in the contract's field table since schema v2). Every collection publish from this app today would be rejected by Station4 with `required_field_missing`. Task 3 below fixes this alongside the schema v3/`bagCode` corrections since it touches the exact same two files.
 - No step-back navigation. "Cancel transaction" is available on every step and always performs a full reset to `SCAN_MACHINE` with an empty draft.
 - `machineName` mirrors the scanned `machineCode` verbatim — no catalog lookup, no operator-typed name.
 - Manual text entry is an allowed fallback on every scan step (machine code, operator ID, bag code), validated identically to a scan.
@@ -20,6 +24,8 @@
 ---
 
 ## Task 1: Extend WasteCollectionValidator with machine-code and bag-code rules
+
+**Status: Steps 1–5 already committed** (worktree `scan-driven-waste-wizard`, commit `cb5a618`) **but Step 3's `validateBagCode` needs a correction — see Steps 6–7 below**, added after cross-checking the 2026-08-05 contract update against Station4's actual `WastageBagCodePolicy.cs`. That policy's `TryNormalize` only rejects blank/over-length/control-character bag codes — it never checks for placeholder values (`UNKNOWN`, `N/A`, etc.), unlike `machineOperatorUserId`. The committed code passes `rejectPlaceholders = true` for `validateBagCode`, which would client-side-block a legitimately configured bag code that happens to collide with the denylist even though Station4 itself would accept it. Steps 1–5 are left below unchanged as a record of what's already done; do not re-run them.
 
 **Files:**
 - Modify: `app/src/main/java/com/ppnam/station4aa/domain/validation/WasteCollectionValidator.kt`
@@ -130,9 +136,49 @@ git add app/src/main/java/com/ppnam/station4aa/domain/validation/WasteCollection
 git commit -m "feat: add machine-code and bag-code validation rules"
 ```
 
+- [ ] **Step 6: Correct the placeholder test, then fix `validateBagCode`**
+
+In `WasteCollectionValidatorTest.kt`, replace the placeholder test committed in Step 1 (it currently asserts placeholders are *rejected*, which is wrong per `WastageBagCodePolicy.TryNormalize`):
+
+```kotlin
+    @Test
+    fun `bag code is not placeholder-checked`() {
+        // WastageBagCodePolicy.TryNormalize (Station4's server-side allow-list check) only
+        // rejects blank, over-length, or control-character bag codes — never placeholder values.
+        // A real configured bag code could plausibly look like a short denylist word.
+        assertNull(WasteCollectionValidator.validateBagCode("UNKNOWN"))
+        assertNull(WasteCollectionValidator.validateBagCode("n/a"))
+    }
+```
+
+(This replaces the `placeholder bag code is rejected case-insensitively` test added in Step 1 — same test name slot, opposite assertion.)
+
+In `WasteCollectionValidator.kt`, change `validateBagCode`'s `rejectPlaceholders` argument and its doc comment:
+
+```kotlin
+    /** `bagCode`: scanned fresh for every transaction. Not placeholder-checked — Station4's own
+     * server-side `WastageBagCodePolicy.TryNormalize` only rejects blank/over-length/control-
+     * character bag codes, never placeholder values, so client-side rejection here would only
+     * create false positives against a legitimately configured code. */
+    fun validateBagCode(raw: String): String? =
+        validateRequiredIdentity(raw, BAG_CODE_MAX_LENGTH, rejectPlaceholders = false)
+```
+
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
+Expected: PASS, all tests including the corrected one.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add app/src/main/java/com/ppnam/station4aa/domain/validation/WasteCollectionValidator.kt app/src/test/java/com/ppnam/station4aa/domain/validation/WasteCollectionValidatorTest.kt
+git commit -m "fix: bag codes are not placeholder-checked, matching Station4's WastageBagCodePolicy"
+```
+
 ---
 
 ## Task 2: Pure wizard step-transition controller
+
+**Status: already committed** (worktree `scan-driven-waste-wizard`, commit `24c981e`) **and unaffected by the 2026-08-05 contract update** — this is local wizard-step state only, no wire concerns. Left below unchanged as a record; do not re-run.
 
 **Files:**
 - Create: `app/src/main/java/com/ppnam/station4aa/domain/wizard/WizardStep.kt`
@@ -446,7 +492,9 @@ git commit -m "feat: add pure WasteWizardController for the scan-driven collecti
 
 ---
 
-## Task 3: Add bagCode to WasteCollectionEvent and the wire message
+## Task 3: Correct WasteCollectionEvent/WasteCollectionMessage for the schema v3 contract update
+
+**Status: partially committed and now wrong.** Worktree commit `a89f686` added `bagCode` as an *optional, defaulted* field with `schemaVersion` still `2`, following the plan as it stood before the 2026-08-05 contract update. This task's steps replace that committed state: `schemaVersion` becomes `3`, `bagCode` loses its default (a required contract field must never be silently publishable as blank), and — a pre-existing gap unrelated to `bagCode` — `deviceId` and `operatorSessionId` are added as required fields for the first time. Without this fix, no collection event this app has ever built could pass Station4's `required_field_missing` check.
 
 **Files:**
 - Modify: `app/src/main/java/com/ppnam/station4aa/domain/model/WasteCollectionEvent.kt`
@@ -454,12 +502,12 @@ git commit -m "feat: add pure WasteWizardController for the scan-driven collecti
 - Modify: `app/src/test/java/com/ppnam/station4aa/domain/model/WasteCollectionEventTest.kt`
 
 **Interfaces:**
-- Consumes: nothing new.
-- Produces: `WasteCollectionEvent.create(machineCode, machineName, wasteTypeCode, collectedBy, machineOperatorUserId, bagCode, now = Instant.now())` (bagCode is a new required parameter, inserted before the defaulted `now`); `WasteCollectionEvent.bagCode: String`; `WasteCollectionMessage.bagCode: String` as the JSON payload's 10th property. Used by Task 4 (outbox mapping) and Task 5 (ViewModel's `onReviewConfirmed`).
+- Consumes: nothing new — `deviceId`/`operatorSessionId` are supplied as plain `String` arguments by the caller (Task 5's ViewModel), same pattern as `collectedBy` today; `WasteCollectionEvent.create()` stays dependency-free.
+- Produces: `WasteCollectionEvent.create(machineCode, machineName, wasteTypeCode, collectedBy, machineOperatorUserId, bagCode, deviceId, operatorSessionId, now = Instant.now())` — `bagCode`, `deviceId`, `operatorSessionId` are all required (no defaults); `WasteCollectionEvent.bagCode/deviceId/operatorSessionId: String`; `WasteCollectionMessage` carries the same three as required wire properties. Used by Task 4 (outbox mapping) and Task 5 (ViewModel's `onReviewConfirmed`, which now must also read `deviceId` from `SettingsRepository` and `operatorSessionId` from `OperatorSessionHolder`).
 
 - [ ] **Step 1: Write the failing tests**
 
-Update `WasteCollectionEventTest.kt` — every existing `WasteCollectionEvent.create(...)` call needs a `bagCode` argument, and one new test is added. Replace the full file content with:
+Replace the full content of `WasteCollectionEventTest.kt`:
 
 ```kotlin
 package com.ppnam.station4aa.domain.model
@@ -474,16 +522,39 @@ class WasteCollectionEventTest {
 
     private val fixedInstant: Instant = Instant.parse("2026-07-30T10:15:30.000Z")
 
+    private fun buildEvent(
+        machineCode: String = "EXT-04",
+        machineName: String = "Extruder 4",
+        wasteTypeCode: String = "WT-01",
+        collectedBy: String = "WO-00112",
+        machineOperatorUserId: String = "MO-00427",
+        bagCode: String = "BAG-00931",
+        deviceId: String = "HH-01",
+        operatorSessionId: String = "4dfda8bb-e9bf-4e92-b8a9-acde673fbb83",
+        now: Instant = fixedInstant,
+    ) = WasteCollectionEvent.create(
+        machineCode = machineCode,
+        machineName = machineName,
+        wasteTypeCode = wasteTypeCode,
+        collectedBy = collectedBy,
+        machineOperatorUserId = machineOperatorUserId,
+        bagCode = bagCode,
+        deviceId = deviceId,
+        operatorSessionId = operatorSessionId,
+        now = now,
+    )
+
     @Test
-    fun `create trims fields and stamps schema version 2 on the wire message`() {
-        val event = WasteCollectionEvent.create(
+    fun `create trims fields and stamps schema version 3 on the wire message`() {
+        val event = buildEvent(
             machineCode = "  EXT-04  ",
             machineName = " Extruder 4 ",
             wasteTypeCode = " WT-01 ",
             collectedBy = " WO-00112 ",
             machineOperatorUserId = " MO-00427 ",
             bagCode = " BAG-00931 ",
-            now = fixedInstant,
+            deviceId = " HH-01 ",
+            operatorSessionId = " 4dfda8bb-e9bf-4e92-b8a9-acde673fbb83 ",
         )
 
         assertEquals("EXT-04", event.machineCode)
@@ -492,48 +563,37 @@ class WasteCollectionEventTest {
         assertEquals("WO-00112", event.collectedBy)
         assertEquals("MO-00427", event.machineOperatorUserId)
         assertEquals("BAG-00931", event.bagCode)
+        assertEquals("HH-01", event.deviceId)
+        assertEquals("4dfda8bb-e9bf-4e92-b8a9-acde673fbb83", event.operatorSessionId)
         assertEquals("2026-07-30T10:15:30.000Z", event.collectedAtUtc)
-        assertEquals(2, event.toWireMessage().schemaVersion)
+        assertEquals(3, event.toWireMessage().schemaVersion)
     }
 
     @Test
-    fun `collectionId follows the contract's WC-yyyyMMdd- shape`() {
-        val event = WasteCollectionEvent.create(
-            machineCode = "EXT-04",
-            machineName = "Extruder 4",
-            wasteTypeCode = "WT-01",
-            collectedBy = "WO-00112",
-            machineOperatorUserId = "MO-00427",
-            bagCode = "BAG-00931",
-            now = fixedInstant,
-        )
+    fun `collectionId follows the contract's WC-yyyyMMdd- shape and is distinct from bagCode`() {
+        val event = buildEvent()
         assertTrue(event.collectionId.matches(Regex("WC-20260730-\\d{6}")))
+        assertTrue(event.collectionId != event.bagCode)
     }
 
     @Test
-    fun `wire JSON uses the exact camelCase property names the contract requires, plus bagCode`() {
-        val event = WasteCollectionEvent.create(
-            machineCode = "EXT-04",
-            machineName = "Extruder 4",
-            wasteTypeCode = "WT-01",
-            collectedBy = "WO-00112",
-            machineOperatorUserId = "MO-00427",
-            bagCode = "BAG-00931",
-            now = fixedInstant,
-        )
+    fun `wire JSON uses the exact camelCase property names the contract requires`() {
+        val event = buildEvent()
         val json = Gson().toJson(event.toWireMessage())
 
         listOf(
-            "\"schemaVersion\":2",
+            "\"schemaVersion\":3",
             "\"messageId\"",
+            "\"deviceId\":\"HH-01\"",
+            "\"operatorSessionId\":\"4dfda8bb-e9bf-4e92-b8a9-acde673fbb83\"",
             "\"collectionId\"",
+            "\"bagCode\":\"BAG-00931\"",
             "\"machineCode\":\"EXT-04\"",
             "\"machineName\":\"Extruder 4\"",
+            "\"machineOperatorUserId\":\"MO-00427\"",
             "\"wasteTypeCode\":\"WT-01\"",
             "\"collectedBy\":\"WO-00112\"",
-            "\"machineOperatorUserId\":\"MO-00427\"",
             "\"collectedAtUtc\":\"2026-07-30T10:15:30.000Z\"",
-            "\"bagCode\":\"BAG-00931\"",
         ).forEach { expectedFragment ->
             assertTrue("Expected JSON to contain $expectedFragment but was $json", json.contains(expectedFragment))
         }
@@ -541,8 +601,8 @@ class WasteCollectionEventTest {
 
     @Test
     fun `two events created back to back get different messageIds`() {
-        val first = WasteCollectionEvent.create("EXT-04", "Extruder 4", "WT-01", "WO-00112", "MO-00427", "BAG-001", fixedInstant)
-        val second = WasteCollectionEvent.create("EXT-04", "Extruder 4", "WT-01", "WO-00112", "MO-00427", "BAG-001", fixedInstant)
+        val first = buildEvent()
+        val second = buildEvent()
         assertTrue(first.messageId != second.messageId)
     }
 }
@@ -551,49 +611,103 @@ class WasteCollectionEventTest {
 - [ ] **Step 2: Run the tests to verify they fail**
 
 Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.model.WasteCollectionEventTest"`
-Expected: FAIL to compile — `create(...)` doesn't accept a `bagCode` argument yet, `event.bagCode` is unresolved.
+Expected: FAIL to compile — `create(...)` doesn't accept `deviceId`/`operatorSessionId` yet, and `event.deviceId`/`event.operatorSessionId` are unresolved; the schema-version assertions also fail against the currently-committed `2`.
 
-- [ ] **Step 3: Add bagCode to WasteCollectionMessage**
+- [ ] **Step 3: Update WasteCollectionMessage**
 
-In `WasteCollectionMessage.kt`, add `bagCode` as the last property:
+Replace `WasteCollectionMessage.kt`'s full content — field order now mirrors Station4's actual `MqttMessageValidator.RequiredStrings` order (`messageId, deviceId, operatorSessionId, collectionId, bagCode, machineCode, machineName, machineOperatorUserId, wasteTypeCode, collectedBy`, plus `collectedAtUtc`):
 
 ```kotlin
+package com.ppnam.station4aa.data.mqtt.dto
+
+/**
+ * Wire shape for the schema v3 payload defined in
+ * `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md` (§1 intro/identity table and the
+ * actual Station4 validator — see that repo's `PPNAM.Station4.Core/Services/MqttMessageValidator.cs`,
+ * which is authoritative over the contract doc's own stale §9 body left over from the v2→v3 bump).
+ * Property names are the exact camelCase names the contract requires — Gson serializes Kotlin
+ * property names verbatim, so these ARE the wire keys; there is no `@SerializedName` remapping.
+ *
+ * `schemaVersion` MUST be exactly `3` (a JSON integer, never the string `"3"`) — see
+ * [com.ppnam.station4aa.domain.model.WasteCollectionEvent.SCHEMA_VERSION]. `bagCode` and
+ * `collectionId` are two distinct required fields, not one merged value — see
+ * `WasteCollectionEvent`'s class doc.
+ */
 data class WasteCollectionMessage(
     val schemaVersion: Int,
     val messageId: String,
+    val deviceId: String,
+    val operatorSessionId: String,
     val collectionId: String,
+    val bagCode: String,
     val machineCode: String,
     val machineName: String,
+    val machineOperatorUserId: String,
     val wasteTypeCode: String,
     val collectedBy: String,
-    val machineOperatorUserId: String,
     val collectedAtUtc: String,
-    val bagCode: String,
 )
 ```
 
-- [ ] **Step 4: Add bagCode to WasteCollectionEvent**
+- [ ] **Step 4: Update WasteCollectionEvent**
 
-In `WasteCollectionEvent.kt`, add the field, the `create()` parameter, and wire it through `toWireMessage()`:
+Replace `WasteCollectionEvent.kt`'s full content:
 
 ```kotlin
+package com.ppnam.station4aa.domain.model
+
+import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionMessage
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import kotlin.random.Random
+
+/**
+ * One immutable waste-collection creation event, matching schema v3 of
+ * `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md` — confirmed against the real
+ * Station4 validator (`PPNAM.Station4.Core/Services/MqttMessageValidator.cs`) since the contract
+ * doc's own §9 body still shows stale v2 text (`schemaVersion` integer `2`, no `bagCode`) left over
+ * from the 2026-08-05 version bump. `bagCode` (the physical, reusable wastage-bag barcode) and
+ * `collectionId` (this handheld's own globally-unique transaction ID) are two distinct required
+ * fields — they are never the same value.
+ *
+ * "Generate `messageId`, `collectionId`, and `collectedAtUtc` only for the completed transaction"
+ * (contract, "Required handheld workflow" step 13) — see [create], the only place these three
+ * fields are minted. Once created, an event's fields never change: a delivery retry MUST reuse
+ * them unchanged, and this class has no setters.
+ */
 data class WasteCollectionEvent(
     val messageId: String,
+    val deviceId: String,
+    val operatorSessionId: String,
     val collectionId: String,
+    val bagCode: String,
     val machineCode: String,
     val machineName: String,
+    val machineOperatorUserId: String,
     val wasteTypeCode: String,
     val collectedBy: String,
-    val machineOperatorUserId: String,
     val collectedAtUtc: String,
-    val bagCode: String,
 ) {
     companion object {
-        const val SCHEMA_VERSION = 2
+        /** The only schema version this app publishes. */
+        const val SCHEMA_VERSION = 3
 
         private val TIMESTAMP_FORMATTER: DateTimeFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneOffset.UTC)
 
+        /**
+         * Mints a new event for a just-completed handheld transaction. Caller-supplied fields
+         * are trimmed but otherwise not re-validated here — see
+         * [com.ppnam.station4aa.domain.validation.WasteCollectionValidator] for the contract's
+         * required pre-publish checks, which the UI runs before this is ever called.
+         *
+         * `collectionId`'s "WC-{yyyyMMdd}-{random}" shape mirrors the contract's earlier example
+         * but, absent a server-assigned or device-local sequence, is randomly generated rather
+         * than counted — collision odds are negligible for one handheld's daily volume but not
+         * zero. A future revision with a real sequence source should replace this.
+         */
         fun create(
             machineCode: String,
             machineName: String,
@@ -601,17 +715,21 @@ data class WasteCollectionEvent(
             collectedBy: String,
             machineOperatorUserId: String,
             bagCode: String,
+            deviceId: String,
+            operatorSessionId: String,
             now: Instant = Instant.now(),
         ): WasteCollectionEvent = WasteCollectionEvent(
             messageId = UUID.randomUUID().toString(),
+            deviceId = deviceId.trim(),
+            operatorSessionId = operatorSessionId.trim(),
             collectionId = generateCollectionId(now),
+            bagCode = bagCode.trim(),
             machineCode = machineCode.trim(),
             machineName = machineName.trim(),
+            machineOperatorUserId = machineOperatorUserId.trim(),
             wasteTypeCode = wasteTypeCode.trim(),
             collectedBy = collectedBy.trim(),
-            machineOperatorUserId = machineOperatorUserId.trim(),
             collectedAtUtc = TIMESTAMP_FORMATTER.format(now),
-            bagCode = bagCode.trim(),
         )
 
         private fun generateCollectionId(now: Instant): String {
@@ -624,62 +742,69 @@ data class WasteCollectionEvent(
     fun toWireMessage(): WasteCollectionMessage = WasteCollectionMessage(
         schemaVersion = SCHEMA_VERSION,
         messageId = messageId,
+        deviceId = deviceId,
+        operatorSessionId = operatorSessionId,
         collectionId = collectionId,
+        bagCode = bagCode,
         machineCode = machineCode,
         machineName = machineName,
+        machineOperatorUserId = machineOperatorUserId,
         wasteTypeCode = wasteTypeCode,
         collectedBy = collectedBy,
-        machineOperatorUserId = machineOperatorUserId,
         collectedAtUtc = collectedAtUtc,
-        bagCode = bagCode,
     )
 }
 ```
-
-(Only the data class fields, `create()`'s signature/body, and `toWireMessage()` change — the class doc comment, imports, and `generateCollectionId` stay as they are in the file today.)
 
 - [ ] **Step 5: Run the tests to verify they pass**
 
 Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.model.WasteCollectionEventTest"`
 Expected: PASS, all 4 tests.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Confirm the expected downstream compile breakage**
+
+Run: `.\gradlew.bat compileDebugKotlin`
+Expected: FAIL — `WasteOutboxEntity.kt`'s `toEvent()`/`toOutboxEntity()` (Task 4) and `WasteGatheringViewModel.kt`'s `onReviewConfirmed()` (Task 5) still call the old `WasteCollectionEvent` constructor/`create()` shape. This is expected; Tasks 4 and 5 fix it. Confirm the *only* compile errors are in those two files, not in `WasteCollectionEvent.kt`/`WasteCollectionMessage.kt` themselves.
+
+- [ ] **Step 7: Commit**
 
 ```bash
 git add app/src/main/java/com/ppnam/station4aa/domain/model/WasteCollectionEvent.kt app/src/main/java/com/ppnam/station4aa/data/mqtt/dto/WasteCollectionMessage.kt app/src/test/java/com/ppnam/station4aa/domain/model/WasteCollectionEventTest.kt
-git commit -m "feat: add bagCode as an additive field on the waste collection event and wire message"
+git commit -m "fix: schemaVersion 3, required bagCode, and add missing deviceId/operatorSessionId to the collection event"
 ```
 
 ---
 
-## Task 4: Carry bagCode through the local outbox
+## Task 4: Carry bagCode/deviceId/operatorSessionId through the local outbox
 
 **Files:**
 - Modify: `app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxEntity.kt`
 - Modify: `app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxDatabase.kt`
 
 **Interfaces:**
-- Consumes: `WasteCollectionEvent.bagCode` (Task 3).
-- Produces: `WasteOutboxEntity.bagCode: String` column; `WasteOutboxDatabase` at schema version 2. Used by Task 5 indirectly (via the unchanged `WasteCollectionPublisher`, which already round-trips whatever `toEvent()`/`toOutboxEntity()` carry).
+- Consumes: `WasteCollectionEvent.bagCode/deviceId/operatorSessionId` (Task 3).
+- Produces: `WasteOutboxEntity.bagCode/deviceId/operatorSessionId: String` columns; `WasteOutboxDatabase` at schema version 2. Used by Task 5 indirectly (via the unchanged `WasteCollectionPublisher`, which already round-trips whatever `toEvent()`/`toOutboxEntity()` carry). This matters beyond `bagCode`: the contract requires a retry to republish the *exact original* payload, so `deviceId`/`operatorSessionId` must survive a process restart in the durable outbox row exactly like every other field — a retry that re-derived them from current app state instead of the original queued row would violate that immutability rule if the device's settings or session changed in between.
 
-No dedicated automated test: this repo has no Room DAO/migration test infrastructure yet (`exportSchema = false`, no `androidTest` DAO coverage, no `Migration` classes anywhere), and the outbox is a transient in-flight queue rather than a permanent record, so a destructive-migration fallback is acceptable rather than authoring net-new Room test infra for this one column. Correctness is exercised end-to-end by Task 8's on-device verification (a queued row must survive to "Queued ..." and drop `pendingCount` back down after PUBACK).
+No dedicated automated test: this repo has no Room DAO/migration test infrastructure yet (`exportSchema = false`, no `androidTest` DAO coverage, no `Migration` classes anywhere), and the outbox is a transient in-flight queue rather than a permanent record, so a destructive-migration fallback is acceptable rather than authoring net-new Room test infra for three columns. Correctness is exercised end-to-end by Task 8's on-device verification (a queued row must survive to "Queued ..." and drop `pendingCount` back down after PUBACK).
 
-- [ ] **Step 1: Add the bagCode column and update the mapping functions**
+- [ ] **Step 1: Add the three columns and update the mapping functions**
 
-In `WasteOutboxEntity.kt`, add the column to the entity and both mapping functions:
+In `WasteOutboxEntity.kt`, add the columns to the entity and both mapping functions:
 
 ```kotlin
 @Entity(tableName = "waste_outbox")
 data class WasteOutboxEntity(
     @PrimaryKey val messageId: String,
+    val deviceId: String,
+    val operatorSessionId: String,
     val collectionId: String,
+    val bagCode: String,
     val machineCode: String,
     val machineName: String,
+    val machineOperatorUserId: String,
     val wasteTypeCode: String,
     val collectedBy: String,
-    val machineOperatorUserId: String,
     val collectedAtUtc: String,
-    val bagCode: String,
     val status: String,
     val createdAtEpochMs: Long,
     val lastAttemptEpochMs: Long?,
@@ -693,26 +818,30 @@ data class WasteOutboxEntity(
 
 fun WasteOutboxEntity.toEvent(): WasteCollectionEvent = WasteCollectionEvent(
     messageId = messageId,
+    deviceId = deviceId,
+    operatorSessionId = operatorSessionId,
     collectionId = collectionId,
+    bagCode = bagCode,
     machineCode = machineCode,
     machineName = machineName,
+    machineOperatorUserId = machineOperatorUserId,
     wasteTypeCode = wasteTypeCode,
     collectedBy = collectedBy,
-    machineOperatorUserId = machineOperatorUserId,
     collectedAtUtc = collectedAtUtc,
-    bagCode = bagCode,
 )
 
 fun WasteCollectionEvent.toOutboxEntity(nowEpochMs: Long): WasteOutboxEntity = WasteOutboxEntity(
     messageId = messageId,
+    deviceId = deviceId,
+    operatorSessionId = operatorSessionId,
     collectionId = collectionId,
+    bagCode = bagCode,
     machineCode = machineCode,
     machineName = machineName,
+    machineOperatorUserId = machineOperatorUserId,
     wasteTypeCode = wasteTypeCode,
     collectedBy = collectedBy,
-    machineOperatorUserId = machineOperatorUserId,
     collectedAtUtc = collectedAtUtc,
-    bagCode = bagCode,
     status = WasteOutboxEntity.Status.PENDING,
     createdAtEpochMs = nowEpochMs,
     lastAttemptEpochMs = null,
@@ -720,7 +849,7 @@ fun WasteCollectionEvent.toOutboxEntity(nowEpochMs: Long): WasteOutboxEntity = W
 )
 ```
 
-(Entity doc comment and `Status` object body are unchanged from the current file — only the new `bagCode` column and its two mapping-function wirings are added.)
+(Entity doc comment and `Status` object body are unchanged from the current file — only the three new columns and their mapping-function wirings are added/reordered.)
 
 - [ ] **Step 2: Bump the database version with a destructive-migration fallback**
 
@@ -745,10 +874,10 @@ abstract class WasteOutboxDatabase : RoomDatabase() {
                 WasteOutboxDatabase::class.java,
                 "ppnam_station4_outbox.db",
             )
-                // No migration path exists yet for the pre-bagCode schema (version 1). The
+                // No migration path exists yet for the pre-schema-v3 outbox (version 1). The
                 // outbox is a transient in-flight queue, not a permanent record, so dropping and
                 // recreating it on upgrade is acceptable rather than authoring a real migration
-                // for one column pre-production.
+                // for a handful of columns pre-production.
                 .fallbackToDestructiveMigration()
                 .build()
     }
@@ -758,13 +887,13 @@ abstract class WasteOutboxDatabase : RoomDatabase() {
 - [ ] **Step 3: Build to confirm it compiles**
 
 Run: `.\gradlew.bat compileDebugKotlin`
-Expected: BUILD SUCCESSFUL. (`WasteCollectionPublisher` and `WasteCollectionEventTest`/etc. all still compile since Task 3 already added `bagCode` everywhere `WasteCollectionEvent` is constructed.)
+Expected: FAIL only in `WasteGatheringViewModel.kt` (Task 5, not yet updated) — `WasteOutboxEntity.kt` itself and everything it touches should now compile cleanly.
 
 - [ ] **Step 4: Commit**
 
 ```bash
 git add app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxEntity.kt app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxDatabase.kt
-git commit -m "feat: carry bagCode through the local waste outbox"
+git commit -m "fix: carry bagCode/deviceId/operatorSessionId through the local waste outbox"
 ```
 
 ---
@@ -776,7 +905,7 @@ git commit -m "feat: carry bagCode through the local waste outbox"
 - Modify: `app/src/main/java/com/ppnam/station4aa/navigation/AppNavGraph.kt`
 
 **Interfaces:**
-- Consumes: `WasteWizardController`/`WizardStep`/`WasteTransactionDraft`/`ScanDispatchResult` (Task 2); `WasteCollectionEvent.create(..., bagCode, now)` (Task 3); existing `ScanEventBus`/`ScanEvent.Barcode`, `MqttConnectionManager`, `WasteCollectionPublisher`, `OperatorSessionHolder`, `SettingsRepository`, `AuthUseCase`, `ConnectionStatus`/`connectionStatusFlow` — all unchanged.
+- Consumes: `WasteWizardController`/`WizardStep`/`WasteTransactionDraft`/`ScanDispatchResult` (Task 2); `WasteCollectionEvent.create(..., bagCode, deviceId, operatorSessionId, now)` (Task 3 — note the two new required parameters sourced from `settingsRepository.current().deviceId` and `session.value?.operatorSessionId`); existing `ScanEventBus`/`ScanEvent.Barcode`, `MqttConnectionManager`, `WasteCollectionPublisher`, `OperatorSessionHolder`, `SettingsRepository`, `AuthUseCase`, `ConnectionStatus`/`connectionStatusFlow` — all unchanged.
 - Produces (new public ViewModel surface, consumed by Task 6's screen): `connectionStatus: StateFlow<ConnectionStatus>`, `pendingCount: StateFlow<Int>`, `session: StateFlow<OperatorSession?>`, `collectedBy: StateFlow<String>`, `step: StateFlow<WizardStep>`, `draft: StateFlow<WasteTransactionDraft>`, `stepError: StateFlow<String?>`, `lastQueuedMessage: StateFlow<String?>`, and functions `onMachineCodeSubmitted(raw: String)`, `onOperatorIdSubmitted(raw: String)`, `onWasteTypeConfirmed(type: WasteTypeCatalog)`, `onBagCodeSubmitted(raw: String)`, `onCancelTransaction()`, `onReviewConfirmed()`, `dismissLastQueuedMessage()`, `logout()`. Constructor gains a `scanEventBus: ScanEventBus` parameter.
 
 This task has no new automated tests of its own — `WasteWizardController` (Task 2) already covers every step-transition/validation/cancel/ignore scenario this ViewModel delegates to, and this repo has no mocking library to cheaply fake the ViewModel's five other constructor dependencies (`MqttConnectionManager`, `WasteCollectionPublisher`, etc. are concrete classes with no existing test doubles). Task 8's on-device walkthrough is this task's verification.
@@ -924,16 +1053,24 @@ class WasteGatheringViewModel(
         }
         val wasteType = requireNotNull(current.wasteType) { "REVIEW reached without wasteType" }
         val bagCode = requireNotNull(current.bagCode) { "REVIEW reached without bagCode" }
+        val operatorSessionId = requireNotNull(session.value?.operatorSessionId) {
+            "REVIEW reached without an active operator session"
+        }
 
-        val event = WasteCollectionEvent.create(
-            machineCode = machineCode,
-            machineName = machineCode,
-            wasteTypeCode = wasteType.code,
-            collectedBy = collectedBy.value,
-            machineOperatorUserId = machineOperatorUserId,
-            bagCode = bagCode,
-        )
+        // requireNotNull guards above fail fast, synchronously, before a coroutine is even
+        // launched. `settingsRepository.current()` is `suspend`, so event construction itself
+        // moves inside the launch — it cannot run on the synchronous path above.
         viewModelScope.launch {
+            val event = WasteCollectionEvent.create(
+                machineCode = machineCode,
+                machineName = machineCode,
+                wasteTypeCode = wasteType.code,
+                collectedBy = collectedBy.value,
+                machineOperatorUserId = machineOperatorUserId,
+                bagCode = bagCode,
+                deviceId = settingsRepository.current().deviceId,
+                operatorSessionId = operatorSessionId,
+            )
             publisher.submit(event)
             wizardController.cancel()
             syncFromController(null)

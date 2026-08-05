@@ -1,5 +1,32 @@
 # Scan-driven waste collection wizard — design
 
+## 2026-08-05 addendum: contract bumped to schema v3 mid-implementation
+
+This design was originally written against contract document version 2.1.0, where `bagCode` was
+planned as an *additive*, ignorable JSON property and the wire `schemaVersion` stayed `2`. The
+contract was updated the same day to document version 3.0.0. The rest of this document is left as
+originally written (it's still an accurate record of the wizard's UI/state-machine design, which
+the contract bump doesn't touch), **except the two points below, which the plan
+(`docs/superpowers/plans/2026-08-05-scan-driven-waste-wizard.md`, Task 3) now implements
+correctly and this doc's "Wire/domain changes" section (below) does not — read Task 3, not this
+section, for the actual field list:**
+
+- `schemaVersion` is now `3`, not `2`.
+- `bagCode` is a **required** contract field, validated by Station4's own
+  `WastageBagCodePolicy`/`MqttMessageValidator` (`C:\Dev\PPNAM-Station-4\PPNAM.Station4.Core\
+  Services\`) — not additive/ignorable, and not placeholder-checked (see the `WasteCollectionValidator`
+  note below). It remains a value distinct from `collectionId`, which stays the handheld's own
+  generated transaction ID.
+- Separately, and unrelated to the bump: reading the actual Station4 validator while implementing
+  this revealed `deviceId` and `operatorSessionId` have always been required contract fields that
+  this app's wire payload has never included. Task 3 fixes this alongside the schema v3 change.
+
+The contract document itself (`Station4_Wastage_MQTT_Contract.md`) is internally inconsistent as of
+this bump: its §1 intro and identity table were updated to v3 language, but its §9 payload
+example/JSON Schema/field table were left showing v2's stale integer `2` and no `bagCode`. Treat
+the real Station4 code as authoritative over that stale section — see the plan's Global Constraints
+for the exact citation.
+
 ## Context
 
 The current Waste Gathering screen (`WasteGatheringScreen`/`WasteGatheringViewModel`) is a
@@ -95,8 +122,9 @@ advancement logic is identical regardless of input source.
    advance to `SELECT_WASTE_TYPE`.
 3. **SELECT_WASTE_TYPE**: operator picks from the existing `WasteTypeCatalog` dropdown/list →
    taps a step-local **Confirm** button → `draft.wasteType` set → advance to `SCAN_BAG`.
-4. **SCAN_BAG**: barcode or manual entry → new `validateBagCode` (same rules as machine-operator
-   ID: blank/control-char/length checks and placeholder-value rejection, max 100 characters) →
+4. **SCAN_BAG**: barcode or manual entry → new `validateBagCode` (blank/control-char/length checks
+   only, max 100 characters — **not** placeholder-value rejection: see the 2026-08-05 addendum
+   above, `WastageBagCodePolicy.TryNormalize` never rejects placeholders for bag codes) →
    `draft.bagCode` set → advance to `REVIEW`.
 5. **REVIEW**: dialog (same visual style as today's `AlertDialog`) listing Machine, Waste type,
    Wastage operator (`collectedBy`, from session, unchanged), Machine operator ID, Bag code.
@@ -119,24 +147,26 @@ draft, identical to Cancel at REVIEW.
 
 ## Wire/domain changes
 
-- `WasteCollectionEvent` (`domain/model/WasteCollectionEvent.kt`): add `bagCode: String`. `create()`
-  gains a `bagCode` parameter (trimmed like the other fields). `toWireMessage()` includes it.
-- `WasteCollectionMessage` (`data/mqtt/dto/WasteCollectionMessage.kt`): add `bagCode: String` as a
-  10th property, after the 9 contract-defined fields. This is additive per the contract's
-  `"additionalProperties": true` — Station 4 is not obligated to store or use it until a future
-  schema version formally adopts it, which is an accepted tradeoff of the "include as an additive
-  field" decision.
-- `WasteOutboxEntity` (`data/local/WasteOutboxEntity.kt`): add `bagCode: String` column, plus
-  `toEvent()`/`toOutboxEntity()` mapping updates.
+- `WasteCollectionEvent` (`domain/model/WasteCollectionEvent.kt`): add required `bagCode`,
+  `deviceId`, `operatorSessionId: String` fields. `create()` gains matching required parameters
+  (trimmed like the other fields, no defaults). `toWireMessage()` includes all three. See the
+  plan's Task 3 for the exact field order and why `deviceId`/`operatorSessionId` are included too.
+- `WasteCollectionMessage` (`data/mqtt/dto/WasteCollectionMessage.kt`): add `bagCode`, `deviceId`,
+  `operatorSessionId` as **required** wire properties — schema v3 validates all three (see the
+  2026-08-05 addendum above); this is not the additive/ignorable field originally planned.
+- `WasteOutboxEntity` (`data/local/WasteOutboxEntity.kt`): add `bagCode`, `deviceId`,
+  `operatorSessionId: String` columns, plus `toEvent()`/`toOutboxEntity()` mapping updates.
 - `WasteOutboxDatabase`: bump `version` 1 → 2. No `exportSchema`/migration infrastructure exists
   yet (`exportSchema = false`, no `Migration` classes anywhere in the codebase) and the outbox is
   a transient in-flight queue, not a permanent record — `fallbackToDestructiveMigration()` is
   acceptable here rather than authoring a real migration.
 - `WasteCollectionValidator` (`domain/validation/WasteCollectionValidator.kt`): add
   `validateBagCode()`, reusing the existing `validateRequiredIdentity` helper with
-  `rejectPlaceholders = true` and a 100-character max (matching `machineOperatorUserId`'s limit,
-  since a bag code is the same kind of opaque scanned identifier). Also add a machine-code
-  validation rule (non-blank/control-char/length, no placeholder check) for step 1.
+  `rejectPlaceholders = false` (see the 2026-08-05 addendum — Station4's own
+  `WastageBagCodePolicy.TryNormalize` never rejects placeholders for bag codes, unlike
+  `machineOperatorUserId`) and a 100-character max (matching `WastageBagCodePolicy.MaximumCodeLength`).
+  Also add a machine-code validation rule (non-blank/control-char/length, no placeholder check) for
+  step 1.
 - `MachineCatalog` (`domain/model/MachineCatalog.kt`): **deleted**. Confirmed via repo-wide grep
   that it's referenced only from `WasteGatheringScreen.kt`/`WasteGatheringViewModel.kt`, both of
   which are being rewritten by this change.
