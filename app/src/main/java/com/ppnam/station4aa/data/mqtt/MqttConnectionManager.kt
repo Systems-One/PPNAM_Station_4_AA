@@ -60,8 +60,10 @@ class MqttConnectionManager(
             onConnected = {
                 isTransportConnected.set(true)
                 if (client === built) {
-                    _connectionState.value = MqttConnectionState.CONNECTED
-                    scope.launch { resubscribeAll(built) }
+                    scope.launch {
+                        resubscribeAll(built)
+                        _connectionState.value = MqttConnectionState.CONNECTED
+                    }
                 }
             },
             onDisconnected = {
@@ -133,6 +135,7 @@ class MqttConnectionManager(
             val old = client
             client = candidate
             isTransportConnected.set(true)
+            resubscribeAll(candidate)
             _connectionState.value = MqttConnectionState.CONNECTED
             try { old?.disconnect() } catch (_: Exception) { }
             Result.success(Unit)
