@@ -26,7 +26,7 @@
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
--keep class com.ppnam.station4aa.data.mqtt.dto.** { *; }
+-keep class com.mitas.ppnam.station4aa.data.mqtt.dto.** { *; }
 
 # ---- HiveMQ MQTT client (shaded) ----
 # Shaded jar, not an AAR, so its consumer rules (if any) aren't picked up automatically.

@@ -101,7 +101,7 @@ Append to `WasteCollectionValidatorTest.kt` (inside the existing `WasteCollectio
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
 Expected: FAIL — `validateMachineCode`/`validateBagCode` are unresolved references.
 
 - [ ] **Step 3: Implement the two new validators**
@@ -126,7 +126,7 @@ In `WasteCollectionValidator.kt`, add a shared max-length constant and the two n
 
 - [ ] **Step 4: Run the tests to verify they pass**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
 Expected: PASS, all tests including the new ones.
 
 - [ ] **Step 5: Commit**
@@ -164,7 +164,7 @@ In `WasteCollectionValidator.kt`, change `validateBagCode`'s `rejectPlaceholders
         validateRequiredIdentity(raw, BAG_CODE_MAX_LENGTH, rejectPlaceholders = false)
 ```
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidatorTest"`
 Expected: PASS, all tests including the corrected one.
 
 - [ ] **Step 7: Commit**
@@ -196,9 +196,9 @@ git commit -m "fix: bag codes are not placeholder-checked, matching Station4's W
 Create `app/src/test/java/com/ppnam/station4aa/domain/wizard/WasteWizardControllerTest.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.domain.wizard
+package com.mitas.ppnam.station4aa.domain.wizard
 
-import com.ppnam.station4aa.domain.model.WasteTypeCatalog
+import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -341,15 +341,15 @@ class WasteWizardControllerTest {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.wizard.WasteWizardControllerTest"`
-Expected: FAIL to compile — `com.ppnam.station4aa.domain.wizard` package and its types don't exist yet.
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.wizard.WasteWizardControllerTest"`
+Expected: FAIL to compile — `com.mitas.ppnam.station4aa.domain.wizard` package and its types don't exist yet.
 
 - [ ] **Step 3: Create WizardStep**
 
 `app/src/main/java/com/ppnam/station4aa/domain/wizard/WizardStep.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.domain.wizard
+package com.mitas.ppnam.station4aa.domain.wizard
 
 /** The five states of the scan-driven waste collection wizard — see
  * `docs/superpowers/specs/2026-08-05-scan-driven-waste-wizard-design.md`. */
@@ -361,13 +361,13 @@ enum class WizardStep { SCAN_MACHINE, SCAN_OPERATOR, SELECT_WASTE_TYPE, SCAN_BAG
 `app/src/main/java/com/ppnam/station4aa/domain/wizard/WasteTransactionDraft.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.domain.wizard
+package com.mitas.ppnam.station4aa.domain.wizard
 
-import com.ppnam.station4aa.domain.model.WasteTypeCatalog
+import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
 
 /** Local-only wizard state — never sent over MQTT itself. Only once every field is non-null does
  * [WasteWizardController] reach [WizardStep.REVIEW]; the completed draft is what
- * WasteGatheringViewModel reads to build the one real [com.ppnam.station4aa.domain.model.WasteCollectionEvent]. */
+ * WasteGatheringViewModel reads to build the one real [com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent]. */
 data class WasteTransactionDraft(
     val machineCode: String? = null,
     val machineOperatorUserId: String? = null,
@@ -381,7 +381,7 @@ data class WasteTransactionDraft(
 `app/src/main/java/com/ppnam/station4aa/domain/wizard/ScanDispatchResult.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.domain.wizard
+package com.mitas.ppnam.station4aa.domain.wizard
 
 /** Result of routing one scanned barcode value into [WasteWizardController.handleScannedValue]. */
 sealed class ScanDispatchResult {
@@ -400,10 +400,10 @@ sealed class ScanDispatchResult {
 `app/src/main/java/com/ppnam/station4aa/domain/wizard/WasteWizardController.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.domain.wizard
+package com.mitas.ppnam.station4aa.domain.wizard
 
-import com.ppnam.station4aa.domain.model.WasteTypeCatalog
-import com.ppnam.station4aa.domain.validation.WasteCollectionValidator
+import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
+import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
 
 /**
  * Pure step-transition logic for the scan-driven waste collection wizard — no Android or MQTT
@@ -480,7 +480,7 @@ class WasteWizardController {
 
 - [ ] **Step 7: Run the tests to verify they pass**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.wizard.WasteWizardControllerTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.wizard.WasteWizardControllerTest"`
 Expected: PASS, all 11 tests.
 
 - [ ] **Step 8: Commit**
@@ -510,7 +510,7 @@ git commit -m "feat: add pure WasteWizardController for the scan-driven collecti
 Replace the full content of `WasteCollectionEventTest.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.domain.model
+package com.mitas.ppnam.station4aa.domain.model
 
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
@@ -610,7 +610,7 @@ class WasteCollectionEventTest {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.model.WasteCollectionEventTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.model.WasteCollectionEventTest"`
 Expected: FAIL to compile — `create(...)` doesn't accept `deviceId`/`operatorSessionId` yet, and `event.deviceId`/`event.operatorSessionId` are unresolved; the schema-version assertions also fail against the currently-committed `2`.
 
 - [ ] **Step 3: Update WasteCollectionMessage**
@@ -618,7 +618,7 @@ Expected: FAIL to compile — `create(...)` doesn't accept `deviceId`/`operatorS
 Replace `WasteCollectionMessage.kt`'s full content — field order now mirrors Station4's actual `MqttMessageValidator.RequiredStrings` order (`messageId, deviceId, operatorSessionId, collectionId, bagCode, machineCode, machineName, machineOperatorUserId, wasteTypeCode, collectedBy`, plus `collectedAtUtc`):
 
 ```kotlin
-package com.ppnam.station4aa.data.mqtt.dto
+package com.mitas.ppnam.station4aa.data.mqtt.dto
 
 /**
  * Wire shape for the schema v3 payload defined in
@@ -629,7 +629,7 @@ package com.ppnam.station4aa.data.mqtt.dto
  * property names verbatim, so these ARE the wire keys; there is no `@SerializedName` remapping.
  *
  * `schemaVersion` MUST be exactly `3` (a JSON integer, never the string `"3"`) — see
- * [com.ppnam.station4aa.domain.model.WasteCollectionEvent.SCHEMA_VERSION]. `bagCode` and
+ * [com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent.SCHEMA_VERSION]. `bagCode` and
  * `collectionId` are two distinct required fields, not one merged value — see
  * `WasteCollectionEvent`'s class doc.
  */
@@ -654,9 +654,9 @@ data class WasteCollectionMessage(
 Replace `WasteCollectionEvent.kt`'s full content:
 
 ```kotlin
-package com.ppnam.station4aa.domain.model
+package com.mitas.ppnam.station4aa.domain.model
 
-import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionMessage
+import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionMessage
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -700,7 +700,7 @@ data class WasteCollectionEvent(
         /**
          * Mints a new event for a just-completed handheld transaction. Caller-supplied fields
          * are trimmed but otherwise not re-validated here — see
-         * [com.ppnam.station4aa.domain.validation.WasteCollectionValidator] for the contract's
+         * [com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator] for the contract's
          * required pre-publish checks, which the UI runs before this is ever called.
          *
          * `collectionId`'s "WC-{yyyyMMdd}-{random}" shape mirrors the contract's earlier example
@@ -758,7 +758,7 @@ data class WasteCollectionEvent(
 
 - [ ] **Step 5: Run the tests to verify they pass**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.domain.model.WasteCollectionEventTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.domain.model.WasteCollectionEventTest"`
 Expected: PASS, all 4 tests.
 
 - [ ] **Step 6: Confirm the expected downstream compile breakage**
@@ -856,7 +856,7 @@ fun WasteCollectionEvent.toOutboxEntity(nowEpochMs: Long): WasteOutboxEntity = W
 In `WasteOutboxDatabase.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.data.local
+package com.mitas.ppnam.station4aa.data.local
 
 import android.content.Context
 import androidx.room.Database
@@ -915,27 +915,27 @@ This task has no new automated tests of its own — `WasteWizardController` (Tas
 Replace the full file content:
 
 ```kotlin
-package com.ppnam.station4aa.ui.waste
+package com.mitas.ppnam.station4aa.ui.waste
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ppnam.station4aa.data.mqtt.MqttConnectionManager
-import com.ppnam.station4aa.data.mqtt.MqttConnectionState
-import com.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
-import com.ppnam.station4aa.data.rfid.ScanEvent
-import com.ppnam.station4aa.data.rfid.ScanEventBus
-import com.ppnam.station4aa.data.session.OperatorSession
-import com.ppnam.station4aa.data.session.OperatorSessionHolder
-import com.ppnam.station4aa.data.settings.SettingsRepository
-import com.ppnam.station4aa.domain.model.WasteCollectionEvent
-import com.ppnam.station4aa.domain.model.WasteTypeCatalog
-import com.ppnam.station4aa.domain.usecase.AuthUseCase
-import com.ppnam.station4aa.domain.wizard.ScanDispatchResult
-import com.ppnam.station4aa.domain.wizard.WasteTransactionDraft
-import com.ppnam.station4aa.domain.wizard.WasteWizardController
-import com.ppnam.station4aa.domain.wizard.WizardStep
-import com.ppnam.station4aa.ui.components.ConnectionStatus
-import com.ppnam.station4aa.ui.components.connectionStatusFlow
+import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
+import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
+import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
+import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
+import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
+import com.mitas.ppnam.station4aa.data.session.OperatorSession
+import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
+import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
+import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
+import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
+import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
+import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
+import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
+import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -1144,7 +1144,7 @@ No new automated test (Compose UI tests aren't part of this repo's existing test
 Replace the full file content:
 
 ```kotlin
-package com.ppnam.station4aa.ui.waste
+package com.mitas.ppnam.station4aa.ui.waste
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -1177,15 +1177,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ppnam.station4aa.domain.model.WasteTypeCatalog
-import com.ppnam.station4aa.domain.wizard.WizardStep
-import com.ppnam.station4aa.ui.components.AppScaffold
-import com.ppnam.station4aa.ui.theme.AmberPrimary
-import com.ppnam.station4aa.ui.theme.GraphiteBorder
-import com.ppnam.station4aa.ui.theme.GraphiteSurface
-import com.ppnam.station4aa.ui.theme.TextMuted
-import com.ppnam.station4aa.ui.theme.TextPrimary
-import com.ppnam.station4aa.ui.theme.WarningOrange
+import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
+import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
+import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
+import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
+import com.mitas.ppnam.station4aa.ui.theme.TextMuted
+import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.WarningOrange
 
 @Composable
 fun WasteGatheringScreen(
@@ -1478,7 +1478,7 @@ Do not proceed to Task 8 with a red build or a failing test — fix the specific
 
 **Interfaces:** none.
 
-A device (`HC720DE260100322`) is already connected via `adb` with `com.ppnam.station4aa` installed and logged in. This task installs the new build and drives the wizard through both the scan path (via simulated DataWedge broadcasts — `DataWedgeReceiver` is registered with `RECEIVER_EXPORTED`, so `adb shell am broadcast` can reach it) and the manual-entry fallback path, confirming the end-to-end result matches the design: one queued event, correct `bagCode`, `pendingCount` behavior, and the "Queued ..." messaging.
+A device (`HC720DE260100322`) is already connected via `adb` with `com.mitas.ppnam.station4aa` installed and logged in. This task installs the new build and drives the wizard through both the scan path (via simulated DataWedge broadcasts — `DataWedgeReceiver` is registered with `RECEIVER_EXPORTED`, so `adb shell am broadcast` can reach it) and the manual-entry fallback path, confirming the end-to-end result matches the design: one queued event, correct `bagCode`, `pendingCount` behavior, and the "Queued ..." messaging.
 
 - [ ] **Step 1: Install the freshly built debug APK**
 
@@ -1503,7 +1503,7 @@ Expected: screenshot shows "Step 1 of 4 — Scan machine code".
 - [ ] **Step 3: Simulate a machine-code barcode scan**
 
 ```powershell
-& $adb shell am broadcast -a com.ppnam.station4aa.ACTION_SCAN --es com.symbol.datawedge.data_string "EXT-04" --es com.symbol.datawedge.label_type "LABEL-TYPE-CODE128"
+& $adb shell am broadcast -a com.mitas.ppnam.station4aa.ACTION_SCAN --es com.symbol.datawedge.data_string "EXT-04" --es com.symbol.datawedge.label_type "LABEL-TYPE-CODE128"
 ```
 
 Then screenshot again. Expected: now on "Step 2 of 4 — Scan machine operator code" — the machine scan advanced the wizard.
@@ -1511,7 +1511,7 @@ Then screenshot again. Expected: now on "Step 2 of 4 — Scan machine operator c
 - [ ] **Step 4: Simulate a machine-operator barcode scan**
 
 ```powershell
-& $adb shell am broadcast -a com.ppnam.station4aa.ACTION_SCAN --es com.symbol.datawedge.data_string "MO-00427" --es com.symbol.datawedge.label_type "LABEL-TYPE-CODE128"
+& $adb shell am broadcast -a com.mitas.ppnam.station4aa.ACTION_SCAN --es com.symbol.datawedge.data_string "MO-00427" --es com.symbol.datawedge.label_type "LABEL-TYPE-CODE128"
 ```
 
 Screenshot. Expected: now on "Step 3 of 4 — Select waste type".
@@ -1519,7 +1519,7 @@ Screenshot. Expected: now on "Step 3 of 4 — Select waste type".
 - [ ] **Step 5: Confirm a stray scan during SELECT_WASTE_TYPE is ignored**
 
 ```powershell
-& $adb shell am broadcast -a com.ppnam.station4aa.ACTION_SCAN --es com.symbol.datawedge.data_string "should-be-ignored" --es com.symbol.datawedge.label_type "LABEL-TYPE-CODE128"
+& $adb shell am broadcast -a com.mitas.ppnam.station4aa.ACTION_SCAN --es com.symbol.datawedge.data_string "should-be-ignored" --es com.symbol.datawedge.label_type "LABEL-TYPE-CODE128"
 ```
 
 Screenshot. Expected: still on "Step 3 of 4 — Select waste type", not advanced and not showing "should-be-ignored" anywhere — confirms `ScanDispatchResult.Ignored` behaves correctly on a real device, not just in the unit test.
@@ -1543,7 +1543,7 @@ Screenshot after. Expected: back on "Step 1 of 4 — Scan machine code" (full re
 - [ ] **Step 9: Pull logcat to confirm no unexpected errors during the run**
 
 ```powershell
-& $adb logcat -d -v time | Select-String -Pattern "com.ppnam.station4aa" | Select-String -Pattern "FATAL|AndroidRuntime|Exception" 
+& $adb logcat -d -v time | Select-String -Pattern "com.mitas.ppnam.station4aa" | Select-String -Pattern "FATAL|AndroidRuntime|Exception" 
 ```
 
 Expected: no matches (no crash, no uncaught exception during the walkthrough).

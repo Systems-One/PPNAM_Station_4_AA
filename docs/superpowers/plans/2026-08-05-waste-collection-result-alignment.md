@@ -38,9 +38,9 @@
 Create `app/src/test/java/com/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessageTest.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.data.mqtt.dto
+package com.mitas.ppnam.station4aa.data.mqtt.dto
 
-import com.ppnam.station4aa.data.mqtt.WireJson
+import com.mitas.ppnam.station4aa.data.mqtt.WireJson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -121,7 +121,7 @@ class WasteCollectionResultMessageTest {
 
 - [x] **Step 2: Run the test to verify it fails**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessageTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessageTest"`
 Expected: FAIL to compile — `WasteCollectionResultMessage` does not exist yet.
 
 - [x] **Step 3: Create WasteCollectionResultMessage**
@@ -129,7 +129,7 @@ Expected: FAIL to compile — `WasteCollectionResultMessage` does not exist yet.
 `app/src/main/java/com/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessage.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.data.mqtt.dto
+package com.mitas.ppnam.station4aa.data.mqtt.dto
 
 /**
  * Wire shape of the direct application-level response to a schema v3 collection publish, per
@@ -168,7 +168,7 @@ data class WasteCollectionResultMessage(
 
 - [x] **Step 4: Run the test to verify it passes**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessageTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessageTest"`
 Expected: PASS, both tests.
 
 - [x] **Step 5: Commit**
@@ -418,7 +418,7 @@ fun WasteCollectionEvent.toOutboxEntity(nowEpochMs: Long): WasteOutboxEntity = W
 Replace `WasteOutboxDao.kt`'s full content:
 
 ```kotlin
-package com.ppnam.station4aa.data.local
+package com.mitas.ppnam.station4aa.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -500,10 +500,10 @@ git commit -m "feat: replace PUBACK-driven DELIVERED status with result-driven A
 Create `app/src/test/java/com/ppnam/station4aa/data/mqtt/WasteCollectionResultChannelTest.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.data.mqtt
+package com.mitas.ppnam.station4aa.data.mqtt
 
-import com.ppnam.station4aa.data.local.WasteOutboxEntity
-import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
+import com.mitas.ppnam.station4aa.data.local.WasteOutboxEntity
+import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -616,7 +616,7 @@ class WasteCollectionResultChannelTest {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.data.mqtt.WasteCollectionResultChannelTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionResultChannelTest"`
 Expected: FAIL to compile — `evaluateOutcome`/`ResultOutcome`/`WasteCollectionResultChannel` don't exist yet.
 
 - [ ] **Step 3: Create WasteCollectionResultChannel**
@@ -624,11 +624,11 @@ Expected: FAIL to compile — `evaluateOutcome`/`ResultOutcome`/`WasteCollection
 `app/src/main/java/com/ppnam/station4aa/data/mqtt/WasteCollectionResultChannel.kt`:
 
 ```kotlin
-package com.ppnam.station4aa.data.mqtt
+package com.mitas.ppnam.station4aa.data.mqtt
 
-import com.ppnam.station4aa.data.local.WasteOutboxDao
-import com.ppnam.station4aa.data.local.WasteOutboxEntity
-import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
+import com.mitas.ppnam.station4aa.data.local.WasteOutboxDao
+import com.mitas.ppnam.station4aa.data.local.WasteOutboxEntity
+import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.CoroutineScope
@@ -724,7 +724,7 @@ class WasteCollectionResultChannel(
 
 - [ ] **Step 4: Run the tests to verify they pass**
 
-Run: `.\gradlew.bat testDebugUnitTest --tests "com.ppnam.station4aa.data.mqtt.WasteCollectionResultChannelTest"`
+Run: `.\gradlew.bat testDebugUnitTest --tests "com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionResultChannelTest"`
 Expected: PASS, all 5 tests.
 
 - [ ] **Step 5: Commit**
@@ -752,15 +752,15 @@ No dedicated test — this class already has no test coverage (constructor takes
 Replace the full file content:
 
 ```kotlin
-package com.ppnam.station4aa.data.mqtt
+package com.mitas.ppnam.station4aa.data.mqtt
 
 import com.google.gson.Gson
-import com.ppnam.station4aa.data.local.WasteOutboxDao
-import com.ppnam.station4aa.data.local.toEvent
-import com.ppnam.station4aa.data.local.toOutboxEntity
-import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
-import com.ppnam.station4aa.data.settings.SettingsRepository
-import com.ppnam.station4aa.domain.model.WasteCollectionEvent
+import com.mitas.ppnam.station4aa.data.local.WasteOutboxDao
+import com.mitas.ppnam.station4aa.data.local.toEvent
+import com.mitas.ppnam.station4aa.data.local.toOutboxEntity
+import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
+import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 import java.nio.charset.StandardCharsets
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
@@ -866,7 +866,7 @@ In `AppContainer.kt`, replace the `wasteCollectionPublisher` block:
 Add the import:
 
 ```kotlin
-import com.ppnam.station4aa.data.mqtt.WasteCollectionResultChannel
+import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionResultChannel
 ```
 
 - [ ] **Step 2: Build to confirm everything compiles**
@@ -899,7 +899,7 @@ No dedicated test, consistent with this file's existing precedent (concrete cons
 In `WasteGatheringViewModel.kt`, add a new import and a new `viewModelScope.launch` block inside `init { ... }`, alongside the two that already exist there:
 
 ```kotlin
-import com.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
+import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 ```
 
 ```kotlin
@@ -977,14 +977,14 @@ Expected: `Success`.
 
 ```powershell
 $adb = "C:\Users\Jonathan\AppData\Local\Android\Sdk\platform-tools\adb.exe"
-& $adb shell am force-stop com.ppnam.station4aa
-& $adb shell am start -n com.ppnam.station4aa/.MainActivity
+& $adb shell am force-stop com.mitas.ppnam.station4aa
+& $adb shell am start -n com.mitas.ppnam.station4aa/.MainActivity
 ```
 
 Wait a few seconds, then pull logcat:
 
 ```powershell
-& $adb logcat -d -v time | Select-String -Pattern "com.ppnam.station4aa" | Select-String -Pattern "FATAL|AndroidRuntime|Exception"
+& $adb logcat -d -v time | Select-String -Pattern "com.mitas.ppnam.station4aa" | Select-String -Pattern "FATAL|AndroidRuntime|Exception"
 ```
 
 Expected: no matches — in particular, no Room `IllegalStateException` from the version-3 outbox migration (the destructive fallback should silently drop and recreate the local `ppnam_station4_outbox.db` rather than crash).
