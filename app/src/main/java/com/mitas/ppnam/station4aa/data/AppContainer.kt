@@ -2,6 +2,7 @@ package com.mitas.ppnam.station4aa.data
 
 import android.content.Context
 import com.mitas.ppnam.station4aa.data.auth.ScramExchange
+import com.mitas.ppnam.station4aa.data.identity.DeviceIdentity
 import com.mitas.ppnam.station4aa.data.local.WasteOutboxDatabase
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
@@ -24,9 +25,14 @@ import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 class AppContainer(context: Context) {
     private val appContext = context.applicationContext
 
+    /** The derived, immutable scanner identity (base standard §2) — derived once here (then
+     * cached/persisted by [DeviceIdentity]) and handed to everything that stamps a deviceId into
+     * an MQTT topic, envelope, or payload. Never a Settings value. */
+    val deviceId: String = DeviceIdentity.deviceId(appContext)
+
     private val secureCredentialStore = SecureCredentialStore(appContext)
     val settingsRepository = SettingsRepository(appContext, secureCredentialStore)
-    val connectionManager = MqttConnectionManager()
+    val connectionManager = MqttConnectionManager(deviceId)
 
     private val outboxDatabase = WasteOutboxDatabase.create(appContext)
     private val wasteCollectionResultChannel = WasteCollectionResultChannel(
@@ -45,7 +51,7 @@ class AppContainer(context: Context) {
     val operatorSessionHolder = OperatorSessionHolder()
     private val requestChannel = MqttRequestChannel(connectionManager)
     private val scramExchange = ScramExchange(requestChannel)
-    val authUseCase = AuthUseCase(requestChannel, operatorSessionHolder, scramExchange, settingsRepository)
+    val authUseCase = AuthUseCase(requestChannel, operatorSessionHolder, scramExchange, deviceId)
 
     val scanEventBus = ScanEventBus()
     val dataWedgeReceiver = DataWedgeReceiver(scanEventBus)

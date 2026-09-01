@@ -3,6 +3,7 @@ package com.mitas.ppnam.station4aa.data.mqtt
 import com.hivemq.client.mqtt.MqttClient
 import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 class MqttClientFactory {
@@ -16,9 +17,10 @@ class MqttClientFactory {
             .useMqttVersion5()
             .serverHost(settings.mqttHost)
             .serverPort(settings.mqttPort)
-            // Contract: "Each MQTT client MUST use a unique, stable client ID." Without this,
-            // HiveMQ generates a fresh random one per connection, which is neither.
-            .identifier(settings.deviceId)
+            // Base standard §2 rule 6: the MQTT client id is a separate *transport* identity,
+            // unique per connection — never the deviceId, since a stale connection reusing the
+            // same client id would kick the live one off the broker.
+            .identifier("ScannerApp_" + UUID.randomUUID().toString().take(8))
             .addConnectedListener { onConnected() }
             .addDisconnectedListener { onDisconnected() }
 

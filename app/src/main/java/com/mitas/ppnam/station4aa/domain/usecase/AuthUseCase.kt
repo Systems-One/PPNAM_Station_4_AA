@@ -10,7 +10,6 @@ import com.mitas.ppnam.station4aa.data.mqtt.dto.OperatorContextResponse
 import com.mitas.ppnam.station4aa.data.mqtt.dto.ScramPurpose
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
-import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.model.SessionState
 import java.time.Instant
 
@@ -25,12 +24,13 @@ class AuthUseCase(
     private val requestChannel: MqttRequestChannel,
     private val sessionHolder: OperatorSessionHolder,
     private val scramExchange: ScramExchange,
-    private val settingsRepository: SettingsRepository,
+    /** The derived, immutable scanner identity (base standard §2) — every auth envelope and its
+     * req/res topics carry this, never a Settings value. */
+    private val deviceId: String,
 ) {
     /** A credentials login is a SCRAM-SHA-256 exchange, not a password on the wire. Badge login
      * carries no secret and keeps the original single `login_requested` shape. */
     suspend fun login(method: LoginMethod): Result<OperatorSession> {
-        val deviceId = settingsRepository.current().deviceId
         return when (method) {
             is LoginMethod.Credentials -> loginWithScram(deviceId, method)
             is LoginMethod.Badge -> loginWithBadge(deviceId, method)
@@ -116,7 +116,6 @@ class AuthUseCase(
      * outcome — stranding an operator logged-in because of a network blip would be worse than a
      * server-side session that expires on its own. */
     suspend fun logout() {
-        val deviceId = settingsRepository.current().deviceId
         requestChannel.request(
             deviceId = deviceId,
             requestType = "reader_logout_requested",

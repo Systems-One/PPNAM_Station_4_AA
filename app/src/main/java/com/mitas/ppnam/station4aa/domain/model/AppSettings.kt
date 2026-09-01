@@ -9,8 +9,11 @@ package com.mitas.ppnam.station4aa.domain.model
  * broker — the two stations are separate deployments. All of it remains operator-editable in
  * Settings because the contract calls the broker "deployment-configured".
  *
- * [deviceId] doubles as this handheld's MQTT client identifier (see MqttClientFactory) — the
- * contract requires "a unique, stable client ID" per publisher.
+ * The device id is deliberately NOT a setting any more: per the fleet MQTT base standard §2 it
+ * is derived on-device (`scanner_` + hashed hardware id — see
+ * [com.mitas.ppnam.station4aa.data.identity.DeviceIdentity]) and shown read-only in Settings →
+ * Diagnostics for enrolment. The MQTT client identifier is likewise no longer configured here
+ * (see MqttClientFactory — unique per connection, per base standard §2 rule 6).
  *
  * [wasteCollectionTopic] is the exact, deployment-configured MQTT topic this handheld publishes
  * waste-collection events to — the contract v3.1.0 default (`PPNAM/station_4/waste/collection`,
@@ -25,7 +28,6 @@ package com.mitas.ppnam.station4aa.domain.model
  * read out of that store and being handed to the MQTT client.
  */
 data class AppSettings(
-    val deviceId: String = "station4_handheld_1",
     val wasteCollectionTopic: String = "PPNAM/station_4/waste/collection",
     val mqttHost: String = "ppnam-mqtt",
     val mqttPort: Int = 1883,

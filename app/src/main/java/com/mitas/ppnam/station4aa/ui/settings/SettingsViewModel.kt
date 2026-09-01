@@ -37,6 +37,10 @@ class SettingsViewModel(
     private val connectionManager: MqttConnectionManager,
     private val sessionHolder: OperatorSessionHolder,
     private val authUseCase: AuthUseCase,
+    /** The derived, immutable scanner identity (base standard §2) — surfaced read-only in the
+     * Diagnostics card so it can be read off the device for enrolment. Not editable: it is not
+     * part of [AppSettings] or the draft at all. */
+    val deviceId: String,
 ) : ViewModel() {
 
     /** Settings is reachable from the Login screen too (broker config has to be editable before

@@ -45,6 +45,9 @@ class WasteGatheringViewModel(
     private val sessionHolder: OperatorSessionHolder,
     private val authUseCase: AuthUseCase,
     private val scanEventBus: ScanEventBus,
+    /** The derived, immutable scanner identity (base standard §2) — stamped into every published
+     * waste-collection event, never read from Settings. */
+    private val deviceId: String,
 ) : ViewModel() {
 
     private val wizardController = WasteWizardController()
@@ -190,8 +193,8 @@ class WasteGatheringViewModel(
 
         _isSubmitting.value = true
         // requireNotNull/validation guards above fail fast, synchronously, before a coroutine is
-        // even launched. `settingsRepository.current()` is `suspend`, so event construction itself
-        // moves inside the launch — it cannot run on the synchronous path above.
+        // even launched. `publisher.submit` is `suspend`, so the publish itself lives inside the
+        // launch — it cannot run on the synchronous path above.
         viewModelScope.launch {
             try {
                 val event = WasteCollectionEvent.create(
@@ -201,7 +204,7 @@ class WasteGatheringViewModel(
                     collectedBy = collectedByValue,
                     machineOperatorUserId = machineOperatorUserId,
                     bagCode = bagCode,
-                    deviceId = settingsRepository.current().deviceId,
+                    deviceId = deviceId,
                     operatorSessionId = operatorSessionId,
                 )
                 publisher.submit(event)

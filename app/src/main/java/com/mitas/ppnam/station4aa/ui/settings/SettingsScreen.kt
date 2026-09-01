@@ -95,6 +95,27 @@ fun SettingsScreen(
 
                     HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
 
+                    // Read-only by design (base standard §2): the device id is derived on-device
+                    // and immutable — this row exists so it can be read off for enrolment.
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "DEVICE ID",
+                            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
+                            color = TextMuted
+                        )
+                        Text(
+                            viewModel.deviceId,
+                            style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
+                            color = TextPrimary
+                        )
+                    }
+
+                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -174,12 +195,9 @@ fun SettingsScreen(
                 }
 
                 PinState.Unlocked -> {
+                    // No Device ID field here any more: the id is derived on-device (base
+                    // standard §2) and shown read-only in the Diagnostics card above.
                     ConfigSection(title = "Station") {
-                        SettingsTextField(
-                            value = draft.deviceId,
-                            label = "Device ID",
-                            onValueChange = { viewModel.updateDraft(draft.copy(deviceId = it)) }
-                        )
                         SettingsTextField(
                             value = draft.wasteCollectionTopic,
                             label = "Collection Topic",

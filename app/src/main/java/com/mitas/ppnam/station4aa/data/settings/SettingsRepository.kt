@@ -28,8 +28,10 @@ class SettingsRepository(
     private val context: Context,
     private val credentialStore: SecureCredentialStore,
 ) {
+    // The retired editable "device_id" key is deliberately absent: the device id is now derived
+    // on-device (base standard §2 — see data/identity/DeviceIdentity.kt). A leftover stored value
+    // from an older install is simply never read again.
     private object Keys {
-        val DEVICE_ID              = stringPreferencesKey("device_id")
         val WASTE_COLLECTION_TOPIC = stringPreferencesKey("waste_collection_topic")
         val MQTT_HOST              = stringPreferencesKey("mqtt_host")
         val MQTT_PORT              = intPreferencesKey("mqtt_port")
@@ -41,7 +43,6 @@ class SettingsRepository(
     val settingsFlow: Flow<AppSettings> = context.dataStore.data.map { prefs ->
         val defaults = AppSettings()
         AppSettings(
-            deviceId             = prefs[Keys.DEVICE_ID]              ?: defaults.deviceId,
             // Migrated on read: a stored value equal to the retired pre-3.1.0 default follows the
             // 2026-08-17 rename to PPNAM/station_4/...; a deliberately custom topic is untouched.
             wasteCollectionTopic = MqttTopics.migrateWasteCollectionTopic(
@@ -67,7 +68,6 @@ class SettingsRepository(
             credentialStore.store(settings.mqttPassword)
         }
         context.dataStore.edit { prefs ->
-            prefs[Keys.DEVICE_ID]              = settings.deviceId
             prefs[Keys.WASTE_COLLECTION_TOPIC] = settings.wasteCollectionTopic
             prefs[Keys.MQTT_HOST]              = settings.mqttHost
             prefs[Keys.MQTT_PORT]              = settings.mqttPort

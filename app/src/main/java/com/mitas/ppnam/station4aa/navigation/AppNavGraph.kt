@@ -62,6 +62,7 @@ fun AppNavGraph() {
                             sessionHolder = container.operatorSessionHolder,
                             authUseCase = container.authUseCase,
                             scanEventBus = container.scanEventBus,
+                            deviceId = container.deviceId,
                         )
                     }
                 }
@@ -80,6 +81,7 @@ fun AppNavGraph() {
                             connectionManager = container.connectionManager,
                             sessionHolder = container.operatorSessionHolder,
                             authUseCase = container.authUseCase,
+                            deviceId = container.deviceId,
                         )
                     }
                 }
