@@ -1,6 +1,9 @@
 package com.mitas.ppnam.station4aa.domain.model
 
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -34,6 +37,58 @@ class WasteCollectionEventTest {
     fun `the published schema version is 4`() {
         assertEquals(4, WasteCollectionEvent.SCHEMA_VERSION)
         assertEquals(4, buildEvent().toWireMessage().schemaVersion)
+    }
+
+    /**
+     * Guards the published JSON wire contract itself, not the Kotlin data class. Asserting on
+     * `toWireMessage()`'s properties cannot see a serialization-level regression, so this test
+     * serializes with the same plain, unconfigured `Gson()` that
+     * [com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher] uses on the real publish path
+     * — the bytes checked here are the bytes Station 4 parses.
+     */
+    @Test
+    fun `the published JSON has exactly the 11 v4 wire keys and an unquoted integer schemaVersion`() {
+        val json = Gson().toJson(buildEvent().toWireMessage())
+
+        // schemaVersion MUST be the JSON integer 4, never the string "4".
+        assertTrue(
+            "Expected an unquoted integer schemaVersion, but JSON was $json",
+            json.contains("\"schemaVersion\":4"),
+        )
+        assertFalse(
+            "schemaVersion must never be serialized as a string, but JSON was $json",
+            json.contains("\"schemaVersion\":\"4\""),
+        )
+
+        // Gson serializes Kotlin property names verbatim — there is no @SerializedName remapping —
+        // so WasteCollectionMessage's property names ARE the wire keys. Comparing the whole
+        // top-level key set (rather than substring-matching each one) fails on a missing required
+        // key and on an unexpected extra key alike.
+        val keys = JsonParser.parseString(json).asJsonObject.keySet()
+        assertEquals(
+            setOf(
+                "schemaVersion",
+                "messageId",
+                "deviceId",
+                "operatorSessionId",
+                "collectionId",
+                "bagCode",
+                "jobNumber",
+                "operatorId",
+                "wasteTypeCode",
+                "collectedBy",
+                "collectedAtUtc",
+            ),
+            keys,
+        )
+
+        // Called out separately because it is a deliberate spec decision a future contributor
+        // might well "helpfully" undo: the waste category is local-only wizard state, and
+        // Station 4 derives the category from the published wasteTypeCode.
+        assertFalse(
+            "wasteCategoryCode must never reach the wire, but JSON was $json",
+            keys.contains("wasteCategoryCode"),
+        )
     }
 
     @Test
