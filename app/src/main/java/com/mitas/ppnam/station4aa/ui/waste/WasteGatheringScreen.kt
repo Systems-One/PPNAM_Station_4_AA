@@ -161,6 +161,7 @@ fun WasteGatheringScreen(
                     emptyMessage = "No waste categories available. Refresh the catalogue in Settings.",
                     label = "Waste Category",
                     options = categories,
+                    current = draft.category,
                     display = { it.name },
                     onConfirm = viewModel::onCategoryConfirmed,
                 )
@@ -169,6 +170,7 @@ fun WasteGatheringScreen(
                     emptyMessage = "No waste types in this category. Refresh the catalogue in Settings.",
                     label = "Waste Type",
                     options = wasteTypes,
+                    current = draft.wasteType,
                     display = { "${it.code} — ${it.name}" },
                     onConfirm = viewModel::onWasteTypeConfirmed,
                 )
@@ -256,6 +258,14 @@ private fun ScanStep(
  * One selection step driven by the cached catalogue. Renders an explicit empty state rather than
  * an empty dropdown: a handheld whose catalogue failed to sync must say so, not present a control
  * that silently does nothing.
+ *
+ * [current] is what the draft already holds for this step — null on the normal forward pass,
+ * non-null when the operator arrived from the review screen's Edit. Seeding the dropdown from it
+ * is what makes a no-op edit actually a no-op: opening on `options[0]` instead would mean an
+ * operator who taps Edit, decides nothing was wrong and presses Confirm silently submits the
+ * first option. On the category step the controller would read that as a genuine category change,
+ * discard the chosen waste type and force a reselection — the same silent contradiction the
+ * category-invalidation rule exists to prevent, just arriving from the other direction.
  */
 @Composable
 private fun <T> CatalogueStep(
@@ -263,6 +273,7 @@ private fun <T> CatalogueStep(
     emptyMessage: String,
     label: String,
     options: List<T>,
+    current: T?,
     display: (T) -> String,
     onConfirm: (T) -> Unit,
 ) {
@@ -272,13 +283,20 @@ private fun <T> CatalogueStep(
             Text(emptyMessage, style = MaterialTheme.typography.labelMedium, color = WarningOrange)
             return@Column
         }
-        var selectedIndex by remember(options) { mutableStateOf(0) }
+        // Re-seeded whenever the option list or the draft's value changes, so a catalogue refresh
+        // arriving mid-step lands back on the operator's own selection rather than on the first
+        // row. coerceAtLeast(0) covers both a null [current] and a value absent from the list.
+        var selectedIndex by remember(options, current) {
+            mutableStateOf(options.indexOfFirst { it == current }.coerceAtLeast(0))
+        }
         DropdownSelector(
             label = label,
             options = options,
             selected = options[selectedIndex],
             display = display,
-            onSelected = { selectedIndex = options.indexOf(it) },
+            // coerceAtLeast(0) again: indexOf returns -1 if the list swapped between the menu
+            // rendering and the tap, and a -1 here would crash the options[selectedIndex] read.
+            onSelected = { selectedIndex = options.indexOf(it).coerceAtLeast(0) },
         )
         Button(
             onClick = { onConfirm(options[selectedIndex]) },
