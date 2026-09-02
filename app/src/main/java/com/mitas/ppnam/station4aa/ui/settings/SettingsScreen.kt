@@ -42,6 +42,7 @@ fun SettingsScreen(
     val pinErrorMessage = viewModel.pinErrorMessage.value
     val pinLockoutMessage = viewModel.pinLockoutMessage.value
     val applyState = viewModel.applyState.value
+    val catalogueRefreshState = viewModel.catalogueRefreshState.value
     val draft = viewModel.draftSettings.value
     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -143,6 +144,45 @@ fun SettingsScreen(
                     )
                     TextButton(onClick = { viewModel.refreshCatalogue() }) {
                         Text("Refresh catalogue", color = AmberPrimary)
+                    }
+
+                    // Kept separate from the Configuration card's applyState block below: that one
+                    // reports the broker Test & Apply outcome, this one reports the catalogue
+                    // refresh — two independent operations that must not clobber each other's
+                    // result, and the feedback belongs where the action was taken.
+                    when (val state = catalogueRefreshState) {
+                        ApplyState.Testing -> {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(18.dp),
+                                    color = AmberPrimary,
+                                    strokeWidth = 2.dp
+                                )
+                                Text("Refreshing catalogue…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+                            }
+                        }
+                        is ApplyState.Success -> {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
+                                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
+                            }
+                        }
+                        is ApplyState.Failure -> {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
+                                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
+                            }
+                        }
+                        ApplyState.Idle -> {}
                     }
                 }
             }

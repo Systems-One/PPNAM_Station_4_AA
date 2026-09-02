@@ -85,6 +85,13 @@ class SettingsViewModel(
         private set
     var applyState = mutableStateOf<ApplyState>(ApplyState.Idle)
         private set
+
+    /** Result of the Diagnostics card's own "Refresh catalogue" action, kept separate from
+     * [applyState] (the broker Test & Apply flow further down): the two are independent
+     * operations, and sharing one [ApplyState] meant whichever finished last silently clobbered
+     * the other's outcome. */
+    var catalogueRefreshState = mutableStateOf<ApplyState>(ApplyState.Idle)
+        private set
     var draftSettings = mutableStateOf(AppSettings())
         private set
 
@@ -104,12 +111,12 @@ class SettingsViewModel(
     fun refreshCatalogue() {
         val activeSession = session.value
         if (activeSession == null) {
-            applyState.value = ApplyState.Failure("Log in before refreshing the catalogue")
+            catalogueRefreshState.value = ApplyState.Failure("Log in before refreshing the catalogue")
             return
         }
         viewModelScope.launch {
-            applyState.value = ApplyState.Testing
-            applyState.value = when (val result = syncCatalogue.sync(activeSession.operatorSessionId)) {
+            catalogueRefreshState.value = ApplyState.Testing
+            catalogueRefreshState.value = when (val result = syncCatalogue.sync(activeSession.operatorSessionId)) {
                 is CatalogueSyncResult.Replaced ->
                     ApplyState.Success("Catalogue updated — ${result.typeCount} waste types")
                 is CatalogueSyncResult.Failed ->
