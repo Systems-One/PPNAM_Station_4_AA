@@ -122,4 +122,57 @@ class WasteCollectionValidatorTest {
     fun `valid bag code is accepted`() {
         assertNull(WasteCollectionValidator.validateBagCode("BAG-00931"))
     }
+
+    @Test
+    fun `a valid operator id is accepted`() {
+        assertNull(WasteCollectionValidator.validateOperatorId("MO-00427"))
+    }
+
+    @Test
+    fun `a blank operator id is rejected`() {
+        assertEquals("Required.", WasteCollectionValidator.validateOperatorId("   "))
+    }
+
+    @Test
+    fun `a placeholder operator id is rejected`() {
+        assertNotNull(WasteCollectionValidator.validateOperatorId("N/A"))
+        assertNotNull(WasteCollectionValidator.validateOperatorId("unknown"))
+    }
+
+    @Test
+    fun `an over-length operator id is rejected`() {
+        assertNotNull(WasteCollectionValidator.validateOperatorId("x".repeat(101)))
+    }
+
+    @Test
+    fun `a valid job number is accepted`() {
+        assertNull(WasteCollectionValidator.validateJobNumber("JOB-2026-0041"))
+    }
+
+    @Test
+    fun `a blank job number is rejected`() {
+        assertEquals("Required.", WasteCollectionValidator.validateJobNumber(""))
+    }
+
+    @Test
+    fun `a placeholder job number is rejected because it can be hand-typed`() {
+        assertNotNull(WasteCollectionValidator.validateJobNumber("N/A"))
+        assertNotNull(WasteCollectionValidator.validateJobNumber("NONE"))
+    }
+
+    @Test
+    fun `a job number containing control characters is rejected`() {
+        val bell = 7.toChar()
+        assertNotNull(WasteCollectionValidator.validateJobNumber("JOB$bell-1"))
+    }
+
+    @Test
+    fun `an over-length job number is rejected`() {
+        assertNotNull(WasteCollectionValidator.validateJobNumber("9".repeat(101)))
+    }
+
+    @Test
+    fun `job number surrounding whitespace does not itself fail validation`() {
+        assertNull(WasteCollectionValidator.validateJobNumber("  JOB-1  "))
+    }
 }

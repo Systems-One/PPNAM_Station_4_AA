@@ -26,6 +26,8 @@ object WasteCollectionValidator {
     private const val MACHINE_OPERATOR_ID_MAX_LENGTH = 100
     private const val MACHINE_CODE_MAX_LENGTH = 100
     private const val BAG_CODE_MAX_LENGTH = 100
+    private const val OPERATOR_ID_MAX_LENGTH = 100
+    private const val JOB_NUMBER_MAX_LENGTH = 100
 
     /** `machineOperatorUserId`: entered/scanned fresh for every transaction, so placeholder
      * values are checked — a scanner default or a bored double-tap must not slip through. */
@@ -50,6 +52,19 @@ object WasteCollectionValidator {
      * create false positives against a legitimately configured code. */
     fun validateBagCode(raw: String): String? =
         validateRequiredIdentity(raw, BAG_CODE_MAX_LENGTH, rejectPlaceholders = false)
+
+    /** `operatorId`: the production operator who ran the machine that produced this waste — a
+     * different person from the logged-in wastage operator, scanned or typed fresh for every
+     * transaction. This is the v3 `machineOperatorUserId` renamed now that the machine itself is
+     * no longer scanned, and it keeps that field's placeholder rejection. */
+    fun validateOperatorId(raw: String): String? =
+        validateRequiredIdentity(raw, OPERATOR_ID_MAX_LENGTH, rejectPlaceholders = true)
+
+    /** `jobNumber`: opaque to this app — no format rule and no list to check against. Placeholder-
+     * checked, unlike `bagCode`: a bag code is always a scanned customer barcode, whereas a job
+     * number can be hand-typed by someone who does not have one to hand. */
+    fun validateJobNumber(raw: String): String? =
+        validateRequiredIdentity(raw, JOB_NUMBER_MAX_LENGTH, rejectPlaceholders = true)
 
     private fun validateRequiredIdentity(
         raw: String,
