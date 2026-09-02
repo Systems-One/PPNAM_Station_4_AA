@@ -13,7 +13,6 @@
   "11": "SecureCredentialStore",
   "12": "AuthMessages.kt",
   "13": "Scan-driven waste collection wizard — design",
-  "14": "WasteGatheringViewModel",
   "15": "Waste Collection Result Alignment Implementation Plan",
   "16": ".create",
   "17": "Scan-Driven Waste Collection Wizard Implementation Plan",
@@ -48,6 +47,5 @@
   "47": "Global Constraints",
   "50": ".sync",
   "55": "WasteCatalogueSeedTest",
-  "56": "PPNAM Station 4 — Final Wastage Bag Process",
-  "57": "WasteTypeCatalog.kt"
+  "56": "PPNAM Station 4 — Final Wastage Bag Process"
 }
