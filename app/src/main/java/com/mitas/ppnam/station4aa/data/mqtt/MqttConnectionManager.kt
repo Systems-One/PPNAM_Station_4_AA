@@ -23,9 +23,10 @@ enum class MqttConnectionState { CONNECTED, RECONNECTING, DISCONNECTED }
  * Transport connection management shared by two independent things this app talks to over MQTT:
  *
  *  - the waste-collection contract at
- *    `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`, which is publish-only (see
- *    [publish] / [WasteCollectionPublisher] — no subscriptions, no presence topic, no
- *    application-level ACK);
+ *    `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`, whose
+ *    collection event is publish-only (see [publish] / [WasteCollectionPublisher] — no
+ *    application-level ACK; its `waste_collection_result` reply arrives on the scanner's own
+ *    `res/` tree, handled by [WasteCollectionResultChannel]);
  *  - the operator-login request/response exchange mirrored from Station 2 AA
  *    (`MqttRequestChannel`, `PPNAM/station_4/{deviceId}/req|res/...`), which does need
  *    subscriptions — hence [subscribe] existing at all despite the waste contract having no use
@@ -37,12 +38,25 @@ enum class MqttConnectionState { CONNECTED, RECONNECTING, DISCONNECTED }
  * this doesn't need to distinguish "first connect" from "reconnect" the way Station 2's actual
  * transport does.
  *
- * Presence follows the fleet-wide convention (MQTT base standard §3): the connection carries a
- * Last Will of retained `offline` on the device's base node `PPNAM/station_4/{deviceId}`, retained
- * `online` is published there after every (re)connect, and retained `offline` is published
- * best-effort on graceful disconnect (a graceful disconnect never fires the LWT). All presence
- * publishes and the LWT are QoS 2 per the base standard; the waste-collection and req/res
- * business traffic stays QoS 1 (see [publish]).
+ * Presence follows the fleet-wide convention (`MQTT_TOPIC_STRUCTURE.md` §2): the connection
+ * carries a Last Will of retained `offline` on the device's base node
+ * `PPNAM/station_4/{deviceId}`, retained `online` is published there after every (re)connect, and
+ * retained `offline` is published best-effort on graceful disconnect (a graceful disconnect never
+ * fires the LWT).
+ *
+ * Presence QoS is **1** here. The fleet standard §5 fixes the presence QoS level per station —
+ * "2 at Station 1; 1 at Stations 2 and 4" — and defers the detail to each station's own contract,
+ * which for Station 4 says QoS 1 for its own presence and LWT
+ * (`Station4_Wastage_MQTT_Contract.md` §"Transport"/§"Presence"). `MQTT_BASE_README.md` §3 states
+ * a blanket QoS 2 modelled on Station 1; the fleet document and this station's contract agree on
+ * 1, so 1 it is. What actually carries presence semantics is `retain`, not the QoS level: a late
+ * subscriber sees the current state either way. Business traffic (waste collection and req/res)
+ * is QoS 1 too (see [publish]).
+ *
+ * [stationOnline] tracks Station 4's own retained presence on `PPNAM/station_4` (fleet standard
+ * §4's scanner subscription row; base standard §3 rule 5), so the UI can say "station offline"
+ * distinctly from "broker disconnected". `null` means not yet known — no retained payload has
+ * been delivered on this connection.
  *
  * [deviceId] is the derived, immutable scanner identity (base standard §2 — see
  * `data/identity/DeviceIdentity.kt`), injected once by `AppContainer` rather than read from
@@ -58,12 +72,21 @@ class MqttConnectionManager(
         // Presence is raw text, not JSON — the base-node topic carries only these two payloads.
         private val STATUS_ONLINE = "online".toByteArray()
         private val STATUS_OFFLINE = "offline".toByteArray()
+        // Fleet standard §5 + Station 4's own contract: presence and its Last Will are QoS 1 at
+        // this station. Retain, not QoS, is what makes a late subscriber see the current state.
+        private val PRESENCE_QOS = MqttQos.AT_LEAST_ONCE
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private val _connectionState = MutableStateFlow(MqttConnectionState.DISCONNECTED)
     val connectionState: StateFlow<MqttConnectionState> = _connectionState.asStateFlow()
+
+    /** Station 4's own presence, read from the retained payload on `PPNAM/station_4`. `null`
+     * until one is delivered — and reset to `null` whenever the transport drops, since a
+     * previously read value says nothing about the station once we can no longer hear it. */
+    private val _stationOnline = MutableStateFlow<Boolean?>(null)
+    val stationOnline: StateFlow<Boolean?> = _stationOnline.asStateFlow()
 
     private var client: Mqtt5AsyncClient? = null
     private val isTransportConnected = AtomicBoolean(false)
@@ -92,6 +115,19 @@ class MqttConnectionManager(
                 scope.launch { client?.let { publishPresence(it, STATUS_ONLINE) } }
             }
         })
+
+        // Station presence (fleet standard §4: the scanner subscribes to `PPNAM/station_{x}`).
+        // The payload is retained, so the current value arrives immediately on every (re)subscribe
+        // rather than only when the station next changes state.
+        subscriptions.add(Subscription(MqttTopics.STATION_PRESENCE) { _, payload ->
+            when (String(payload, Charsets.UTF_8).trim().lowercase()) {
+                "online" -> _stationOnline.value = true
+                "offline" -> _stationOnline.value = false
+                // Anything else is not this topic's contract; leave the last known state rather
+                // than guessing the station is down off a payload we don't understand.
+                else -> Log.w(TAG, "Ignoring unrecognised station presence payload")
+            }
+        })
     }
 
     private fun buildClient(settings: AppSettings): Mqtt5AsyncClient {
@@ -111,6 +147,7 @@ class MqttConnectionManager(
             onDisconnected = {
                 if (client === built) {
                     isTransportConnected.set(false)
+                    _stationOnline.value = null
                     _connectionState.value = MqttConnectionState.RECONNECTING
                 }
             },
@@ -168,6 +205,7 @@ class MqttConnectionManager(
         client?.disconnect()
         client = null
         isTransportConnected.set(false)
+        _stationOnline.value = null
         _connectionState.value = MqttConnectionState.DISCONNECTED
     }
 
@@ -201,7 +239,7 @@ class MqttConnectionManager(
             .willPublish()
                 .topic(MqttTopics.devicePresence(deviceId))
                 .payload(STATUS_OFFLINE)
-                .qos(MqttQos.EXACTLY_ONCE)
+                .qos(PRESENCE_QOS)
                 .retain(true)
                 .applyWillPublish()
             .send()
@@ -215,7 +253,7 @@ class MqttConnectionManager(
             target.publishWith()
                 .topic(MqttTopics.devicePresence(deviceId))
                 .payload(payload)
-                .qos(MqttQos.EXACTLY_ONCE)
+                .qos(PRESENCE_QOS)
                 .retain(true)
                 .send()
                 .await()
@@ -229,7 +267,7 @@ class MqttConnectionManager(
             target.publishWith()
                 .topic(MqttTopics.devicePresence(deviceId))
                 .payload(STATUS_OFFLINE)
-                .qos(MqttQos.EXACTLY_ONCE)
+                .qos(PRESENCE_QOS)
                 .retain(true)
                 .send()
                 .get(2, java.util.concurrent.TimeUnit.SECONDS)

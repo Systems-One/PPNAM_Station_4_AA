@@ -54,6 +54,7 @@ class WasteGatheringViewModel(
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
         connectionManager.connectionState,
+        connectionManager.stationOnline,
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
 
     /** Durably queued events awaiting PUBACK — surfaced so the operator can see unsynced work

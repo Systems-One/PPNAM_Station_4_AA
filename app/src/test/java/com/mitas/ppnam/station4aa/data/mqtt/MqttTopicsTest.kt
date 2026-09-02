@@ -81,4 +81,48 @@ class MqttTopicsTest {
             MqttTopics.devicePresence("device#1")
         }
     }
+
+    @Test
+    fun `station presence lives on the station base node`() {
+        // Fleet standard MQTT_TOPIC_STRUCTURE.md section 1/2: presence is the retained payload on
+        // the base node itself, never a `/status` sub-topic.
+        assertEquals("PPNAM/station_4", MqttTopics.STATION_PRESENCE)
+    }
+
+    @Test
+    fun `a reserved station segment is rejected as a device id`() {
+        // Fleet standard section 1: `res` and `waste` are literal segments Station 4's contract
+        // uses directly under its base node, so neither can ever be a scanner id.
+        assertThrows(IllegalArgumentException::class.java) { MqttTopics.devicePresence("waste") }
+        assertThrows(IllegalArgumentException::class.java) { MqttTopics.responseWildcard("res") }
+    }
+
+    @Test
+    fun `a configured collection topic containing a wildcard is rejected`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MqttTopics.validatePublishTopic("PPNAM/station_4/+/collection")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            MqttTopics.validatePublishTopic("PPNAM/station_4/waste/#")
+        }
+    }
+
+    @Test
+    fun `a configured collection topic with a blank or empty segment is rejected`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MqttTopics.validatePublishTopic("   ")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            MqttTopics.validatePublishTopic("PPNAM//waste/collection")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            MqttTopics.validatePublishTopic("/PPNAM/station_4/waste/collection")
+        }
+    }
+
+    @Test
+    fun `the default and a deliberately custom collection topic both validate`() {
+        MqttTopics.validatePublishTopic(MqttTopics.WASTE_COLLECTION)
+        MqttTopics.validatePublishTopic("plant7/custom/waste")
+    }
 }

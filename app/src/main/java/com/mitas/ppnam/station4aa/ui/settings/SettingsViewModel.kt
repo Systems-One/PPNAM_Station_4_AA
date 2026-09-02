@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
+import com.mitas.ppnam.station4aa.data.mqtt.MqttTopics
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
@@ -85,6 +86,7 @@ class SettingsViewModel(
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
         connectionManager.connectionState,
+        connectionManager.stationOnline,
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
 
     init {
@@ -145,6 +147,19 @@ class SettingsViewModel(
     }
 
     fun testAndApply() {
+        // Fleet standard §1: a topic carrying `+`/`#` (or an empty segment) is rejected loudly
+        // rather than allowed to silently reshape a publish. Checked before the broker test so a
+        // typo is reported as the configuration error it is, not as a connection failure.
+        val topicError = runCatching {
+            MqttTopics.validatePublishTopic(
+                draftSettings.value.wasteCollectionTopic,
+                "Collection topic",
+            )
+        }.exceptionOrNull()
+        if (topicError != null) {
+            applyState.value = ApplyState.Failure(topicError.message ?: "Invalid collection topic")
+            return
+        }
         applyState.value = ApplyState.Testing
         viewModelScope.launch {
             val result = connectionManager.reconnectWith(draftSettings.value)

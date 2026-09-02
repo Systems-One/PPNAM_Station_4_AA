@@ -1,31 +1,50 @@
 package com.mitas.ppnam.station4aa.data.mqtt
 
 /**
- * Wire topics for the two independent things this app talks to over MQTT, both nested under the
- * per-station namespace `PPNAM/station_4/...` (contract v3.1.0, 2026-08-17: the previously
- * un-namespaced `station4/...` and `PPNAM/{deviceId}/...` topics moved into the station tree;
- * payloads unchanged).
+ * Every topic this app touches, all inside the per-station namespace `PPNAM/station_4/...`.
  *
- * [WASTE_COLLECTION] is from the normative contract at
- * `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`: one Settings-configured
- * publish-only topic, no application-level ACK — "the scanner-visible PUBACK... does not confirm
- * that Station 4 accepted the business event."
+ * The normative shape is the fleet topic structure at
+ * `C:\Dev\Clients\PPNAM\MQTT_TOPIC_STRUCTURE.md` §1 (the fleet authority for hierarchy, which
+ * `C:\Dev\Clients\PPNAM\Andriod\MQTT_BASE_README.md` §1 mirrors for the Android apps):
  *
- * [request]/[responseWildcard] are a *different*, deliberately mirrored contract: Station 2 AA's
- * operator-login request/response pattern (`PPNAM/station_2/{deviceId}/req|res/...`), ported on
- * request so Station 4's login works the same way Station 2's does — with `station_4` as the
- * namespace segment so Station 4 never answers Station 2 traffic on a shared broker. There is no
- * evidence Station 4's actual backend (`C:\Dev\PPNAM-Station-4`) implements a matching MQTT auth
- * service yet — its only login today is a local SQL Server check inside the WPF desktop app,
- * unreachable from this handheld — so this topic family is speculative/forward-looking the same
- * way schema v2 publishing was before Station 4 supported it. See `data/mqtt/MqttRequestChannel.kt`.
+ * ```
+ * PPNAM/station_4                              station presence   (retained online/offline + LWT)
+ * PPNAM/station_4/{deviceId}                   scanner presence   (retained online/offline + LWT)
+ * PPNAM/station_4/{deviceId}/req/{type}        scanner -> station request
+ * PPNAM/station_4/{deviceId}/res/{type}        station -> scanner response
+ * PPNAM/station_4/waste/collection             Station 4's station-scoped collection event topic
+ * ```
  *
- * [devicePresence] is the fleet-wide presence convention: retained `online`/`offline` (and the
- * Last Will) on the device's base node `PPNAM/station_4/{deviceId}` — no `/status` sub-topic.
+ * [WASTE_COLLECTION] is from the normative station contract at
+ * `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`: one
+ * Settings-configured publish-only topic, no application-level PUBACK semantics — "the
+ * scanner-visible PUBACK... does not confirm that Station 4 accepted the business event". It is
+ * the one station-scoped topic the fleet standard allows beyond the shapes above, and it is
+ * allowed precisely because it starts with the reserved segment `waste`.
+ *
+ * [request]/[responseWildcard] carry the operator-login request/response exchange mirrored from
+ * Station 2 AA, on `station_4` topics so Station 4 never answers Station 2 traffic on a shared
+ * broker. There is still no evidence Station 4's backend implements a matching MQTT auth service
+ * — see `data/mqtt/MqttRequestChannel.kt`.
+ *
+ * [stationPresence] and [devicePresence] are the presence convention: retained `online`/`offline`
+ * (and the Last Will) on the base node itself, never a `/status` sub-topic.
  */
 object MqttTopics {
 
     private const val STATION_BASE = "PPNAM/station_4"
+
+    /**
+     * Literal segments Station 4's contract uses directly under its base node. Per the fleet
+     * standard §1 these can never be a device id — otherwise a misderived id could shadow the
+     * collection topic or the (Station 1 only) broadcast tree.
+     */
+    private val RESERVED_SEGMENTS = setOf("res", "waste")
+
+    /** Station 4's own base node — carries the station's retained presence payload (contract
+     * v3.1.0). The scanner subscribes to it so "station offline" is distinguishable from
+     * "broker disconnected". */
+    const val STATION_PRESENCE = STATION_BASE
 
     /** Default collection topic. Deployments may configure an exact override in Settings. */
     const val WASTE_COLLECTION = "$STATION_BASE/waste/collection"
@@ -55,7 +74,7 @@ object MqttTopics {
     /** The `waste_collection_result` response topic (contract §3/§12), validated the same way
      * every other deviceId-derived topic in this file is — [deviceId] is derived on-device now
      * (base standard §2), but defence in depth still refuses to let any value smuggle an MQTT
-     * wildcard segment into a subscription. */
+     * wildcard or a reserved segment into a subscription. */
     fun wasteCollectionResult(deviceId: String): String {
         validateSegment(deviceId, "deviceId")
         return "$STATION_BASE/$deviceId/res/waste_collection_result"
@@ -67,10 +86,32 @@ object MqttTopics {
         return "$STATION_BASE/$deviceId"
     }
 
+    /**
+     * Rejects a Settings-configured publish topic that could never work on the wire, loudly and
+     * at the point of configuration rather than as a buried publish failure later: MQTT forbids
+     * `+`/`#` in a topic a client publishes to, and the fleet standard §1 requires implementations
+     * to reject such values rather than let them silently reshape a topic. Empty segments and
+     * leading/trailing separators go the same way. The topic is otherwise left alone — the station
+     * contract calls it a deployment-configured *exact* topic, so this deliberately does not force
+     * it back into `PPNAM/station_4/...`.
+     */
+    fun validatePublishTopic(topic: String, name: String = "topic") {
+        require(topic.isNotBlank()) { "$name must not be blank" }
+        require(topic.none { it == '+' || it == '#' }) {
+            "$name must not contain the MQTT wildcards '+' or '#': was '$topic'"
+        }
+        require(topic.split('/').none { it.isEmpty() }) {
+            "$name must not contain an empty topic segment: was '$topic'"
+        }
+    }
+
     private fun validateSegment(value: String, name: String) {
         require(value.isNotBlank()) { "$name must not be blank" }
         require(value.none { it == '/' || it == '+' || it == '#' }) {
             "$name must not contain '/', '+' or '#': was '$value'"
+        }
+        require(value !in RESERVED_SEGMENTS) {
+            "$name must not be a reserved station segment ${RESERVED_SEGMENTS.sorted()}: was '$value'"
         }
     }
 }
