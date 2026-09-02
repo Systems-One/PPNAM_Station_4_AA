@@ -335,8 +335,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt": {
-    "mtime": 1788333610.8139532,
-    "ast_hash": "0cf4b99179a44d14b9bfb5d350eb15e3",
+    "mtime": 1788346078.946936,
+    "ast_hash": "b2f61696020b385261040036a7bf9d07",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/navigation/NavRoutes.kt": {
@@ -370,13 +370,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt": {
-    "mtime": 1788247098.8435402,
-    "ast_hash": "57f87827a30545ec83e5dea0fb2d981a",
+    "mtime": 1788346085.1354024,
+    "ast_hash": "c4644aa4f6b59e33d7914da3e5490f21",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt": {
-    "mtime": 1788327274.550722,
-    "ast_hash": "6e7b14bbfdbb9c9dee8990c58c7d768d",
+    "mtime": 1788346072.800902,
+    "ast_hash": "1698d9f9f4dd75098b42f21d2f014e82",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Color.kt": {
@@ -542,6 +542,16 @@
   "docs/superpowers/specs/2026-09-02-phase-1-wastage-bag-flow-design.md": {
     "mtime": 1788329999.2166803,
     "ast_hash": "2ad4727199d5f1da909e123a4405f849",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/CatalogueStatus.kt": {
+    "mtime": 1788346042.035082,
+    "ast_hash": "708f79aee8cf3793433268e0c32668cf",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/ui/settings/CatalogueStatusTest.kt": {
+    "mtime": 1788346029.1483424,
+    "ast_hash": "22c1d186ac6cbf6e3128a2caef3d9d42",
     "semantic_hash": ""
   }
 }
