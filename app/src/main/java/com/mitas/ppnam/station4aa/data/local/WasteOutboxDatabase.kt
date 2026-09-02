@@ -5,9 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [WasteOutboxEntity::class], version = 3, exportSchema = false)
+@Database(
+    entities = [
+        WasteOutboxEntity::class,
+        WasteCategoryEntity::class,
+        WasteTypeEntity::class,
+        CatalogueMetaEntity::class,
+    ],
+    version = 4,
+    exportSchema = false,
+)
 abstract class WasteOutboxDatabase : RoomDatabase() {
     abstract fun wasteOutboxDao(): WasteOutboxDao
+    abstract fun wasteCatalogueDao(): WasteCatalogueDao
 
     companion object {
         fun create(context: Context): WasteOutboxDatabase =
@@ -16,10 +26,12 @@ abstract class WasteOutboxDatabase : RoomDatabase() {
                 WasteOutboxDatabase::class.java,
                 "ppnam_station4_outbox.db",
             )
-                // No migration path exists yet for the pre-schema-v3 outbox (version 1). The
-                // outbox is a transient in-flight queue, not a permanent record, so dropping and
-                // recreating it on upgrade is acceptable rather than authoring a real migration
-                // for a handful of columns pre-production.
+                // Version 4 changes the outbox to schema v4 (machine fields out, jobNumber and
+                // operatorId in) and adds the catalogue tables. Destructive migration is kept
+                // deliberately: a queued v3 event carries machineCode and no jobNumber, so it can
+                // never be accepted by a v4 consumer — a migration would preserve only messages
+                // guaranteed to be rejected. The catalogue re-seeds and re-syncs on next launch.
+                // ROLLOUT: upgrade when no handheld holds unsent collections.
                 .fallbackToDestructiveMigration()
                 .build()
     }
