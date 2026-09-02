@@ -505,8 +505,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt": {
-    "mtime": 1788331997.7703166,
-    "ast_hash": "d6e8c451e4119b42850feb8060a4e892",
+    "mtime": 1788345726.7608757,
+    "ast_hash": "a72c63df1a0cef0c0c028442e8598c29",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueRepositoryTest.kt": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt": {
-    "mtime": 1788331953.112626,
-    "ast_hash": "5e655b187440c41f654ba3a0511bf4f4",
+    "mtime": 1788345805.6060662,
+    "ast_hash": "3778ff514c70cda25fda51bb361ff038",
     "semantic_hash": ""
   },
   "docs/README-Wastage-Bag-Process-Flow.md": {

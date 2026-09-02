@@ -440,7 +440,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository",
-      "community": 45,
+      "community": 18,
       "norm_label": "wastecataloguerepository.kt"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository",
-      "community": 45,
+      "community": 18,
       "norm_label": "wastecataloguerepository"
     },
     {
@@ -3237,7 +3237,7 @@
       "label": "CatalogueSyncResult",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L13",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_cataloguesyncresult",
       "community": 50,
@@ -3247,7 +3247,7 @@
       "label": "Replaced",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_replaced",
       "community": 50,
@@ -3257,7 +3257,7 @@
       "label": "Failed",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_failed",
       "community": 50,
@@ -3267,7 +3267,7 @@
       "label": "SyncWasteCatalogueUseCase",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L27",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase",
       "community": 50,
@@ -3277,7 +3277,7 @@
       "label": ".sync()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L37",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
       "community": 50,
@@ -3297,7 +3297,7 @@
       "label": ".fail()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L78",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_fail",
       "community": 50,
@@ -3580,7 +3580,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_editfield",
-      "community": 4,
+      "community": 45,
       "norm_label": ".editfield()"
     },
     {
@@ -3610,7 +3610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wizardstep",
-      "community": 4,
+      "community": 45,
       "norm_label": "wizardstep.kt"
     },
     {
@@ -3620,7 +3620,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wizardstep_wizardstep",
-      "community": 4,
+      "community": 45,
       "norm_label": "wizardstep"
     },
     {
@@ -3870,7 +3870,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "viewmodel",
-      "community": 5,
+      "community": 3,
       "norm_label": "viewmodel"
     },
     {
@@ -4110,7 +4110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel",
-      "community": 5,
+      "community": 3,
       "norm_label": "settingsviewmodel.kt"
     },
     {
@@ -4120,7 +4120,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_pinstate",
-      "community": 5,
+      "community": 3,
       "norm_label": "pinstate"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_locked",
-      "community": 5,
+      "community": 3,
       "norm_label": "locked"
     },
     {
@@ -4140,7 +4140,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_unlocked",
-      "community": 5,
+      "community": 3,
       "norm_label": "unlocked"
     },
     {
@@ -4150,7 +4150,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_applystate",
-      "community": 5,
+      "community": 3,
       "norm_label": "applystate"
     },
     {
@@ -4160,7 +4160,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_idle",
-      "community": 5,
+      "community": 3,
       "norm_label": "idle"
     },
     {
@@ -4170,7 +4170,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_testing",
-      "community": 5,
+      "community": 3,
       "norm_label": "testing"
     },
     {
@@ -4180,7 +4180,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_success",
-      "community": 5,
+      "community": 3,
       "norm_label": "success"
     },
     {
@@ -4190,7 +4190,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_failure",
-      "community": 5,
+      "community": 3,
       "norm_label": "failure"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel",
-      "community": 5,
+      "community": 3,
       "norm_label": "settingsviewmodel"
     },
     {
@@ -4210,7 +4210,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_kt_stateflow",
-      "community": 5,
+      "community": 3,
       "norm_label": "stateflow"
     },
     {
@@ -4220,7 +4220,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_logout",
-      "community": 5,
+      "community": 3,
       "norm_label": ".logout()"
     },
     {
@@ -4230,7 +4230,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_onpinchange",
-      "community": 5,
+      "community": 3,
       "norm_label": ".onpinchange()"
     },
     {
@@ -4240,7 +4240,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_kt_string",
-      "community": 5,
+      "community": 3,
       "norm_label": "string"
     },
     {
@@ -4250,7 +4250,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_submitpin",
-      "community": 5,
+      "community": 3,
       "norm_label": ".submitpin()"
     },
     {
@@ -4270,7 +4270,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_testandapply",
-      "community": 5,
+      "community": 3,
       "norm_label": ".testandapply()"
     },
     {
@@ -4430,7 +4430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel",
-      "community": 3,
+      "community": 45,
       "norm_label": "wastegatheringviewmodel.kt"
     },
     {
@@ -4440,7 +4440,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel",
-      "community": 3,
+      "community": 45,
       "norm_label": "wastegatheringviewmodel"
     },
     {
@@ -4450,7 +4450,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_kt_stateflow",
-      "community": 3,
+      "community": 45,
       "norm_label": "stateflow"
     },
     {
@@ -4460,7 +4460,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_kt_int",
-      "community": 3,
+      "community": 45,
       "norm_label": "int"
     },
     {
@@ -4470,7 +4470,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_kt_string",
-      "community": 3,
+      "community": 45,
       "norm_label": "string"
     },
     {
@@ -4480,7 +4480,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_kt_list",
-      "community": 3,
+      "community": 45,
       "norm_label": "list"
     },
     {
@@ -4490,7 +4490,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_kt_boolean",
-      "community": 3,
+      "community": 45,
       "norm_label": "boolean"
     },
     {
@@ -4500,7 +4500,7 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_onbagcodesubmitted",
-      "community": 3,
+      "community": 45,
       "norm_label": ".onbagcodesubmitted()"
     },
     {
@@ -4510,7 +4510,7 @@
       "source_location": "L177",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_onjobnumbersubmitted",
-      "community": 3,
+      "community": 45,
       "norm_label": ".onjobnumbersubmitted()"
     },
     {
@@ -4520,7 +4520,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_onoperatoridsubmitted",
-      "community": 3,
+      "community": 45,
       "norm_label": ".onoperatoridsubmitted()"
     },
     {
@@ -4530,7 +4530,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_oncategoryconfirmed",
-      "community": 3,
+      "community": 45,
       "norm_label": ".oncategoryconfirmed()"
     },
     {
@@ -4540,7 +4540,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_onwastetypeconfirmed",
-      "community": 3,
+      "community": 45,
       "norm_label": ".onwastetypeconfirmed()"
     },
     {
@@ -4550,7 +4550,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_oneditfield",
-      "community": 3,
+      "community": 45,
       "norm_label": ".oneditfield()"
     },
     {
@@ -4560,7 +4560,7 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_oncanceltransaction",
-      "community": 3,
+      "community": 45,
       "norm_label": ".oncanceltransaction()"
     },
     {
@@ -4570,7 +4570,7 @@
       "source_location": "L221",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_onreviewconfirmed",
-      "community": 3,
+      "community": 45,
       "norm_label": ".onreviewconfirmed()"
     },
     {
@@ -4580,7 +4580,7 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_syncfromcontroller",
-      "community": 3,
+      "community": 45,
       "norm_label": ".syncfromcontroller()"
     },
     {
@@ -4590,7 +4590,7 @@
       "source_location": "L277",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_dismisslastqueuedmessage",
-      "community": 3,
+      "community": 45,
       "norm_label": ".dismisslastqueuedmessage()"
     },
     {
@@ -4600,7 +4600,7 @@
       "source_location": "L284",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringviewmodel_wastegatheringviewmodel_logout",
-      "community": 3,
+      "community": 45,
       "norm_label": ".logout()"
     },
     {
@@ -4720,7 +4720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest",
-      "community": 45,
+      "community": 18,
       "norm_label": "wastecataloguerepositorytest.kt"
     },
     {
@@ -4730,7 +4730,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_fakewastecataloguedao",
-      "community": 45,
+      "community": 18,
       "norm_label": "fakewastecataloguedao"
     },
     {
@@ -4770,7 +4770,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_fakewastecataloguedao_typesfor",
-      "community": 45,
+      "community": 18,
       "norm_label": ".typesfor()"
     },
     {
@@ -4780,7 +4780,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_kt_string",
-      "community": 45,
+      "community": 18,
       "norm_label": "string"
     },
     {
@@ -4800,7 +4800,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_fakewastecataloguedao_wastetypecount",
-      "community": 45,
+      "community": 18,
       "norm_label": ".wastetypecount()"
     },
     {
@@ -4810,7 +4810,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_kt_int",
-      "community": 45,
+      "community": 18,
       "norm_label": "int"
     },
     {
@@ -4820,7 +4820,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_fakewastecataloguedao_deleteallcategories",
-      "community": 45,
+      "community": 18,
       "norm_label": ".deleteallcategories()"
     },
     {
@@ -4830,7 +4830,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_fakewastecataloguedao_deletealltypes",
-      "community": 45,
+      "community": 18,
       "norm_label": ".deletealltypes()"
     },
     {
@@ -4870,7 +4870,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest",
-      "community": 45,
+      "community": 18,
       "norm_label": "wastecataloguerepositorytest"
     },
     {
@@ -4880,7 +4880,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_category",
-      "community": 45,
+      "community": 18,
       "norm_label": ".category()"
     },
     {
@@ -4890,7 +4890,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_type",
-      "community": 45,
+      "community": 18,
       "norm_label": ".type()"
     },
     {
@@ -4900,7 +4900,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_seedifempty_populates_the_built_in_catalogue_on_a_fresh_install",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`seedifempty populates the built-in catalogue on a fresh install`()"
     },
     {
@@ -4910,7 +4910,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_seedifempty_does_nothing_when_a_catalogue_is_already_cached",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`seedifempty does nothing when a catalogue is already cached`()"
     },
     {
@@ -4920,7 +4920,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_replacewith_is_wholesale_not_a_merge",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`replacewith is wholesale, not a merge`()"
     },
     {
@@ -4930,7 +4930,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_replacewith_records_synced_provenance_and_clears_any_prior_failure",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`replacewith records synced provenance and clears any prior failure`()"
     },
     {
@@ -4940,7 +4940,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_recordsyncfailure_leaves_the_cached_catalogue_untouched",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`recordsyncfailure leaves the cached catalogue untouched`()"
     },
     {
@@ -4950,7 +4950,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_typesfor_returns_only_the_requested_category_in_sort_order",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`typesfor returns only the requested category, in sort order`()"
     },
     {
@@ -4960,7 +4960,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_replacewith_throws_illegalargumentexception_when_types_list_is_empty",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`replacewith throws illegalargumentexception when types list is empty`()"
     },
     {
@@ -4970,7 +4970,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_replacewith_throws_illegalargumentexception_when_categories_list_is_empty",
-      "community": 45,
+      "community": 18,
       "norm_label": ".`replacewith throws illegalargumentexception when categories list is empty`()"
     },
     {
@@ -5824,10 +5824,20 @@
       "norm_label": "fakewastecataloguedao"
     },
     {
+      "label": "Throwable",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "throwable",
+      "community": 18,
+      "norm_label": "throwable"
+    },
+    {
       "label": ".categories()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L30",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_categories",
       "community": 18,
@@ -5857,7 +5867,7 @@
       "label": ".typesFor()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L33",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_typesfor",
       "community": 18,
@@ -5877,7 +5887,7 @@
       "label": ".meta()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L36",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_meta",
       "community": 18,
@@ -5887,7 +5897,7 @@
       "label": ".wasteTypeCount()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L37",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_wastetypecount",
       "community": 18,
@@ -5907,7 +5917,7 @@
       "label": ".deleteAllCategories()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L38",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_deleteallcategories",
       "community": 18,
@@ -5917,7 +5927,7 @@
       "label": ".deleteAllTypes()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L39",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_deletealltypes",
       "community": 18,
@@ -5927,7 +5937,7 @@
       "label": ".insertCategories()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L40",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_insertcategories",
       "community": 18,
@@ -5937,7 +5947,7 @@
       "label": ".insertTypes()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L43",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_inserttypes",
       "community": 18,
@@ -5947,17 +5957,27 @@
       "label": ".upsertMeta()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L46",
+      "source_location": "L55",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_upsertmeta",
       "community": 18,
       "norm_label": ".upsertmeta()"
     },
     {
+      "label": ".replaceAll()",
+      "file_type": "code",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "community": 18,
+      "norm_label": ".replaceall()"
+    },
+    {
       "label": "FakeRequestChannel",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L49",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel",
       "community": 18,
@@ -5967,7 +5987,7 @@
       "label": ".request()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
       "community": 18,
@@ -6017,7 +6037,7 @@
       "label": "SyncWasteCatalogueUseCaseTest",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L68",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "community": 18,
@@ -6027,7 +6047,7 @@
       "label": ".useCase()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
       "community": 18,
@@ -6047,7 +6067,7 @@
       "label": ".goodResponse()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L86",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
       "community": 18,
@@ -6057,7 +6077,7 @@
       "label": ".`an accepted catalogue replaces the cache wholesale`()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L95",
+      "source_location": "L132",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_replaces_the_cache_wholesale",
       "community": 18,
@@ -6067,7 +6087,7 @@
       "label": ".`an accepted but empty catalogue is treated as a failure and never replaces the cache`()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L108",
+      "source_location": "L145",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_but_empty_catalogue_is_treated_as_a_failure_and_never_replaces_the_cache",
       "community": 18,
@@ -6077,7 +6097,7 @@
       "label": ".`an accepted catalogue with no categories is also treated as a failure`()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L125",
+      "source_location": "L162",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_with_no_categories_is_also_treated_as_a_failure",
       "community": 18,
@@ -6087,7 +6107,7 @@
       "label": ".`a rejected response leaves the cached catalogue in place and records the failure`()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L138",
+      "source_location": "L175",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_rejected_response_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "community": 18,
@@ -6097,11 +6117,31 @@
       "label": ".`a timeout leaves the cached catalogue in place and records the failure`()",
       "file_type": "code",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L153",
+      "source_location": "L190",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_timeout_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "community": 18,
       "norm_label": ".`a timeout leaves the cached catalogue in place and records the failure`()"
+    },
+    {
+      "label": ".`a repository write that throws is converted to Failed instead of propagating`()",
+      "file_type": "code",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L202",
+      "_origin": "ast",
+      "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_repository_write_that_throws_is_converted_to_failed_instead_of_propagating",
+      "community": 18,
+      "norm_label": ".`a repository write that throws is converted to failed instead of propagating`()"
+    },
+    {
+      "label": ".`sync still returns Failed when both the write and the failure recording throw`()",
+      "file_type": "code",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L219",
+      "_origin": "ast",
+      "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_sync_still_returns_failed_when_both_the_write_and_the_failure_recording_throw",
+      "community": 18,
+      "norm_label": ".`sync still returns failed when both the write and the failure recording throw`()"
     },
     {
       "label": "WasteCollectionValidatorTest.kt",
@@ -8573,7 +8613,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L141",
+      "source_location": "L178",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_rejected_response_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
@@ -8584,7 +8624,18 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L156",
+      "source_location": "L205",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_repository_write_that_throws_is_converted_to_failed_instead_of_propagating",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L193",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_timeout_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
@@ -8595,7 +8646,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L111",
+      "source_location": "L148",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_but_empty_catalogue_is_treated_as_a_failure_and_never_replaces_the_cache",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
@@ -8606,7 +8657,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L99",
+      "source_location": "L136",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_replaces_the_cache_wholesale",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
@@ -8617,7 +8668,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L128",
+      "source_location": "L165",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_with_no_categories_is_also_treated_as_a_failure",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
@@ -8628,7 +8679,18 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L79",
+      "source_location": "L222",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_sync_still_returns_failed_when_both_the_write_and_the_failure_recording_throw",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L116",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository"
@@ -9099,7 +9161,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L30",
+      "source_location": "L38",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_categories",
@@ -9110,10 +9172,21 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L40",
+      "source_location": "L48",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_insertcategories",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastecategoryentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L63",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastecategoryentity",
       "confidence_score": 1.0
     },
@@ -9187,7 +9260,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L43",
+      "source_location": "L51",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_inserttypes",
@@ -9198,7 +9271,18 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L33",
+      "source_location": "L63",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastetypeentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L41",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_typesfor",
@@ -9275,7 +9359,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L36",
+      "source_location": "L44",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_meta",
@@ -9286,7 +9370,18 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L46",
+      "source_location": "L63",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_cataloguemetaentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L55",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_upsertmeta",
@@ -10880,7 +10975,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -10891,7 +10986,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -11423,7 +11518,7 @@
       "relation": "implements",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L49",
+      "source_location": "L86",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_requestchannel_requestchannel",
@@ -12269,7 +12364,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L42",
+      "source_location": "L52",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecataloguemessages_wastecataloguerequestpayload"
@@ -12280,7 +12375,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L89",
+      "source_location": "L126",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecataloguemessages_wastecategorydto"
@@ -12291,7 +12386,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L91",
+      "source_location": "L128",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecataloguemessages_wastetypedto"
@@ -12301,7 +12396,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L86",
+      "source_location": "L123",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecataloguemessages_wastecatalogueresponse",
@@ -12311,7 +12406,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -13317,7 +13412,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L59",
+      "source_location": "L69",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_wastecategory"
@@ -13499,7 +13594,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L62",
+      "source_location": "L72",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype"
@@ -13859,7 +13954,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_cataloguesyncresult",
@@ -13869,7 +13964,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_failed",
@@ -13879,7 +13974,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_replaced",
@@ -13889,7 +13984,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L27",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase",
@@ -13899,7 +13994,7 @@
       "relation": "implements",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_failed",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_cataloguesyncresult",
@@ -13909,7 +14004,7 @@
       "relation": "implements",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_replaced",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_cataloguesyncresult",
@@ -13919,7 +14014,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L78",
+      "source_location": "L99",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_fail",
@@ -13930,7 +14025,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L37",
+      "source_location": "L46",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
@@ -13942,7 +14037,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L72",
+      "source_location": "L82",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_replaced",
@@ -13953,7 +14048,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L80",
+      "source_location": "L108",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_fail",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_failed",
@@ -13963,7 +14058,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L78",
+      "source_location": "L99",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_fail",
@@ -13973,7 +14068,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L37",
+      "source_location": "L46",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
@@ -13984,7 +14079,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase",
@@ -13994,7 +14089,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L37",
+      "source_location": "L46",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
@@ -14006,7 +14101,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L49",
+      "source_location": "L59",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_sync",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_fail",
@@ -14016,7 +14111,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt",
-      "source_location": "L78",
+      "source_location": "L99",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecase_syncwastecatalogueusecase_fail",
@@ -18410,7 +18505,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L49",
+      "source_location": "L86",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel",
@@ -18430,7 +18525,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L68",
+      "source_location": "L105",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
@@ -18440,7 +18535,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L30",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_categories",
@@ -18450,7 +18545,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L38",
+      "source_location": "L46",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_deleteallcategories",
@@ -18460,7 +18555,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L39",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_deletealltypes",
@@ -18470,7 +18565,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L40",
+      "source_location": "L48",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_insertcategories",
@@ -18480,7 +18575,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L43",
+      "source_location": "L51",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_inserttypes",
@@ -18490,7 +18585,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L36",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_meta",
@@ -18500,7 +18595,17 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L33",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L41",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_typesfor",
@@ -18510,7 +18615,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L46",
+      "source_location": "L55",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_upsertmeta",
@@ -18520,10 +18625,21 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L37",
+      "source_location": "L45",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_wastetypecount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "field",
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
+      "target": "throwable",
       "confidence_score": 1.0
     },
     {
@@ -18531,7 +18647,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L140",
+      "source_location": "L177",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_rejected_response_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
@@ -18542,7 +18658,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L155",
+      "source_location": "L204",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_repository_write_that_throws_is_converted_to_failed_instead_of_propagating",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L192",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_timeout_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
@@ -18553,7 +18680,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L110",
+      "source_location": "L147",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_but_empty_catalogue_is_treated_as_a_failure_and_never_replaces_the_cache",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
@@ -18564,7 +18691,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L97",
+      "source_location": "L134",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_replaces_the_cache_wholesale",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
@@ -18575,9 +18702,20 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L127",
+      "source_location": "L164",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_with_no_categories_is_also_treated_as_a_failure",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L221",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_sync_still_returns_failed_when_both_the_write_and_the_failure_recording_throw",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao",
       "confidence_score": 1.0
     },
@@ -18585,7 +18723,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18596,7 +18734,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L30",
+      "source_location": "L38",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_categories",
@@ -18607,7 +18745,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L30",
+      "source_location": "L38",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_categories",
@@ -18618,7 +18756,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L36",
+      "source_location": "L44",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_meta",
@@ -18629,7 +18767,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L33",
+      "source_location": "L41",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_typesfor",
@@ -18640,7 +18778,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L40",
+      "source_location": "L48",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_insertcategories",
@@ -18651,7 +18789,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L43",
+      "source_location": "L51",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_inserttypes",
@@ -18662,7 +18800,18 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L33",
+      "source_location": "L63",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L41",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_typesfor",
@@ -18673,7 +18822,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L33",
+      "source_location": "L41",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_typesfor",
@@ -18684,7 +18833,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L52",
+      "source_location": "L89",
       "weight": 1.0,
       "context": "field",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel",
@@ -18695,7 +18844,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -18706,7 +18855,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L37",
+      "source_location": "L45",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_wastetypecount",
@@ -18714,10 +18863,65 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_deleteallcategories",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_deletealltypes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_insertcategories",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_inserttypes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_replaceall",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakewastecataloguedao_upsertmeta",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -18728,7 +18932,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel",
@@ -18738,7 +18942,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -18749,7 +18953,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -18760,7 +18964,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -18771,7 +18975,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L54",
+      "source_location": "L91",
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_fakerequestchannel_request",
@@ -18782,7 +18986,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L138",
+      "source_location": "L175",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_rejected_response_leaves_the_cached_catalogue_in_place_and_records_the_failure",
@@ -18792,7 +18996,17 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L153",
+      "source_location": "L202",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_repository_write_that_throws_is_converted_to_failed_instead_of_propagating",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L190",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_timeout_leaves_the_cached_catalogue_in_place_and_records_the_failure",
@@ -18802,7 +19016,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L108",
+      "source_location": "L145",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_but_empty_catalogue_is_treated_as_a_failure_and_never_replaces_the_cache",
@@ -18812,7 +19026,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L95",
+      "source_location": "L132",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_replaces_the_cache_wholesale",
@@ -18822,7 +19036,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L125",
+      "source_location": "L162",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_with_no_categories_is_also_treated_as_a_failure",
@@ -18832,7 +19046,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L86",
+      "source_location": "L123",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
@@ -18842,7 +19056,17 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L219",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_sync_still_returns_failed_when_both_the_write_and_the_failure_recording_throw",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L109",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18853,7 +19077,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L143",
+      "source_location": "L180",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_rejected_response_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18864,7 +19088,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L158",
+      "source_location": "L208",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_repository_write_that_throws_is_converted_to_failed_instead_of_propagating",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L195",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_timeout_leaves_the_cached_catalogue_in_place_and_records_the_failure",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18875,7 +19110,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L113",
+      "source_location": "L150",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_but_empty_catalogue_is_treated_as_a_failure_and_never_replaces_the_cache",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18886,7 +19121,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L98",
+      "source_location": "L135",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_replaces_the_cache_wholesale",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18897,9 +19132,20 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L129",
+      "source_location": "L166",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_with_no_categories_is_also_treated_as_a_failure",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L226",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_sync_still_returns_failed_when_both_the_write_and_the_failure_recording_throw",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
       "confidence_score": 1.0
     },
@@ -18907,7 +19153,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L72",
+      "source_location": "L109",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_usecase",
@@ -18919,7 +19165,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L114",
+      "source_location": "L208",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_a_repository_write_that_throws_is_converted_to_failed_instead_of_propagating",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L151",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_but_empty_catalogue_is_treated_as_a_failure_and_never_replaces_the_cache",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
@@ -18930,7 +19187,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L98",
+      "source_location": "L135",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_replaces_the_cache_wholesale",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
@@ -18941,9 +19198,20 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
-      "source_location": "L130",
+      "source_location": "L167",
       "weight": 1.0,
       "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_an_accepted_catalogue_with_no_categories_is_also_treated_as_a_failure",
+      "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt",
+      "source_location": "L226",
+      "weight": 1.0,
+      "source": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_sync_still_returns_failed_when_both_the_write_and_the_failure_recording_throw",
       "target": "app_src_test_java_com_mitas_ppnam_station4aa_domain_usecase_syncwastecatalogueusecasetest_syncwastecatalogueusecasetest_goodresponse",
       "confidence_score": 1.0
     },
@@ -20473,5 +20741,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ace6174243f02a0cfd1596c0d0aea1167e65248a"
+  "built_at_commit": "41399e10e32c990c4ec935819b7de99d4135f4e5"
 }

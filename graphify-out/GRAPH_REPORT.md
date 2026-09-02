@@ -1,16 +1,16 @@
 # Graph Report - PPNAM_Station_4_AA  (2026-09-02)
 
 ## Corpus Check
-- 90 files · ~61,851 words
+- 90 files · ~62,356 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 760 nodes · 1220 edges · 50 communities (37 shown, 13 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 66 edges (avg confidence: 0.8)
+- 764 nodes · 1241 edges · 50 communities (37 shown, 13 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 68 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ace61742`
+- Built from commit: `41399e10`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -64,12 +64,12 @@
 ## God Nodes (most connected - your core abstractions)
 1. `WasteCollectionValidatorTest` - 30 edges
 2. `WasteGatheringViewModel` - 26 edges
-3. `WasteWizardControllerTest` - 24 edges
-4. `WasteCatalogueRepository` - 23 edges
+3. `WasteCatalogueRepository` - 25 edges
+4. `WasteWizardControllerTest` - 24 edges
 5. `WasteWizardController` - 23 edges
 6. `MqttConnectionManager` - 22 edges
-7. `FakeWasteCatalogueDao` - 19 edges
-8. `FakeWasteCatalogueDao` - 17 edges
+7. `FakeWasteCatalogueDao` - 21 edges
+8. `FakeWasteCatalogueDao` - 19 edges
 9. `ScramCrypto` - 16 edges
 10. `MqttTopicsTest` - 16 edges
 
@@ -82,8 +82,8 @@
   app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt
 - `AppNavGraph()` --calls--> `WasteGatheringViewModel`  [INFERRED]
   app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt
-- `FakeWasteCatalogueDao` --implements--> `WasteCatalogueDao`  [EXTRACTED]
-  app/src/test/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueRepositoryTest.kt → app/src/main/java/com/mitas/ppnam/station4aa/data/local/WasteCatalogueDao.kt
+- `WasteCatalogueRepository` --references--> `CatalogueMeta`  [EXTRACTED]
+  app/src/main/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueRepository.kt → app/src/main/java/com/mitas/ppnam/station4aa/domain/model/CatalogueMeta.kt
 
 ## Import Cycles
 - None detected.
@@ -103,16 +103,16 @@ Cohesion: 0.09
 Nodes (18): Mqtt5AsyncClient, MqttClientFactory, Boolean, ByteArray, Mqtt5AsyncClient, Result, StateFlow, String (+10 more)
 
 ### Community 3 - "WasteGatheringViewModel"
-Cohesion: 0.19
-Nodes (6): Boolean, Int, List, StateFlow, String, WasteGatheringViewModel
+Cohesion: 0.18
+Nodes (12): ApplyState, Failure, Idle, StateFlow, String, Locked, PinState, SettingsViewModel (+4 more)
 
 ### Community 4 - "WasteWizardController"
 Cohesion: 0.09
-Nodes (8): Applied, Ignored, ScanDispatchResult, WasteTransactionDraft, String, WasteWizardController, WizardStep, WasteWizardControllerTest
+Nodes (7): Applied, Ignored, ScanDispatchResult, WasteTransactionDraft, String, WasteWizardController, WasteWizardControllerTest
 
 ### Community 5 - "ScramCrypto"
-Cohesion: 0.07
-Nodes (28): ConnectionStatus, connectionStatusFlow(), Boolean, Flow, resolveConnectionStatus(), Error, Idle, Flow (+20 more)
+Cohesion: 0.11
+Nodes (16): ConnectionStatus, connectionStatusFlow(), Boolean, Flow, resolveConnectionStatus(), Error, Idle, Flow (+8 more)
 
 ### Community 6 - "WasteCollectionPublisher"
 Cohesion: 0.22
@@ -155,8 +155,8 @@ Cohesion: 0.18
 Nodes (10): Global Constraints, Scan-Driven Waste Collection Wizard Implementation Plan, Task 1: Extend WasteCollectionValidator with machine-code and bag-code rules, Task 2: Pure wizard step-transition controller, Task 3: Correct WasteCollectionEvent/WasteCollectionMessage for the schema v3 contract update, Task 4: Carry bagCode/deviceId/operatorSessionId through the local outbox, Task 5: Rewrite WasteGatheringViewModel around the wizard controller, Task 6: Rewrite WasteGatheringScreen as a step wizard, remove MachineCatalog (+2 more)
 
 ### Community 18 - ".validateRequiredIdentity"
-Cohesion: 0.06
-Nodes (27): CatalogueMetaEntity, toEntity(), WasteCategoryEntity, WasteTypeEntity, Flow, Int, List, String (+19 more)
+Cohesion: 0.05
+Nodes (33): WasteCatalogueRepository, CatalogueMetaEntity, toEntity(), WasteCategoryEntity, WasteTypeEntity, Flow, Int, List (+25 more)
 
 ### Community 20 - "MqttTopics"
 Cohesion: 0.35
@@ -199,8 +199,8 @@ Cohesion: 0.83
 Nodes (3): gradlew script, die(), warn()
 
 ### Community 45 - "WasteCatalogueRepository"
-Cohesion: 0.08
-Nodes (17): Boolean, Flow, List, String, WasteCatalogueRepository, List, WasteCatalogueSeed, toDomain() (+9 more)
+Cohesion: 0.06
+Nodes (19): Boolean, Flow, List, String, List, WasteCatalogueSeed, toDomain(), CatalogueMeta (+11 more)
 
 ### Community 46 - "Final wastage bag process, Phase 1 — design"
 Cohesion: 0.09
@@ -226,14 +226,14 @@ Nodes (5): Control points, Flow diagram, Phase 1 — Label and register the disp
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WasteGatheringViewModel` connect `WasteGatheringViewModel` to `LoginViewModel`, `WasteWizardController`, `ScramCrypto`, `AuthMessages.kt`, `WasteCatalogueRepository`?**
-  _High betweenness centrality (0.163) - this node is a cross-community bridge._
-- **Why does `SettingsViewModel` connect `ScramCrypto` to `LoginViewModel`, `MqttConnectionManager`, `AuthMessages.kt`?**
-  _High betweenness centrality (0.108) - this node is a cross-community bridge._
-- **Why does `MqttConnectionManager` connect `MqttConnectionManager` to `FakeWasteOutboxDao`?**
-  _High betweenness centrality (0.100) - this node is a cross-community bridge._
-- **Are the 14 inferred relationships involving `WasteCatalogueRepository` (e.g. with `.`recordSyncFailure leaves the cached catalogue untouched`()` and `.`replaceWith is wholesale, not a merge`()`) actually correct?**
-  _`WasteCatalogueRepository` has 14 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `WasteGatheringViewModel` connect `WasteCatalogueRepository` to `LoginViewModel`, `WasteGatheringViewModel`, `WasteWizardController`, `ScramCrypto`, `AuthMessages.kt`?**
+  _High betweenness centrality (0.164) - this node is a cross-community bridge._
+- **Why does `SettingsViewModel` connect `WasteGatheringViewModel` to `LoginViewModel`, `MqttConnectionManager`, `AuthMessages.kt`, `ScramCrypto`?**
+  _High betweenness centrality (0.107) - this node is a cross-community bridge._
+- **Why does `WasteCategory` connect `WasteCatalogueRepository` to `.validateRequiredIdentity`, `.sync`?**
+  _High betweenness centrality (0.102) - this node is a cross-community bridge._
+- **Are the 16 inferred relationships involving `WasteCatalogueRepository` (e.g. with `.`recordSyncFailure leaves the cached catalogue untouched`()` and `.`replaceWith is wholesale, not a merge`()`) actually correct?**
+  _`WasteCatalogueRepository` has 16 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Status`, `FailureKind`, `EmptyPayload` to the rest of the system?**
   _73 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `LoginViewModel` be split into smaller, more focused modules?**
