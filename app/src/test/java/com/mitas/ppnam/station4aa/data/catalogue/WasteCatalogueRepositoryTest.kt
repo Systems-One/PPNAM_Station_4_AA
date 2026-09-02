@@ -163,4 +163,60 @@ class WasteCatalogueRepositoryTest {
         assertEquals(listOf("WT-01", "WT-02"), repository.typesFor("CAT-01").first().map { it.code })
         assertEquals(listOf("WT-09"), repository.typesFor("CAT-02").first().map { it.code })
     }
+
+    @Test
+    fun `replaceWith throws IllegalArgumentException when types list is empty`() = runTest {
+        val dao = FakeWasteCatalogueDao()
+        val repository = WasteCatalogueRepository(dao)
+        repository.replaceWith(
+            categories = listOf(category("CAT-01")),
+            types = listOf(type("WT-01", "CAT-01")),
+            catalogueVersion = "v1",
+            nowUtc = "2026-09-02T07:00:00.000Z",
+        )
+
+        try {
+            repository.replaceWith(
+                categories = listOf(category("CAT-02")),
+                types = emptyList(),
+                catalogueVersion = "v2",
+                nowUtc = "2026-09-02T08:00:00.000Z",
+            )
+            assertTrue("Should have thrown IllegalArgumentException", false)
+        } catch (e: IllegalArgumentException) {
+            assertTrue(e.message?.contains("types") ?: false)
+        }
+
+        // Cache remains untouched
+        assertEquals(listOf("WT-01"), dao.typeRows.value.map { it.code })
+        assertEquals(listOf("CAT-01"), dao.categoryRows.value.map { it.code })
+    }
+
+    @Test
+    fun `replaceWith throws IllegalArgumentException when categories list is empty`() = runTest {
+        val dao = FakeWasteCatalogueDao()
+        val repository = WasteCatalogueRepository(dao)
+        repository.replaceWith(
+            categories = listOf(category("CAT-01")),
+            types = listOf(type("WT-01", "CAT-01")),
+            catalogueVersion = "v1",
+            nowUtc = "2026-09-02T07:00:00.000Z",
+        )
+
+        try {
+            repository.replaceWith(
+                categories = emptyList(),
+                types = listOf(type("WT-02", "CAT-02")),
+                catalogueVersion = "v2",
+                nowUtc = "2026-09-02T08:00:00.000Z",
+            )
+            assertTrue("Should have thrown IllegalArgumentException", false)
+        } catch (e: IllegalArgumentException) {
+            assertTrue(e.message?.contains("categories") ?: false)
+        }
+
+        // Cache remains untouched
+        assertEquals(listOf("WT-01"), dao.typeRows.value.map { it.code })
+        assertEquals(listOf("CAT-01"), dao.categoryRows.value.map { it.code })
+    }
 }

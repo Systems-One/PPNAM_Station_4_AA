@@ -53,8 +53,13 @@ class WasteCatalogueRepository(
      * marks it SYNCED. Clears any recorded failure: the catalogue is current as of [nowUtc], so a
      * stale failure timestamp would only mislead whoever reads Diagnostics.
      *
-     * Callers must not pass an empty [types] or [categories] — see SyncWasteCatalogueUseCase,
-     * which treats an empty payload as a failed sync rather than a valid replacement.
+     * Enforces that [categories] and [types] are not empty — never replaces a working catalogue
+     * with an empty one, which would leave every handheld unable to select a waste type. This
+     * guard rejects an empty server payload at the repository boundary. Callers like
+     * SyncWasteCatalogueUseCase must treat an empty payload as a failed sync, recorded via
+     * [recordSyncFailure], not as a valid replacement.
+     *
+     * @throws IllegalArgumentException if [categories] or [types] is empty.
      */
     suspend fun replaceWith(
         categories: List<WasteCategory>,
@@ -62,6 +67,9 @@ class WasteCatalogueRepository(
         catalogueVersion: String,
         nowUtc: String,
     ) {
+        require(categories.isNotEmpty()) { "categories list must not be empty" }
+        require(types.isNotEmpty()) { "types list must not be empty" }
+
         dao.replaceAll(
             categories = categories.map { it.toEntity() },
             types = types.map { it.toEntity() },
