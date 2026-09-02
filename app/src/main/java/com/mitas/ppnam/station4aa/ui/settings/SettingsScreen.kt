@@ -132,6 +132,18 @@ fun SettingsScreen(
                             color = TextPrimary
                         )
                     }
+
+                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
+
+                    val catalogueStatus by viewModel.catalogueStatus.collectAsState()
+                    Text(
+                        catalogueStatus,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = TextMuted,
+                    )
+                    TextButton(onClick = { viewModel.refreshCatalogue() }) {
+                        Text("Refresh catalogue", color = AmberPrimary)
+                    }
                 }
             }
 

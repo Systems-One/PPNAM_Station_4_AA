@@ -83,6 +83,8 @@ fun AppNavGraph() {
                             connectionManager = container.connectionManager,
                             sessionHolder = container.operatorSessionHolder,
                             authUseCase = container.authUseCase,
+                            catalogueRepository = container.wasteCatalogueRepository,
+                            syncCatalogue = container.syncWasteCatalogueUseCase,
                             deviceId = container.deviceId,
                         )
                     }
