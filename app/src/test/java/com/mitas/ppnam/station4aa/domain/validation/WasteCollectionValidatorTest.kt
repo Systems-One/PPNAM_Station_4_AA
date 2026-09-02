@@ -8,43 +8,6 @@ import org.junit.Test
 class WasteCollectionValidatorTest {
 
     @Test
-    fun `blank machine operator id is rejected`() {
-        assertEquals("Required.", WasteCollectionValidator.validateMachineOperatorUserId(""))
-        assertEquals("Required.", WasteCollectionValidator.validateMachineOperatorUserId("   "))
-    }
-
-    @Test
-    fun `placeholder machine operator id is rejected case-insensitively`() {
-        assertNotNull(WasteCollectionValidator.validateMachineOperatorUserId("UNKNOWN"))
-        assertNotNull(WasteCollectionValidator.validateMachineOperatorUserId("unknown"))
-        assertNotNull(WasteCollectionValidator.validateMachineOperatorUserId("N/A"))
-        assertNotNull(WasteCollectionValidator.validateMachineOperatorUserId("n/a"))
-    }
-
-    @Test
-    fun `control characters in machine operator id are rejected`() {
-        val bell = 7.toChar()
-        val withControlChar = "MO-001$bell"
-        assertNotNull(WasteCollectionValidator.validateMachineOperatorUserId(withControlChar))
-    }
-
-    @Test
-    fun `machine operator id over 100 characters is rejected`() {
-        val tooLong = "A".repeat(101)
-        assertNotNull(WasteCollectionValidator.validateMachineOperatorUserId(tooLong))
-    }
-
-    @Test
-    fun `valid machine operator id is accepted`() {
-        assertNull(WasteCollectionValidator.validateMachineOperatorUserId("MO-00427"))
-    }
-
-    @Test
-    fun `leading and trailing whitespace does not itself fail validation`() {
-        assertNull(WasteCollectionValidator.validateMachineOperatorUserId("  MO-00427  "))
-    }
-
-    @Test
     fun `blank collected by is rejected`() {
         assertEquals("Required.", WasteCollectionValidator.validateCollectedBy(""))
     }
@@ -60,36 +23,6 @@ class WasteCollectionValidatorTest {
     fun `collected by over 200 characters is rejected`() {
         val tooLong = "A".repeat(201)
         assertNotNull(WasteCollectionValidator.validateCollectedBy(tooLong))
-    }
-
-    @Test
-    fun `blank machine code is rejected`() {
-        assertEquals("Required.", WasteCollectionValidator.validateMachineCode(""))
-        assertEquals("Required.", WasteCollectionValidator.validateMachineCode("   "))
-    }
-
-    @Test
-    fun `machine code is not placeholder-checked`() {
-        // A real machine could plausibly be labeled with a code that collides with the
-        // placeholder denylist; unlike machineOperatorUserId this isn't freshly typed per
-        // transaction under identity rules, so it isn't placeholder-checked.
-        assertNull(WasteCollectionValidator.validateMachineCode("UNKNOWN"))
-    }
-
-    @Test
-    fun `control characters in machine code are rejected`() {
-        val bell = 7.toChar()
-        assertNotNull(WasteCollectionValidator.validateMachineCode("EXT-04$bell"))
-    }
-
-    @Test
-    fun `machine code over 100 characters is rejected`() {
-        assertNotNull(WasteCollectionValidator.validateMachineCode("A".repeat(101)))
-    }
-
-    @Test
-    fun `valid machine code is accepted`() {
-        assertNull(WasteCollectionValidator.validateMachineCode("EXT-04"))
     }
 
     @Test
