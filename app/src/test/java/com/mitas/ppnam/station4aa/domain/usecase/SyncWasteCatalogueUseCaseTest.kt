@@ -27,6 +27,14 @@ private class FakeWasteCatalogueDao : WasteCatalogueDao {
     val typeRows = MutableStateFlow<List<WasteTypeEntity>>(emptyList())
     val metaRow = MutableStateFlow<CatalogueMetaEntity?>(null)
 
+    /** When set, [insertTypes] throws this instead of writing — simulates a Room/disk failure
+     *  partway through [replaceAll]'s transaction (e.g. a low-storage SQLiteException). */
+    var insertTypesFailure: Throwable? = null
+
+    /** When set, [upsertMeta] throws this instead of writing — simulates the same DAO failing
+     *  again while recording a sync failure. */
+    var upsertMetaFailure: Throwable? = null
+
     override fun categories(): Flow<List<WasteCategoryEntity>> =
         categoryRows.map { rows -> rows.sortedBy { it.sortOrder } }
 
@@ -41,9 +49,38 @@ private class FakeWasteCatalogueDao : WasteCatalogueDao {
         categoryRows.value = categoryRows.value + rows
     }
     override suspend fun insertTypes(rows: List<WasteTypeEntity>) {
+        insertTypesFailure?.let { throw it }
         typeRows.value = typeRows.value + rows
     }
-    override suspend fun upsertMeta(row: CatalogueMetaEntity) { metaRow.value = row }
+    override suspend fun upsertMeta(row: CatalogueMetaEntity) {
+        upsertMetaFailure?.let { throw it }
+        metaRow.value = row
+    }
+
+    // Real Room wraps this in @Transaction, so a mid-write throw rolls back rather than
+    // leaving a half-applied catalogue. Snapshot/restore reproduces that here so a failing
+    // insertTypes leaves the previously cached rows untouched, same as production.
+    override suspend fun replaceAll(
+        categories: List<WasteCategoryEntity>,
+        types: List<WasteTypeEntity>,
+        meta: CatalogueMetaEntity,
+    ) {
+        val categoriesBefore = categoryRows.value
+        val typesBefore = typeRows.value
+        val metaBefore = metaRow.value
+        try {
+            deleteAllTypes()
+            deleteAllCategories()
+            insertCategories(categories)
+            insertTypes(types)
+            upsertMeta(meta)
+        } catch (e: Throwable) {
+            categoryRows.value = categoriesBefore
+            typeRows.value = typesBefore
+            metaRow.value = metaBefore
+            throw e
+        }
+    }
 }
 
 private class FakeRequestChannel(
@@ -160,5 +197,39 @@ class SyncWasteCatalogueUseCaseTest {
         assertTrue(useCase.sync("session-1") is CatalogueSyncResult.Failed)
         assertEquals(18, dao.typeRows.value.size)
         assertEquals("2026-09-02T07:00:00Z", repository.meta.first()!!.lastFailedAtUtc)
+    }
+
+    @Test
+    fun `a repository write that throws is converted to Failed instead of propagating`() = runTest {
+        val dao = FakeWasteCatalogueDao()
+        val repository = WasteCatalogueRepository(dao)
+        repository.seedIfEmpty()
+        dao.insertTypesFailure = IllegalStateException("disk full")
+        val (useCase, _) = useCase(MqttOutcome.Accepted(goodResponse()), dao)
+
+        val result = useCase.sync("session-1")
+
+        assertEquals(CatalogueSyncResult.Failed("disk full"), result)
+        // The cached (seeded) catalogue survives the failed write untouched.
+        assertEquals(18, dao.typeRows.value.size)
+        // The failure was still recorded because upsertMeta itself did not fail.
+        assertEquals("2026-09-02T07:00:00Z", repository.meta.first()!!.lastFailedAtUtc)
+    }
+
+    @Test
+    fun `sync still returns Failed when both the write and the failure recording throw`() = runTest {
+        val dao = FakeWasteCatalogueDao()
+        val repository = WasteCatalogueRepository(dao)
+        repository.seedIfEmpty()
+        dao.insertTypesFailure = IllegalStateException("disk full")
+        dao.upsertMetaFailure = IllegalStateException("cannot even record the failure")
+        val (useCase, _) = useCase(MqttOutcome.Accepted(goodResponse()), dao)
+
+        val result = useCase.sync("session-1")
+
+        // The original write failure's message survives; the follow-on failure while trying
+        // to record it is swallowed rather than propagating out of sync().
+        assertEquals(CatalogueSyncResult.Failed("disk full"), result)
+        assertEquals(18, dao.typeRows.value.size)
     }
 }
