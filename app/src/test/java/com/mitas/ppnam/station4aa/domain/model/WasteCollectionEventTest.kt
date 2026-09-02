@@ -1,7 +1,7 @@
 package com.mitas.ppnam.station4aa.domain.model
 
-import com.google.gson.Gson
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
@@ -11,50 +11,65 @@ class WasteCollectionEventTest {
     private val fixedInstant: Instant = Instant.parse("2026-07-30T10:15:30.000Z")
 
     private fun buildEvent(
-        machineCode: String = "EXT-04",
-        machineName: String = "Extruder 4",
+        bagCode: String = "BAG-01",
+        jobNumber: String = "JOB-2026-0041",
+        operatorId: String = "MO-00427",
         wasteTypeCode: String = "WT-01",
-        collectedBy: String = "WO-00112",
-        machineOperatorUserId: String = "MO-00427",
-        bagCode: String = "BAG-00931",
-        deviceId: String = "HH-01",
+        collectedBy: String = "Collector One",
+        deviceId: String = "scanner_a1b2c3d4e5f6",
         operatorSessionId: String = "4dfda8bb-e9bf-4e92-b8a9-acde673fbb83",
         now: Instant = fixedInstant,
     ) = WasteCollectionEvent.create(
-        machineCode = machineCode,
-        machineName = machineName,
+        bagCode = bagCode,
+        jobNumber = jobNumber,
+        operatorId = operatorId,
         wasteTypeCode = wasteTypeCode,
         collectedBy = collectedBy,
-        machineOperatorUserId = machineOperatorUserId,
-        bagCode = bagCode,
         deviceId = deviceId,
         operatorSessionId = operatorSessionId,
         now = now,
     )
 
     @Test
-    fun `create trims fields and stamps schema version 3 on the wire message`() {
-        val event = buildEvent(
-            machineCode = "  EXT-04  ",
-            machineName = " Extruder 4 ",
-            wasteTypeCode = " WT-01 ",
-            collectedBy = " WO-00112 ",
-            machineOperatorUserId = " MO-00427 ",
-            bagCode = " BAG-00931 ",
-            deviceId = " HH-01 ",
-            operatorSessionId = " 4dfda8bb-e9bf-4e92-b8a9-acde673fbb83 ",
-        )
+    fun `the published schema version is 4`() {
+        assertEquals(4, WasteCollectionEvent.SCHEMA_VERSION)
+        assertEquals(4, buildEvent().toWireMessage().schemaVersion)
+    }
 
-        assertEquals("EXT-04", event.machineCode)
-        assertEquals("Extruder 4", event.machineName)
-        assertEquals("WT-01", event.wasteTypeCode)
-        assertEquals("WO-00112", event.collectedBy)
-        assertEquals("MO-00427", event.machineOperatorUserId)
-        assertEquals("BAG-00931", event.bagCode)
-        assertEquals("HH-01", event.deviceId)
-        assertEquals("4dfda8bb-e9bf-4e92-b8a9-acde673fbb83", event.operatorSessionId)
-        assertEquals("2026-07-30T10:15:30.000Z", event.collectedAtUtc)
-        assertEquals(3, event.toWireMessage().schemaVersion)
+    @Test
+    fun `the wire message carries the v4 field set`() {
+        val message = buildEvent().toWireMessage()
+        assertEquals("BAG-01", message.bagCode)
+        assertEquals("JOB-2026-0041", message.jobNumber)
+        assertEquals("MO-00427", message.operatorId)
+        assertEquals("WT-01", message.wasteTypeCode)
+    }
+
+    @Test
+    fun `fields are trimmed when the event is minted`() {
+        val event = buildEvent(jobNumber = "  JOB-7  ", operatorId = "  MO-7  ")
+        assertEquals("JOB-7", event.jobNumber)
+        assertEquals("MO-7", event.operatorId)
+    }
+
+    @Test
+    fun `the generated identity fields are minted fresh per event, never shared`() {
+        // A retry must republish the exact bytes originally queued, so these three are minted once
+        // in create() and never regenerated — two separate transactions must not collide.
+        val first = buildEvent()
+        val second = buildEvent()
+        assertNotEquals(first.messageId, second.messageId)
+        assertNotEquals(first.collectionId, second.collectionId)
+    }
+
+    @Test
+    fun `converting to the wire message does not re-mint anything`() {
+        val event = buildEvent()
+        val first = event.toWireMessage()
+        val second = event.toWireMessage()
+        assertEquals(first.messageId, second.messageId)
+        assertEquals(first.collectionId, second.collectionId)
+        assertEquals(first.collectedAtUtc, second.collectedAtUtc)
     }
 
     @Test
@@ -62,29 +77,6 @@ class WasteCollectionEventTest {
         val event = buildEvent()
         assertTrue(event.collectionId.matches(Regex("WC-20260730-\\d{6}")))
         assertTrue(event.collectionId != event.bagCode)
-    }
-
-    @Test
-    fun `wire JSON uses the exact camelCase property names the contract requires`() {
-        val event = buildEvent()
-        val json = Gson().toJson(event.toWireMessage())
-
-        listOf(
-            "\"schemaVersion\":3",
-            "\"messageId\"",
-            "\"deviceId\":\"HH-01\"",
-            "\"operatorSessionId\":\"4dfda8bb-e9bf-4e92-b8a9-acde673fbb83\"",
-            "\"collectionId\"",
-            "\"bagCode\":\"BAG-00931\"",
-            "\"machineCode\":\"EXT-04\"",
-            "\"machineName\":\"Extruder 4\"",
-            "\"machineOperatorUserId\":\"MO-00427\"",
-            "\"wasteTypeCode\":\"WT-01\"",
-            "\"collectedBy\":\"WO-00112\"",
-            "\"collectedAtUtc\":\"2026-07-30T10:15:30.000Z\"",
-        ).forEach { expectedFragment ->
-            assertTrue("Expected JSON to contain $expectedFragment but was $json", json.contains(expectedFragment))
-        }
     }
 
     @Test

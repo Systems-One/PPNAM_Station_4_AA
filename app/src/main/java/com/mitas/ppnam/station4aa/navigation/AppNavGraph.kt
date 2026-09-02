@@ -62,6 +62,7 @@ fun AppNavGraph() {
                             sessionHolder = container.operatorSessionHolder,
                             authUseCase = container.authUseCase,
                             scanEventBus = container.scanEventBus,
+                            catalogueRepository = container.wasteCatalogueRepository,
                             deviceId = container.deviceId,
                         )
                     }

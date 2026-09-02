@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
@@ -58,6 +57,8 @@ fun WasteGatheringScreen(
     val lastQueuedMessage by viewModel.lastQueuedMessage.collectAsState()
     val lastMessageIsError by viewModel.lastMessageIsError.collectAsState()
     val isSubmitting by viewModel.isSubmitting.collectAsState()
+    val categories by viewModel.categories.collectAsState()
+    val wasteTypes by viewModel.typesForSelectedCategory.collectAsState()
 
     if (step == WizardStep.REVIEW) {
         AlertDialog(
@@ -65,11 +66,22 @@ fun WasteGatheringScreen(
             title = { Text("Confirm waste collection", color = TextPrimary) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    ConfirmRow("Machine", draft.machineCode.orEmpty())
-                    ConfirmRow("Waste type", draft.wasteType?.display.orEmpty())
+                    ConfirmRow("Bag code", draft.bagCode.orEmpty()) {
+                        viewModel.onEditField(WizardStep.SCAN_BAG)
+                    }
+                    ConfirmRow("Job number", draft.jobNumber.orEmpty()) {
+                        viewModel.onEditField(WizardStep.SCAN_JOB)
+                    }
+                    ConfirmRow("Operator ID", draft.operatorId.orEmpty()) {
+                        viewModel.onEditField(WizardStep.SCAN_OPERATOR)
+                    }
+                    ConfirmRow("Waste category", draft.category?.name.orEmpty()) {
+                        viewModel.onEditField(WizardStep.SELECT_CATEGORY)
+                    }
+                    ConfirmRow("Waste type", draft.wasteType?.name.orEmpty()) {
+                        viewModel.onEditField(WizardStep.SELECT_WASTE_TYPE)
+                    }
                     ConfirmRow("Wastage operator", collectedBy)
-                    ConfirmRow("Machine operator ID", draft.machineOperatorUserId.orEmpty())
-                    ConfirmRow("Bag code", draft.bagCode.orEmpty())
                     if (stepError != null) {
                         Text(stepError!!, style = MaterialTheme.typography.labelSmall, color = WarningOrange)
                     }
@@ -129,23 +141,36 @@ fun WasteGatheringScreen(
             StepIndicator(step)
 
             when (step) {
-                WizardStep.SCAN_MACHINE -> ScanStep(
-                    label = "Scan machine code",
-                    errorMessage = stepError,
-                    onSubmit = viewModel::onMachineCodeSubmitted,
-                )
-                WizardStep.SCAN_OPERATOR -> ScanStep(
-                    label = "Scan machine operator code",
-                    errorMessage = stepError,
-                    onSubmit = viewModel::onOperatorIdSubmitted,
-                )
-                WizardStep.SELECT_WASTE_TYPE -> WasteTypeStep(
-                    onConfirm = viewModel::onWasteTypeConfirmed,
-                )
                 WizardStep.SCAN_BAG -> ScanStep(
                     label = "Scan bag code",
                     errorMessage = stepError,
                     onSubmit = viewModel::onBagCodeSubmitted,
+                )
+                WizardStep.SCAN_JOB -> ScanStep(
+                    label = "Scan or enter the job number",
+                    errorMessage = stepError,
+                    onSubmit = viewModel::onJobNumberSubmitted,
+                )
+                WizardStep.SCAN_OPERATOR -> ScanStep(
+                    label = "Scan or enter the operator ID",
+                    errorMessage = stepError,
+                    onSubmit = viewModel::onOperatorIdSubmitted,
+                )
+                WizardStep.SELECT_CATEGORY -> CatalogueStep(
+                    title = "Select waste category",
+                    emptyMessage = "No waste categories available. Refresh the catalogue in Settings.",
+                    label = "Waste Category",
+                    options = categories,
+                    display = { it.name },
+                    onConfirm = viewModel::onCategoryConfirmed,
+                )
+                WizardStep.SELECT_WASTE_TYPE -> CatalogueStep(
+                    title = "Select waste type",
+                    emptyMessage = "No waste types in this category. Refresh the catalogue in Settings.",
+                    label = "Waste Type",
+                    options = wasteTypes,
+                    display = { "${it.code} — ${it.name}" },
+                    onConfirm = viewModel::onWasteTypeConfirmed,
                 )
                 WizardStep.REVIEW -> Unit // rendered as the AlertDialog above
             }
@@ -158,24 +183,26 @@ fun WasteGatheringScreen(
 }
 
 private val WIZARD_STEP_ORDINALS = mapOf(
-    WizardStep.SCAN_MACHINE to 1,
-    WizardStep.SCAN_OPERATOR to 2,
-    WizardStep.SELECT_WASTE_TYPE to 3,
-    WizardStep.SCAN_BAG to 4,
-    WizardStep.REVIEW to 4,
+    WizardStep.SCAN_BAG to 1,
+    WizardStep.SCAN_JOB to 2,
+    WizardStep.SCAN_OPERATOR to 3,
+    WizardStep.SELECT_CATEGORY to 4,
+    WizardStep.SELECT_WASTE_TYPE to 5,
+    WizardStep.REVIEW to 5,
 )
 
 @Composable
 private fun StepIndicator(step: WizardStep) {
     val label = when (step) {
-        WizardStep.SCAN_MACHINE -> "Scan machine code"
-        WizardStep.SCAN_OPERATOR -> "Scan machine operator code"
-        WizardStep.SELECT_WASTE_TYPE -> "Select waste type"
         WizardStep.SCAN_BAG -> "Scan bag code"
+        WizardStep.SCAN_JOB -> "Scan or enter the job number"
+        WizardStep.SCAN_OPERATOR -> "Scan or enter the operator ID"
+        WizardStep.SELECT_CATEGORY -> "Select waste category"
+        WizardStep.SELECT_WASTE_TYPE -> "Select waste type"
         WizardStep.REVIEW -> "Review and confirm"
     }
     Text(
-        "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 4 — $label",
+        "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 5 — $label",
         style = MaterialTheme.typography.labelLarge,
         color = AmberPrimary,
     )
@@ -225,21 +252,36 @@ private fun ScanStep(
     }
 }
 
+/**
+ * One selection step driven by the cached catalogue. Renders an explicit empty state rather than
+ * an empty dropdown: a handheld whose catalogue failed to sync must say so, not present a control
+ * that silently does nothing.
+ */
 @Composable
-private fun WasteTypeStep(onConfirm: (WasteTypeCatalog) -> Unit) {
-    var selected by remember { mutableStateOf(WasteTypeCatalog.GENERAL) }
-
+private fun <T> CatalogueStep(
+    title: String,
+    emptyMessage: String,
+    label: String,
+    options: List<T>,
+    display: (T) -> String,
+    onConfirm: (T) -> Unit,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Select waste type", style = MaterialTheme.typography.titleMedium, color = TextPrimary)
-        EnumDropdownSelector(
-            label = "Waste Type",
-            options = WasteTypeCatalog.entries,
-            selected = selected,
-            display = { it.display },
-            onSelected = { selected = it },
+        Text(title, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+        if (options.isEmpty()) {
+            Text(emptyMessage, style = MaterialTheme.typography.labelMedium, color = WarningOrange)
+            return@Column
+        }
+        var selectedIndex by remember(options) { mutableStateOf(0) }
+        DropdownSelector(
+            label = label,
+            options = options,
+            selected = options[selectedIndex],
+            display = display,
+            onSelected = { selectedIndex = options.indexOf(it) },
         )
         Button(
-            onClick = { onConfirm(selected) },
+            onClick = { onConfirm(options[selectedIndex]) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Confirm")
@@ -248,16 +290,21 @@ private fun WasteTypeStep(onConfirm: (WasteTypeCatalog) -> Unit) {
 }
 
 @Composable
-private fun ConfirmRow(label: String, value: String) {
-    Column {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextMuted)
-        Text(value, style = MaterialTheme.typography.bodyLarge, color = TextPrimary)
+private fun ConfirmRow(label: String, value: String, onEdit: (() -> Unit)? = null) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(label, style = MaterialTheme.typography.labelSmall, color = TextMuted)
+            Text(value, style = MaterialTheme.typography.bodyLarge, color = TextPrimary)
+        }
+        if (onEdit != null) {
+            TextButton(onClick = onEdit) { Text("Edit", color = AmberPrimary) }
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun <T> EnumDropdownSelector(
+private fun <T> DropdownSelector(
     label: String,
     options: List<T>,
     selected: T,

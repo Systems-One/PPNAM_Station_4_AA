@@ -2,6 +2,7 @@ package com.mitas.ppnam.station4aa.data
 
 import android.content.Context
 import com.mitas.ppnam.station4aa.data.auth.ScramExchange
+import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.identity.DeviceIdentity
 import com.mitas.ppnam.station4aa.data.local.WasteOutboxDatabase
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
@@ -45,6 +46,7 @@ class AppContainer(context: Context) {
         resultChannel = wasteCollectionResultChannel,
         settingsRepository = settingsRepository,
     )
+    val wasteCatalogueRepository = WasteCatalogueRepository(outboxDatabase.wasteCatalogueDao())
 
     // Login exchange, mirrored from Station 2 AA — see MqttTopics' class doc for why this talks
     // to a backend Station 4 doesn't demonstrably implement yet.

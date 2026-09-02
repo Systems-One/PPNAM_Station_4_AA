@@ -1,5 +1,5 @@
 package com.mitas.ppnam.station4aa.domain.wizard
 
-/** The five states of the scan-driven waste collection wizard — see
- * `docs/superpowers/specs/2026-08-05-scan-driven-waste-wizard-design.md`. */
-enum class WizardStep { SCAN_MACHINE, SCAN_OPERATOR, SELECT_WASTE_TYPE, SCAN_BAG, REVIEW }
+/** The six states of the Phase 1 wastage-bag wizard, in the order the process document defines —
+ * see `docs/superpowers/specs/2026-09-02-phase-1-wastage-bag-flow-design.md`. */
+enum class WizardStep { SCAN_BAG, SCAN_JOB, SCAN_OPERATOR, SELECT_CATEGORY, SELECT_WASTE_TYPE, REVIEW }
