@@ -1,16 +1,16 @@
-# Graph Report - PPNAM_Station_4_AA  (2026-09-01)
+# Graph Report - PPNAM_Station_4_AA  (2026-09-02)
 
 ## Corpus Check
-- 72 files · ~42,671 words
+- 73 files · ~43,823 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 537 nodes · 829 edges · 44 communities (33 shown, 11 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
+- 551 nodes · 848 edges · 45 communities (34 shown, 11 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d40ba67d`
+- Built from commit: `45690f37`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -54,18 +54,19 @@
 - SessionState.kt
 - NavRoutes.kt
 - Color.kt
+- resolveConnectionStatus
 
 ## God Nodes (most connected - your core abstractions)
-1. `MqttConnectionManager` - 21 edges
+1. `MqttConnectionManager` - 22 edges
 2. `WasteGatheringViewModel` - 21 edges
 3. `WasteWizardController` - 20 edges
 4. `WasteCollectionValidatorTest` - 20 edges
 5. `ScramCrypto` - 16 edges
-6. `FakeWasteOutboxDao` - 15 edges
-7. `LoginViewModel` - 14 edges
-8. `SecureCredentialStore` - 13 edges
-9. `SettingsViewModel` - 13 edges
-10. `WasteWizardControllerTest` - 12 edges
+6. `MqttTopicsTest` - 16 edges
+7. `FakeWasteOutboxDao` - 15 edges
+8. `LoginViewModel` - 14 edges
+9. `SecureCredentialStore` - 13 edges
+10. `SettingsViewModel` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `AppNavGraph()` --calls--> `LoginViewModel`  [INFERRED]
@@ -82,19 +83,19 @@
 ## Import Cycles
 - None detected.
 
-## Communities (44 total, 11 thin omitted)
+## Communities (45 total, 11 thin omitted)
 
 ### Community 0 - "LoginViewModel"
 Cohesion: 0.09
 Nodes (23): MainActivity, AppNavGraph(), AppScaffold(), Boolean, String, Unit, LoginScreen(), SessionWatcher() (+15 more)
 
 ### Community 1 - "FakeWasteOutboxDao"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (19): WasteOutboxEntity, WasteCollectionResultMessage, Accepted, evaluateOutcome(), IdentityMismatch, SharedFlow, String, Rejected (+11 more)
 
 ### Community 2 - "MqttConnectionManager"
-Cohesion: 0.10
-Nodes (16): Mqtt5AsyncClient, MqttClientFactory, ByteArray, Mqtt5AsyncClient, Result, StateFlow, String, Unit (+8 more)
+Cohesion: 0.09
+Nodes (18): Mqtt5AsyncClient, MqttClientFactory, Boolean, ByteArray, Mqtt5AsyncClient, Result, StateFlow, String (+10 more)
 
 ### Community 3 - "WasteGatheringViewModel"
 Cohesion: 0.11
@@ -105,8 +106,8 @@ Cohesion: 0.14
 Nodes (7): Applied, Ignored, ScanDispatchResult, WasteTransactionDraft, String, WasteWizardController, WasteWizardControllerTest
 
 ### Community 5 - "ScramCrypto"
-Cohesion: 0.13
-Nodes (17): MqttConnectionState, ConnectionStatus, connectionStatusFlow(), Flow, resolveConnectionStatus(), ApplyState, Failure, Idle (+9 more)
+Cohesion: 0.18
+Nodes (12): ApplyState, Failure, Idle, StateFlow, String, Locked, PinState, SettingsViewModel (+4 more)
 
 ### Community 6 - "WasteCollectionPublisher"
 Cohesion: 0.22
@@ -121,7 +122,7 @@ Cohesion: 0.12
 Nodes (14): Long, Status, toEvent(), toOutboxEntity(), WasteCollectionMessage, Flow, Int, SharedFlow (+6 more)
 
 ### Community 9 - "WasteOutboxDao"
-Cohesion: 0.12
+Cohesion: 0.13
 Nodes (10): Flow, Int, List, Long, String, WasteOutboxDao, create(), Context (+2 more)
 
 ### Community 11 - "SecureCredentialStore"
@@ -196,6 +197,10 @@ Nodes (5): Barcode, SharedFlow, RfidTag, ScanEvent, ScanEventBus
 Cohesion: 0.83
 Nodes (3): gradlew script, die(), warn()
 
+### Community 44 - "resolveConnectionStatus"
+Cohesion: 0.26
+Nodes (6): ConnectionStatus, connectionStatusFlow(), Boolean, Flow, resolveConnectionStatus(), ConnectionStatusTest
+
 ## Knowledge Gaps
 - **41 isolated node(s):** `Status`, `FailureKind`, `EmptyPayload`, `ScramPurpose`, `ScramChallengeResponse` (+36 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -204,12 +209,12 @@ Nodes (3): gradlew script, die(), warn()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `MqttConnectionManager` connect `MqttConnectionManager` to `FakeWasteOutboxDao`, `ScramCrypto`?**
+- **Why does `MqttConnectionManager` connect `MqttConnectionManager` to `FakeWasteOutboxDao`?**
   _High betweenness centrality (0.138) - this node is a cross-community bridge._
-- **Why does `SettingsViewModel` connect `ScramCrypto` to `LoginViewModel`, `MqttConnectionManager`, `AuthMessages.kt`?**
-  _High betweenness centrality (0.137) - this node is a cross-community bridge._
-- **Why does `MqttConnectionState` connect `ScramCrypto` to `MqttConnectionManager`?**
-  _High betweenness centrality (0.118) - this node is a cross-community bridge._
+- **Why does `SettingsViewModel` connect `ScramCrypto` to `LoginViewModel`, `MqttConnectionManager`, `AuthMessages.kt`, `resolveConnectionStatus`?**
+  _High betweenness centrality (0.133) - this node is a cross-community bridge._
+- **Why does `MqttConnectionState` connect `MqttConnectionManager` to `resolveConnectionStatus`, `ScramCrypto`?**
+  _High betweenness centrality (0.120) - this node is a cross-community bridge._
 - **Are the 6 inferred relationships involving `MqttConnectionManager` (e.g. with `.`a result for an already-ACCEPTED row is a no-op, status stays ACCEPTED, no emit`()` and `.`a well-formed accepted result marks the stored PENDING row ACCEPTED and emits`()`) actually correct?**
   _`MqttConnectionManager` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 11 inferred relationships involving `WasteWizardController` (e.g. with `.`an invalid scanned value is applied as an error and does not advance`()` and `.`cancel from REVIEW also fully resets`()`) actually correct?**
