@@ -1,6 +1,7 @@
 package com.mitas.ppnam.station4aa.data
 
 import android.content.Context
+import android.util.Log
 import com.mitas.ppnam.station4aa.data.auth.ScramExchange
 import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.identity.DeviceIdentity
@@ -16,10 +17,13 @@ import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+
+private const val TAG = "AppContainer"
 
 /**
  * Station 4 has no Hilt (see the "minimal architecture" scope decision), so this is the one place
@@ -71,9 +75,34 @@ class AppContainer(context: Context) {
     // Seeding touches disk, so it cannot run on the constructor's thread. Fire-and-forget: a
     // handheld whose seed has not landed yet shows an empty selection step with its own explicit
     // message, which is honest, rather than blocking startup on a database write.
+    //
+    // SupervisorJob only stops a failing child from cancelling its siblings; it does not stop that
+    // child's own exception reaching Dispatchers.IO's default handler, which for an unhandled
+    // exception is a process crash. AppContainer is built from PpnamApplication.onCreate(), so an
+    // unguarded seed failure (full disk, corrupt DB, a future migration fault) would be a hard crash
+    // at app launch. seedCatalogueSafely() below guards this the same way
+    // SyncWasteCatalogueUseCase.sync() guards a sync failure, so the comment above is actually true.
     private val containerScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
-        containerScope.launch { wasteCatalogueRepository.seedIfEmpty() }
+        containerScope.launch { seedCatalogueSafely(wasteCatalogueRepository) }
+    }
+}
+
+/**
+ * Runs [WasteCatalogueRepository.seedIfEmpty] and converts any failure into a log line instead of
+ * letting it propagate. Mirrors [com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase.sync]'s
+ * rule: [CancellationException] is rethrown (structured concurrency must still be able to cancel
+ * this), everything else is swallowed. A failed seed simply leaves the catalogue empty, which the
+ * wizard's own `CatalogueStep` already renders as an explicit "Refresh the catalogue in Settings"
+ * message rather than a silently inert dropdown.
+ */
+internal suspend fun seedCatalogueSafely(repository: WasteCatalogueRepository) {
+    try {
+        repository.seedIfEmpty()
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        Log.w(TAG, "Failed to seed the waste catalogue; the wizard will show its empty-catalogue state until a sync succeeds", e)
     }
 }

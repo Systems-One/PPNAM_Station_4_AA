@@ -260,12 +260,21 @@ private fun ScanStep(
  * that silently does nothing.
  *
  * [current] is what the draft already holds for this step — null on the normal forward pass,
- * non-null when the operator arrived from the review screen's Edit. Seeding the dropdown from it
- * is what makes a no-op edit actually a no-op: opening on `options[0]` instead would mean an
+ * non-null when the operator arrived from the review screen's Edit. Seeding `selectedValue` from
+ * it is what makes a no-op edit actually a no-op: opening on `options[0]` instead would mean an
  * operator who taps Edit, decides nothing was wrong and presses Confirm silently submits the
  * first option. On the category step the controller would read that as a genuine category change,
  * discard the chosen waste type and force a reselection — the same silent contradiction the
  * category-invalidation rule exists to prevent, just arriving from the other direction.
+ *
+ * The selection is held as the chosen *value* (`selectedValue`, type `T?`), not an index into
+ * [options], and [remember] is keyed only on [current] — not on [options]. A catalogue refresh
+ * that arrives mid-step (e.g. a reconnect-triggered sync) replaces [options] with a new list
+ * without re-keying this state, so the operator's own in-progress choice survives the refresh:
+ * `selected` below is re-derived every recomposition by looking the held value up in the current
+ * [options], and only falls back to `options[0]` when the refresh actually dropped that item from
+ * the catalogue. Keying on an index instead (the previous shape) silently re-pointed at whatever
+ * now occupied position 0 on every such refresh — the mislabelling this shape exists to avoid.
  */
 @Composable
 private fun <T> CatalogueStep(
@@ -283,23 +292,19 @@ private fun <T> CatalogueStep(
             Text(emptyMessage, style = MaterialTheme.typography.labelMedium, color = WarningOrange)
             return@Column
         }
-        // Re-seeded whenever the option list or the draft's value changes, so a catalogue refresh
-        // arriving mid-step lands back on the operator's own selection rather than on the first
-        // row. coerceAtLeast(0) covers both a null [current] and a value absent from the list.
-        var selectedIndex by remember(options, current) {
-            mutableStateOf(options.indexOfFirst { it == current }.coerceAtLeast(0))
-        }
+        var selectedValue by remember(current) { mutableStateOf(current) }
+        // Falls back to the first option both when nothing has been chosen yet (forward pass) and
+        // when a mid-step catalogue refresh removed the held value from the list.
+        val selected = options.firstOrNull { it == selectedValue } ?: options[0]
         DropdownSelector(
             label = label,
             options = options,
-            selected = options[selectedIndex],
+            selected = selected,
             display = display,
-            // coerceAtLeast(0) again: indexOf returns -1 if the list swapped between the menu
-            // rendering and the tap, and a -1 here would crash the options[selectedIndex] read.
-            onSelected = { selectedIndex = options.indexOf(it).coerceAtLeast(0) },
+            onSelected = { selectedValue = it },
         )
         Button(
-            onClick = { onConfirm(options[selectedIndex]) },
+            onClick = { onConfirm(selected) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Confirm")
