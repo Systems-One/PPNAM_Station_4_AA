@@ -63,6 +63,7 @@ fun AppNavGraph() {
                             authUseCase = container.authUseCase,
                             scanEventBus = container.scanEventBus,
                             catalogueRepository = container.wasteCatalogueRepository,
+                            syncCatalogue = container.syncWasteCatalogueUseCase,
                             deviceId = container.deviceId,
                         )
                     }

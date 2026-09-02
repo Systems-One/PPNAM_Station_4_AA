@@ -16,6 +16,7 @@ import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 import com.mitas.ppnam.station4aa.domain.model.WasteType
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
 import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
 import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
@@ -53,6 +55,7 @@ class WasteGatheringViewModel(
     private val authUseCase: AuthUseCase,
     private val scanEventBus: ScanEventBus,
     private val catalogueRepository: WasteCatalogueRepository,
+    private val syncCatalogue: SyncWasteCatalogueUseCase,
     /** The derived, immutable scanner identity (base standard §2) — stamped into every published
      * waste-collection event, never read from Settings. */
     private val deviceId: String,
@@ -149,6 +152,21 @@ class WasteGatheringViewModel(
                 // shown at publish time already told them the transaction is in motion, and the
                 // wizard has already moved on to the next one.
             }
+        }
+        // Refresh the catalogue whenever we have both a session and a live broker link — that
+        // covers first login and every reconnect. Failure is deliberately silent here: the cached
+        // or seeded catalogue stays usable and Settings → Diagnostics is where staleness shows.
+        viewModelScope.launch {
+            combine(
+                connectionManager.connectionState,
+                sessionHolder.session,
+            ) { state, activeSession -> state to activeSession }
+                .filter { (state, activeSession) ->
+                    state == MqttConnectionState.CONNECTED && activeSession != null
+                }
+                .collect { (_, activeSession) ->
+                    syncCatalogue.sync(activeSession!!.operatorSessionId)
+                }
         }
     }
 

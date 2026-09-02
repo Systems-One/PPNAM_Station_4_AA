@@ -15,6 +15,11 @@ import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * Station 4 has no Hilt (see the "minimal architecture" scope decision), so this is the one place
@@ -54,7 +59,21 @@ class AppContainer(context: Context) {
     private val requestChannel = MqttRequestChannel(connectionManager)
     private val scramExchange = ScramExchange(requestChannel)
     val authUseCase = AuthUseCase(requestChannel, operatorSessionHolder, scramExchange, deviceId)
+    val syncWasteCatalogueUseCase = SyncWasteCatalogueUseCase(
+        requestChannel = requestChannel,
+        repository = wasteCatalogueRepository,
+        deviceId = deviceId,
+    )
 
     val scanEventBus = ScanEventBus()
     val dataWedgeReceiver = DataWedgeReceiver(scanEventBus)
+
+    // Seeding touches disk, so it cannot run on the constructor's thread. Fire-and-forget: a
+    // handheld whose seed has not landed yet shows an empty selection step with its own explicit
+    // message, which is honest, rather than blocking startup on a database write.
+    private val containerScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    init {
+        containerScope.launch { wasteCatalogueRepository.seedIfEmpty() }
+    }
 }
