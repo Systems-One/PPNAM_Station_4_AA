@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.mitas.ppnam.station4aa.data.mqtt.MqttTopics
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +31,6 @@ class SettingsRepository(
     // on-device (base standard §2 — see data/identity/DeviceIdentity.kt). A leftover stored value
     // from an older install is simply never read again.
     private object Keys {
-        val WASTE_COLLECTION_TOPIC = stringPreferencesKey("waste_collection_topic")
         val MQTT_HOST              = stringPreferencesKey("mqtt_host")
         val MQTT_PORT              = intPreferencesKey("mqtt_port")
         val MQTT_USE_WEBSOCKET     = booleanPreferencesKey("mqtt_use_websocket")
@@ -43,11 +41,6 @@ class SettingsRepository(
     val settingsFlow: Flow<AppSettings> = context.dataStore.data.map { prefs ->
         val defaults = AppSettings()
         AppSettings(
-            // Migrated on read: a stored value equal to the retired pre-3.1.0 default follows the
-            // 2026-08-17 rename to PPNAM/station_4/...; a deliberately custom topic is untouched.
-            wasteCollectionTopic = MqttTopics.migrateWasteCollectionTopic(
-                prefs[Keys.WASTE_COLLECTION_TOPIC] ?: defaults.wasteCollectionTopic
-            ),
             mqttHost             = prefs[Keys.MQTT_HOST]              ?: defaults.mqttHost,
             mqttPort             = prefs[Keys.MQTT_PORT]              ?: defaults.mqttPort,
             mqttUseWebSocket     = prefs[Keys.MQTT_USE_WEBSOCKET]     ?: defaults.mqttUseWebSocket,
@@ -68,7 +61,6 @@ class SettingsRepository(
             credentialStore.store(settings.mqttPassword)
         }
         context.dataStore.edit { prefs ->
-            prefs[Keys.WASTE_COLLECTION_TOPIC] = settings.wasteCollectionTopic
             prefs[Keys.MQTT_HOST]              = settings.mqttHost
             prefs[Keys.MQTT_PORT]              = settings.mqttPort
             prefs[Keys.MQTT_USE_WEBSOCKET]     = settings.mqttUseWebSocket

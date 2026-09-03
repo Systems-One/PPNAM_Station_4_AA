@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.BuildConfig
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
+import com.mitas.ppnam.station4aa.data.mqtt.MqttTopics
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.theme.*
 
@@ -111,6 +112,24 @@ fun SettingsScreen(
                         Text(
                             viewModel.deviceId,
                             style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
+                            color = TextPrimary
+                        )
+                    }
+
+                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
+
+                    // Read-only by design: the collection topic is fixed for Station 4, not
+                    // configured. This row exists so support can read off what the handheld
+                    // actually publishes to when reconciling against the broker ACL.
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            "PUBLISHES TO",
+                            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
+                            color = TextMuted
+                        )
+                        Text(
+                            MqttTopics.WASTE_COLLECTION,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
                             color = TextPrimary
                         )
                     }
@@ -247,16 +266,10 @@ fun SettingsScreen(
                 }
 
                 PinState.Unlocked -> {
-                    // No Device ID field here any more: the id is derived on-device (base
-                    // standard §2) and shown read-only in the Diagnostics card above.
-                    ConfigSection(title = "Station") {
-                        SettingsTextField(
-                            value = draft.wasteCollectionTopic,
-                            label = "Collection Topic",
-                            onValueChange = { viewModel.updateDraft(draft.copy(wasteCollectionTopic = it)) }
-                        )
-                    }
-
+                    // Neither the Device ID nor the collection topic is a field here any more:
+                    // the id is derived on-device (base standard §2) and the topic is fixed for
+                    // Station 4. Both are read-only rows in the Diagnostics card above. What is
+                    // left is genuinely deployment-configured — the broker.
                     ConfigSection(title = "Connection") {
                         SettingsTextField(
                             value = draft.mqttHost,

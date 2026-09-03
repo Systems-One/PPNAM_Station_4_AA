@@ -5,14 +5,13 @@ import com.mitas.ppnam.station4aa.data.local.WasteOutboxDao
 import com.mitas.ppnam.station4aa.data.local.toEvent
 import com.mitas.ppnam.station4aa.data.local.toOutboxEntity
 import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
-import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 import java.nio.charset.StandardCharsets
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
 /**
- * Implements the handheld side of `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`:
+ * Implements the handheld side of `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`:
  * durably write before the first publish attempt, only clear the interactive transaction after
  * that durable write, and only treat an event as accepted once a correlated `waste_collection_result`
  * with `accepted: true` arrives — never on PUBACK alone, which confirms only broker receipt (see
@@ -22,7 +21,6 @@ class WasteCollectionPublisher(
     private val outboxDao: WasteOutboxDao,
     private val connectionManager: MqttConnectionManager,
     private val resultChannel: WasteCollectionResultChannel,
-    private val settingsRepository: SettingsRepository,
 ) {
     private val gson = Gson()
 
@@ -55,7 +53,7 @@ class WasteCollectionPublisher(
 
     private suspend fun attemptPublish(event: WasteCollectionEvent) {
         resultChannel.ensureSubscribed(event.deviceId)
-        val topic = settingsRepository.current().wasteCollectionTopic
+        val topic = MqttTopics.WASTE_COLLECTION
         val payload = gson.toJson(event.toWireMessage()).toByteArray(StandardCharsets.UTF_8)
         connectionManager.publish(topic, payload)
         outboxDao.recordAttempt(event.messageId, System.currentTimeMillis())

@@ -17,10 +17,16 @@ package com.mitas.ppnam.station4aa.data.mqtt
  *
  * [WASTE_COLLECTION] is from the normative station contract at
  * `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`: one
- * Settings-configured publish-only topic, no application-level PUBACK semantics — "the
- * scanner-visible PUBACK... does not confirm that Station 4 accepted the business event". It is
- * the one station-scoped topic the fleet standard allows beyond the shapes above, and it is
- * allowed precisely because it starts with the reserved segment `waste`.
+ * publish-only topic, no application-level PUBACK semantics — "the scanner-visible PUBACK... does
+ * not confirm that Station 4 accepted the business event". It is the one station-scoped topic the
+ * fleet standard allows beyond the shapes above, and it is allowed precisely because it starts
+ * with the reserved segment `waste`.
+ *
+ * The contract v3.2.0 calls that topic "Settings-configured" (lines 11/408/882) and constrains it
+ * to the `PPNAM/station_4/waste` subtree (line 152). This handheld deliberately deviates: it is
+ * Station 4's scanner and nothing else, so the topic is this constant rather than a Settings
+ * field an operator can mistype. That satisfies line 152 by construction, at the cost of needing
+ * a rebuild if a deployment ever moves the topic — see CLAUDE.md.
  *
  * [request]/[responseWildcard] carry the operator-login request/response exchange mirrored from
  * Station 2 AA, on `station_4` topics so Station 4 never answers Station 2 traffic on a shared
@@ -46,19 +52,8 @@ object MqttTopics {
      * "broker disconnected". */
     const val STATION_PRESENCE = STATION_BASE
 
-    /** Default collection topic. Deployments may configure an exact override in Settings. */
+    /** The collection topic. Fixed, not configurable — see this class' doc. */
     const val WASTE_COLLECTION = "$STATION_BASE/waste/collection"
-
-    /** The pre-v3.1.0 default collection topic, before the per-station namespace move. */
-    private const val LEGACY_WASTE_COLLECTION = "station4/waste/collection"
-
-    /**
-     * Maps a stored Settings value equal to the retired default onto the renamed default, so
-     * existing installs follow the topic restructure without re-provisioning. A deliberately
-     * custom topic is returned unchanged.
-     */
-    fun migrateWasteCollectionTopic(stored: String): String =
-        if (stored == LEGACY_WASTE_COLLECTION) WASTE_COLLECTION else stored
 
     fun request(deviceId: String, requestType: String): String {
         validateSegment(deviceId, "deviceId")

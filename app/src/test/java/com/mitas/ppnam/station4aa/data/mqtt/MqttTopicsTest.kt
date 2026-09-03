@@ -2,6 +2,7 @@ package com.mitas.ppnam.station4aa.data.mqtt
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MqttTopicsTest {
@@ -14,18 +15,13 @@ class MqttTopicsTest {
     }
 
     @Test
-    fun `legacy configured collection topic migrates to the renamed default`() {
-        assertEquals(
-            "PPNAM/station_4/waste/collection",
-            MqttTopics.migrateWasteCollectionTopic("station4/waste/collection")
-        )
-    }
-
-    @Test
-    fun `a deliberately custom collection topic is left alone by migration`() {
-        assertEquals(
-            "plant7/custom/waste",
-            MqttTopics.migrateWasteCollectionTopic("plant7/custom/waste")
+    fun `the collection topic sits inside the reserved waste subtree the contract requires`() {
+        // Contract v3.2.0 line 152: the collection topic MUST be `PPNAM/station_4/waste` or begin
+        // with `PPNAM/station_4/waste/`. Holding it as a constant satisfies that by construction —
+        // this test is what stops a future edit to the constant from silently breaking it.
+        assertTrue(
+            MqttTopics.WASTE_COLLECTION == "PPNAM/station_4/waste" ||
+                MqttTopics.WASTE_COLLECTION.startsWith("PPNAM/station_4/waste/")
         )
     }
 

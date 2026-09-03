@@ -15,12 +15,13 @@ package com.mitas.ppnam.station4aa.domain.model
  * Diagnostics for enrolment. The MQTT client identifier is likewise no longer configured here
  * (see MqttClientFactory — unique per connection, per base standard §2 rule 6).
  *
- * [wasteCollectionTopic] is the exact, deployment-configured MQTT topic this handheld publishes
- * waste-collection events to — the contract v3.1.0 default (`PPNAM/station_4/waste/collection`,
- * moved into the per-station namespace on 2026-08-17) is this field's default, but a Station 4
- * deployment MAY reconfigure it in its own Settings, and this handheld MUST be reconfigured to
- * match (`Station4_Wastage_MQTT_Contract.md` §3/§9). A stored value equal to the retired
- * pre-3.1.0 default is migrated on read — see SettingsRepository.
+ * The collection topic is deliberately NOT a setting either: this app is Station 4's handheld
+ * and nothing else, so the topic is fixed at `MqttTopics.WASTE_COLLECTION` and shown read-only in
+ * Settings → Diagnostics. Note this is a deliberate
+ * deviation from `Station4_Wastage_MQTT_Contract.md` v3.2.0, which calls the topic
+ * "Settings-configured" (lines 11/408/882); see CLAUDE.md. Retiring the field also removes the
+ * only way a typo in Settings could point a scanner outside `PPNAM/station_4/waste`, which
+ * contract line 152 forbids.
  *
  * Broker credentials have no defaults deliberately: a default here is an APK constant shipped to
  * every device. [com.mitas.ppnam.station4aa.data.security.SecureCredentialStore] holds the password
@@ -28,7 +29,6 @@ package com.mitas.ppnam.station4aa.domain.model
  * read out of that store and being handed to the MQTT client.
  */
 data class AppSettings(
-    val wasteCollectionTopic: String = "PPNAM/station_4/waste/collection",
     val mqttHost: String = "ppnam-mqtt",
     val mqttPort: Int = 1883,
     val mqttUseWebSocket: Boolean = false,

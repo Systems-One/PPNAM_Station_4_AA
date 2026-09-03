@@ -53,7 +53,6 @@ class AppContainer(context: Context) {
         outboxDao = outboxDatabase.wasteOutboxDao(),
         connectionManager = connectionManager,
         resultChannel = wasteCollectionResultChannel,
-        settingsRepository = settingsRepository,
     )
     val wasteCatalogueRepository = WasteCatalogueRepository(outboxDatabase.wasteCatalogueDao())
 
