@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.BuildConfig
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
-import com.mitas.ppnam.station4aa.data.mqtt.MqttTopics
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.theme.*
 
@@ -85,9 +84,10 @@ fun SettingsScreen(
                 border = BorderStroke(1.dp, GraphiteBorder)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    // The contract gives the handheld no presence topic and no application-level
-                    // ACK to consume — it's a pure publisher — so broker transport state is the
-                    // whole picture here, not one line among several.
+                    // Transport state only. Whether Station 4 itself is up is the scaffold's
+                    // connection pill ("Station offline" vs "Offline"), which reads the retained
+                    // station presence; this row answers the narrower question support asks first,
+                    // which is whether the handheld is talking to the broker at all.
                     val (brokerColor, brokerLabel) = when (connectionState) {
                         MqttConnectionState.CONNECTED    -> SuccessGreen to "Connected"
                         MqttConnectionState.RECONNECTING -> AmberPrimary to "Reconnecting"
@@ -112,25 +112,6 @@ fun SettingsScreen(
                         Text(
                             viewModel.deviceId,
                             style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                            color = TextPrimary
-                        )
-                    }
-
-                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
-
-                    // Read-only by design: contract §17.45 requires Settings to expose no topic to
-                    // configure. This row exists so support can read off what the handheld actually
-                    // publishes to when reconciling against the broker ACL — which since contract
-                    // 5.0.0 is inside this scanner's own subtree, so it varies by device.
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            "PUBLISHES TO",
-                            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
-                            color = TextMuted
-                        )
-                        Text(
-                            MqttTopics.wasteCollectionRequest(viewModel.deviceId),
-                            style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
                             color = TextPrimary
                         )
                     }

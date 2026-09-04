@@ -25,7 +25,11 @@ class MqttClientFactory {
             .addDisconnectedListener { onDisconnected() }
 
         if (settings.mqttUseWebSocket) {
-            builder.webSocketConfig().serverPath("/mqtt").applyWebSocketConfig()
+            // No base path: the deployment's broker serves MQTT-over-WebSocket at the root
+            // (`wss://mqtt.sysone.co.za:443/`), not under a `/mqtt` suffix. A wrong path here does
+            // not fail loudly — the socket is simply refused and the client retries forever, which
+            // reads on the handheld as an unexplained "Offline".
+            builder.webSocketConfig().serverPath("").applyWebSocketConfig()
         }
         if (settings.mqttUseTls) {
             builder.sslWithDefaultConfig()

@@ -1,0 +1,35 @@
+<!--
+  Waste Collection tile icon: a single-use bag carrying the customer-created barcode label that
+  becomes `bagCode`. Flat white on the tile's own colour, matching Station 1's dashboard art.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="80dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48"
+    android:tint="#FFFFFF">
+
+    <!-- Bag handle -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M18,14 L18,10 A6,6 0 0,1 30,10 L30,14" />
+
+    <!-- Bag body -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:pathData="M11,14 L37,14 L34.5,40 L13.5,40 Z" />
+
+    <!-- Barcode label -->
+    <path android:fillColor="#FFFFFF" android:pathData="M17,22 L18.5,22 L18.5,32 L17,32 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M20,22 L20.8,22 L20.8,32 L20,32 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M22.3,22 L23.8,22 L23.8,32 L22.3,32 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M25.3,22 L26.1,22 L26.1,32 L25.3,32 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M27.6,22 L29.1,22 L29.1,32 L27.6,32 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M30.6,22 L31.4,22 L31.4,32 L30.6,32 Z" />
+</vector>

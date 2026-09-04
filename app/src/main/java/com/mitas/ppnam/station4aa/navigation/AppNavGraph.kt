@@ -10,6 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mitas.ppnam.station4aa.PpnamApplication
+import com.mitas.ppnam.station4aa.ui.home.HomeScreen
+import com.mitas.ppnam.station4aa.ui.home.HomeViewModel
 import com.mitas.ppnam.station4aa.ui.login.LoginScreen
 import com.mitas.ppnam.station4aa.ui.login.LoginViewModel
 import com.mitas.ppnam.station4aa.ui.session.SessionWatcher
@@ -44,12 +46,31 @@ fun AppNavGraph() {
             )
             LoginScreen(
                 onLoggedIn = {
-                    navController.navigate(NavRoutes.WASTE_GATHERING) {
+                    navController.navigate(NavRoutes.HOME) {
                         popUpTo(NavRoutes.LOGIN) { inclusive = true }
                     }
                 },
                 onNavigateSettings = { navController.navigate(NavRoutes.SETTINGS) },
                 onExitApp = { (context as? Activity)?.finish() },
+                viewModel = viewModel,
+            )
+        }
+        composable(NavRoutes.HOME) {
+            val viewModel: HomeViewModel = viewModel(
+                factory = viewModelFactory {
+                    initializer {
+                        HomeViewModel(
+                            connectionManager = container.connectionManager,
+                            sessionHolder = container.operatorSessionHolder,
+                            authUseCase = container.authUseCase,
+                        )
+                    }
+                }
+            )
+            HomeScreen(
+                onWasteCollection = { navController.navigate(NavRoutes.WASTE_GATHERING) },
+                onWeighBag = { navController.navigate(NavRoutes.WEIGH_BAG) },
+                onSettings = { navController.navigate(NavRoutes.SETTINGS) },
                 viewModel = viewModel,
             )
         }
@@ -72,8 +93,8 @@ fun AppNavGraph() {
                 }
             )
             WasteGatheringScreen(
+                onBack = { navController.popBackStack() },
                 onSettings = { navController.navigate(NavRoutes.SETTINGS) },
-                onWeighBag = { navController.navigate(NavRoutes.WEIGH_BAG) },
                 viewModel = viewModel,
             )
         }
