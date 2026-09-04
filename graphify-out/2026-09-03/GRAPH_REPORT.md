@@ -1,16 +1,16 @@
-# Graph Report - PPNAM_Station_4_AA  (2026-09-04)
+# Graph Report - PPNAM_Station_4_AA  (2026-09-02)
 
 ## Corpus Check
-- 100 files · ~68,807 words
+- 92 files · ~63,208 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 859 nodes · 1445 edges · 57 communities (43 shown, 14 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 89 edges (avg confidence: 0.8)
+- 782 nodes · 1297 edges · 51 communities (39 shown, 12 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 83 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `664f254d`
+- Built from commit: `56e81393`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -41,7 +41,7 @@
 - .build
 - ScanEvent
 - .onCreate
-- .request
+- PpnamApplication
 - MqttSchema
 - DataWedgeReceiver
 - Repo Rules
@@ -58,13 +58,7 @@
 - WasteCatalogueRepository
 - Final wastage bag process, Phase 1 — design
 - Global Constraints
-- WasteGatheringViewModel
-- WasteType
 - .sync
-- CaptureRefusalTest
-- CaptureRefusals
-- .advanceTo
-- ScanDispatchResult
 - WasteCatalogueSeedTest
 - PPNAM Station 4 — Final Wastage Bag Process
 
@@ -83,39 +77,39 @@
 ## Surprising Connections (you probably didn't know these)
 - `toEvent()` --references--> `WasteCollectionEvent`  [EXTRACTED]
   app/src/main/java/com/mitas/ppnam/station4aa/data/local/WasteOutboxEntity.kt → app/src/main/java/com/mitas/ppnam/station4aa/domain/model/WasteCollectionEvent.kt
-- `AppNavGraph()` --calls--> `SettingsScreen()`  [INFERRED]
-  app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt
+- `AppNavGraph()` --calls--> `LoginViewModel`  [INFERRED]
+  app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginViewModel.kt
 - `AppNavGraph()` --calls--> `SettingsViewModel`  [INFERRED]
   app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt
-- `AppNavGraph()` --calls--> `WasteGatheringScreen()`  [INFERRED]
-  app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt
 - `AppNavGraph()` --calls--> `WasteGatheringViewModel`  [INFERRED]
   app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt → app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt
+- `WasteCatalogueRepository` --references--> `CatalogueMeta`  [EXTRACTED]
+  app/src/main/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueRepository.kt → app/src/main/java/com/mitas/ppnam/station4aa/domain/model/CatalogueMeta.kt
 
 ## Import Cycles
 - None detected.
 
-## Communities (57 total, 14 thin omitted)
+## Communities (51 total, 12 thin omitted)
 
 ### Community 0 - "LoginViewModel"
-Cohesion: 0.11
-Nodes (20): AppScaffold(), Boolean, String, Unit, ConnectionStatus, connectionStatusFlow(), Boolean, Flow (+12 more)
+Cohesion: 0.07
+Nodes (33): MainActivity, AppNavGraph(), AppScaffold(), Boolean, String, Unit, LoginScreen(), SessionWatcher() (+25 more)
 
 ### Community 1 - "FakeWasteOutboxDao"
-Cohesion: 0.07
-Nodes (29): Flow, Int, List, Long, String, WasteOutboxDao, Long, Status (+21 more)
+Cohesion: 0.09
+Nodes (23): Long, Status, toEvent(), toOutboxEntity(), WasteOutboxEntity, WasteCollectionResultMessage, Accepted, evaluateOutcome() (+15 more)
 
 ### Community 2 - "MqttConnectionManager"
 Cohesion: 0.09
 Nodes (18): Mqtt5AsyncClient, MqttClientFactory, Boolean, ByteArray, Mqtt5AsyncClient, Result, StateFlow, String (+10 more)
 
 ### Community 3 - "WasteGatheringViewModel"
-Cohesion: 0.12
-Nodes (22): ConfigSection(), DiagnosticRow(), Boolean, String, SectionLabel(), SettingsScreen(), SettingsTextField(), SettingsToggleRow() (+14 more)
+Cohesion: 0.20
+Nodes (11): ApplyState, Failure, Idle, StateFlow, String, Locked, PinState, SettingsViewModel (+3 more)
 
 ### Community 4 - "WasteWizardController"
-Cohesion: 0.12
-Nodes (3): WasteTransactionDraft, WasteWizardController, WasteWizardControllerTest
+Cohesion: 0.09
+Nodes (7): Applied, Ignored, ScanDispatchResult, WasteTransactionDraft, String, WasteWizardController, WasteWizardControllerTest
 
 ### Community 5 - "ScramCrypto"
 Cohesion: 0.10
@@ -134,8 +128,8 @@ Cohesion: 0.17
 Nodes (10): WasteCollectionMessage, Flow, Int, SharedFlow, WasteCollectionPublisher, create(), generateCollectionId(), Instant (+2 more)
 
 ### Community 9 - "WasteOutboxDao"
-Cohesion: 0.33
-Nodes (4): create(), Context, WasteOutboxDatabase, RoomDatabase
+Cohesion: 0.12
+Nodes (10): Flow, Int, List, Long, String, WasteOutboxDao, create(), Context (+2 more)
 
 ### Community 11 - "SecureCredentialStore"
 Cohesion: 0.24
@@ -166,8 +160,8 @@ Cohesion: 0.18
 Nodes (10): Global Constraints, Scan-Driven Waste Collection Wizard Implementation Plan, Task 1: Extend WasteCollectionValidator with machine-code and bag-code rules, Task 2: Pure wizard step-transition controller, Task 3: Correct WasteCollectionEvent/WasteCollectionMessage for the schema v3 contract update, Task 4: Carry bagCode/deviceId/operatorSessionId through the local outbox, Task 5: Rewrite WasteGatheringViewModel around the wizard controller, Task 6: Rewrite WasteGatheringScreen as a step wizard, remove MachineCatalog (+2 more)
 
 ### Community 18 - ".validateRequiredIdentity"
-Cohesion: 0.09
-Nodes (16): AppContainer, String, seedCatalogueSafely(), Flow, List, String, WasteCatalogueRepository, PpnamApplication (+8 more)
+Cohesion: 0.11
+Nodes (12): seedCatalogueSafely(), Flow, List, String, WasteCatalogueRepository, AppContainerTest, FakeWasteCatalogueDao, Flow (+4 more)
 
 ### Community 20 - "MqttTopics"
 Cohesion: 0.38
@@ -185,9 +179,9 @@ Nodes (3): DeviceIdentity, Context, String
 Cohesion: 0.29
 Nodes (5): EmptyPayload, Any, Gson, String, RequestEnvelope
 
-### Community 26 - ".request"
-Cohesion: 0.10
-Nodes (18): WasteCapturePayload, WasteCaptureResultMessage, Failed, InvalidBagCode, String, Refused, RequestWasteCaptureUseCase, WasteCaptureOutcome (+10 more)
+### Community 26 - "PpnamApplication"
+Cohesion: 0.33
+Nodes (4): AppContainer, String, PpnamApplication, Application
 
 ### Community 27 - "MqttSchema"
 Cohesion: 0.33
@@ -198,8 +192,8 @@ Cohesion: 0.33
 Nodes (4): DataWedgeReceiver, Context, BroadcastReceiver, Intent
 
 ### Community 29 - "Repo Rules"
-Cohesion: 0.29
-Nodes (6): External directory: C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4, graphify, Handheld-triggered weight capture (contract 5.1.0 §9.2), No topic is configurable, at either end, Operator login is mirrored from Station 2 AA — and Station 4's backend has now caught up, Repo Rules
+Cohesion: 0.40
+Nodes (4): External directory: C:\Dev\PPNAM-Station-4, graphify, Operator login is mirrored from Station 2 AA, not Station 4's own contract, Repo Rules
 
 ### Community 30 - "WasteCollectionResultMessageTest"
 Cohesion: 0.48
@@ -210,8 +204,8 @@ Cohesion: 0.83
 Nodes (3): gradlew script, die(), warn()
 
 ### Community 44 - "LoginViewModel"
-Cohesion: 0.06
-Nodes (32): MainActivity, AppNavGraph(), LoginScreen(), Error, Idle, Flow, StateFlow, String (+24 more)
+Cohesion: 0.11
+Nodes (17): ConnectionStatus, connectionStatusFlow(), Boolean, Flow, resolveConnectionStatus(), Error, Idle, Flow (+9 more)
 
 ### Community 45 - "WasteCatalogueRepository"
 Cohesion: 0.15
@@ -225,49 +219,33 @@ Nodes (21): A latent bug this work fixes, Catalogue fetch, Catalogue subsystem, 
 Cohesion: 0.15
 Nodes (12): Global Constraints, Phase 1 Wastage Bag Flow Implementation Plan, Task 1: Catalogue domain models and seed data, Task 2: Room storage for the catalogue, Task 3: Waste catalogue repository, Task 4: Catalogue sync over MQTT, Task 5: Validator support for the new fields, Task 6: Phase 1 wizard and schema v4, end to end (+4 more)
 
-### Community 48 - "WasteGatheringViewModel"
-Cohesion: 0.17
-Nodes (7): WizardStep, Boolean, Int, List, StateFlow, String, WasteGatheringViewModel
-
-### Community 49 - "WasteType"
-Cohesion: 0.15
-Nodes (5): List, WasteCatalogueSeed, toDomain(), WasteCategory, WasteType
-
 ### Community 50 - ".sync"
-Cohesion: 0.54
-Nodes (5): CatalogueSyncResult, Failed, String, Replaced, SyncWasteCatalogueUseCase
-
-### Community 52 - "CaptureRefusals"
-Cohesion: 0.43
-Nodes (5): CaptureRefusal, CaptureRefusals, Entry, String, Map
-
-### Community 54 - "ScanDispatchResult"
-Cohesion: 0.83
-Nodes (3): Applied, Ignored, ScanDispatchResult
+Cohesion: 0.08
+Nodes (17): List, WasteCatalogueSeed, toDomain(), WasteCategory, WasteType, CatalogueSyncResult, Failed, String (+9 more)
 
 ### Community 56 - "PPNAM Station 4 — Final Wastage Bag Process"
 Cohesion: 0.33
 Nodes (5): Control points, Flow diagram, Phase 1 — Label and register the disposable wastage bag, Phase 2 — Scan and weigh the same bag at Station 4, PPNAM Station 4 — Final Wastage Bag Process
 
 ## Knowledge Gaps
-- **74 isolated node(s):** `Status`, `FailureKind`, `EmptyPayload`, `ScramPurpose`, `ScramChallengeResponse` (+69 more)
+- **72 isolated node(s):** `Status`, `FailureKind`, `EmptyPayload`, `ScramPurpose`, `ScramChallengeResponse` (+67 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WasteGatheringViewModel` connect `WasteGatheringViewModel` to `LoginViewModel`, `WasteWizardController`, `LoginViewModel`, `AuthMessages.kt`, `WasteType`?**
-  _High betweenness centrality (0.190) - this node is a cross-community bridge._
-- **Why does `WasteCatalogueRepository` connect `.validateRequiredIdentity` to `WasteType`, `ScramCrypto`, `WasteCatalogueRepository`?**
-  _High betweenness centrality (0.141) - this node is a cross-community bridge._
-- **Why does `WasteCategory` connect `WasteType` to `WasteGatheringViewModel`, `.validateRequiredIdentity`, `.sync`?**
-  _High betweenness centrality (0.141) - this node is a cross-community bridge._
+- **Why does `WasteGatheringViewModel` connect `.sync` to `LoginViewModel`, `AuthMessages.kt`, `WasteWizardController`, `LoginViewModel`?**
+  _High betweenness centrality (0.184) - this node is a cross-community bridge._
+- **Why does `WasteCategory` connect `.sync` to `.validateRequiredIdentity`?**
+  _High betweenness centrality (0.124) - this node is a cross-community bridge._
+- **Why does `WasteCatalogueRepository` connect `.validateRequiredIdentity` to `.sync`, `ScramCrypto`, `WasteCatalogueRepository`?**
+  _High betweenness centrality (0.114) - this node is a cross-community bridge._
 - **Are the 19 inferred relationships involving `WasteCatalogueRepository` (e.g. with `.`a seed failure is swallowed rather than propagating`()` and `.`a successful seed still populates the catalogue`()`) actually correct?**
   _`WasteCatalogueRepository` has 19 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 6 inferred relationships involving `MqttConnectionManager` (e.g. with `.`a result for an already-ACCEPTED row is a no-op, status stays ACCEPTED, no emit`()` and `.`a well-formed accepted result marks the stored PENDING row ACCEPTED and emits`()`) actually correct?**
   _`MqttConnectionManager` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Status`, `FailureKind`, `EmptyPayload` to the rest of the system?**
-  _74 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _72 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `LoginViewModel` be split into smaller, more focused modules?**
-  _Cohesion score 0.11375661375661375 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07200929152148665 - nodes in this community are weakly interconnected._
