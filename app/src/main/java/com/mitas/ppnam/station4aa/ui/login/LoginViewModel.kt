@@ -46,6 +46,7 @@ class LoginViewModel(
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
         connectionManager.connectionState,
+        connectionManager.stationOnline,
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
 
     private var badgeScanJob: Job? = null

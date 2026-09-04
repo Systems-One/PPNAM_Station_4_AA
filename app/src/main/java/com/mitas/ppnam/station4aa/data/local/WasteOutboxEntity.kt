@@ -6,7 +6,7 @@ import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 
 /**
  * The durable local outbox the contract requires before the first publish attempt: "Durably write
- * the complete immutable schema v3 event to a local handheld outbox before the first publish
+ * the complete immutable schema v4 event to a local handheld outbox before the first publish
  * attempt" / a row only leaves [Status.PENDING] once a correlated `waste_collection_result`
  * message resolves it to [Status.ACCEPTED] or [Status.REJECTED], while retaining enough
  * information for operational reconciliation (`Station4_Wastage_MQTT_Contract.md`, "Required
@@ -23,9 +23,8 @@ data class WasteOutboxEntity(
     val operatorSessionId: String,
     val collectionId: String,
     val bagCode: String,
-    val machineCode: String,
-    val machineName: String,
-    val machineOperatorUserId: String,
+    val jobNumber: String,
+    val operatorId: String,
     val wasteTypeCode: String,
     val collectedBy: String,
     val collectedAtUtc: String,
@@ -56,9 +55,8 @@ fun WasteOutboxEntity.toEvent(): WasteCollectionEvent = WasteCollectionEvent(
     operatorSessionId = operatorSessionId,
     collectionId = collectionId,
     bagCode = bagCode,
-    machineCode = machineCode,
-    machineName = machineName,
-    machineOperatorUserId = machineOperatorUserId,
+    jobNumber = jobNumber,
+    operatorId = operatorId,
     wasteTypeCode = wasteTypeCode,
     collectedBy = collectedBy,
     collectedAtUtc = collectedAtUtc,
@@ -70,9 +68,8 @@ fun WasteCollectionEvent.toOutboxEntity(nowEpochMs: Long): WasteOutboxEntity = W
     operatorSessionId = operatorSessionId,
     collectionId = collectionId,
     bagCode = bagCode,
-    machineCode = machineCode,
-    machineName = machineName,
-    machineOperatorUserId = machineOperatorUserId,
+    jobNumber = jobNumber,
+    operatorId = operatorId,
     wasteTypeCode = wasteTypeCode,
     collectedBy = collectedBy,
     collectedAtUtc = collectedAtUtc,

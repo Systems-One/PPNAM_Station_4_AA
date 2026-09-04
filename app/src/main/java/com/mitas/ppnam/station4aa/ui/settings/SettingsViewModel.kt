@@ -7,14 +7,18 @@ import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.CatalogueSyncResult
+import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
 import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -37,6 +41,12 @@ class SettingsViewModel(
     private val connectionManager: MqttConnectionManager,
     private val sessionHolder: OperatorSessionHolder,
     private val authUseCase: AuthUseCase,
+    private val catalogueRepository: WasteCatalogueRepository,
+    private val syncCatalogue: SyncWasteCatalogueUseCase,
+    /** The derived, immutable scanner identity (base standard §2) — surfaced read-only in the
+     * Diagnostics card so it can be read off the device for enrolment. Not editable: it is not
+     * part of [AppSettings] or the draft at all. */
+    val deviceId: String,
 ) : ViewModel() {
 
     /** Settings is reachable from the Login screen too (broker config has to be editable before
@@ -74,6 +84,13 @@ class SettingsViewModel(
         private set
     var applyState = mutableStateOf<ApplyState>(ApplyState.Idle)
         private set
+
+    /** Result of the Diagnostics card's own "Refresh catalogue" action, kept separate from
+     * [applyState] (the broker Test & Apply flow further down): the two are independent
+     * operations, and sharing one [ApplyState] meant whichever finished last silently clobbered
+     * the other's outcome. */
+    var catalogueRefreshState = mutableStateOf<ApplyState>(ApplyState.Idle)
+        private set
     var draftSettings = mutableStateOf(AppSettings())
         private set
 
@@ -81,7 +98,31 @@ class SettingsViewModel(
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
         connectionManager.connectionState,
+        connectionManager.stationOnline,
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
+
+    val catalogueStatus: StateFlow<String> = catalogueRepository.meta
+        .map(::describeCatalogue)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), "Catalogue: not loaded")
+
+    /** Manual "Refresh catalogue". Requires an active session, because the request carries the
+     * operatorSessionId Station 4 authorizes against. */
+    fun refreshCatalogue() {
+        val activeSession = session.value
+        if (activeSession == null) {
+            catalogueRefreshState.value = ApplyState.Failure("Log in before refreshing the catalogue")
+            return
+        }
+        viewModelScope.launch {
+            catalogueRefreshState.value = ApplyState.Testing
+            catalogueRefreshState.value = when (val result = syncCatalogue.sync(activeSession.operatorSessionId)) {
+                is CatalogueSyncResult.Replaced ->
+                    ApplyState.Success("Catalogue updated — ${result.typeCount} waste types")
+                is CatalogueSyncResult.Failed ->
+                    ApplyState.Failure("Catalogue refresh failed: ${result.reason}")
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {

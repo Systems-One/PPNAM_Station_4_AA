@@ -42,6 +42,7 @@ fun SettingsScreen(
     val pinErrorMessage = viewModel.pinErrorMessage.value
     val pinLockoutMessage = viewModel.pinLockoutMessage.value
     val applyState = viewModel.applyState.value
+    val catalogueRefreshState = viewModel.catalogueRefreshState.value
     val draft = viewModel.draftSettings.value
     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -83,15 +84,37 @@ fun SettingsScreen(
                 border = BorderStroke(1.dp, GraphiteBorder)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    // The contract gives the handheld no presence topic and no application-level
-                    // ACK to consume — it's a pure publisher — so broker transport state is the
-                    // whole picture here, not one line among several.
+                    // Transport state only. Whether Station 4 itself is up is the scaffold's
+                    // connection pill ("Station offline" vs "Offline"), which reads the retained
+                    // station presence; this row answers the narrower question support asks first,
+                    // which is whether the handheld is talking to the broker at all.
                     val (brokerColor, brokerLabel) = when (connectionState) {
                         MqttConnectionState.CONNECTED    -> SuccessGreen to "Connected"
                         MqttConnectionState.RECONNECTING -> AmberPrimary to "Reconnecting"
                         MqttConnectionState.DISCONNECTED -> DangerRed to "Disconnected"
                     }
                     DiagnosticRow("MQTT BROKER", brokerColor, brokerLabel)
+
+                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
+
+                    // Read-only by design (base standard §2): the device id is derived on-device
+                    // and immutable — this row exists so it can be read off for enrolment.
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "DEVICE ID",
+                            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
+                            color = TextMuted
+                        )
+                        Text(
+                            viewModel.deviceId,
+                            style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
+                            color = TextPrimary
+                        )
+                    }
 
                     HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
 
@@ -110,6 +133,57 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
                             color = TextPrimary
                         )
+                    }
+
+                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
+
+                    val catalogueStatus by viewModel.catalogueStatus.collectAsState()
+                    Text(
+                        catalogueStatus,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = TextMuted,
+                    )
+                    TextButton(onClick = { viewModel.refreshCatalogue() }) {
+                        Text("Refresh catalogue", color = AmberPrimary)
+                    }
+
+                    // Kept separate from the Configuration card's applyState block below: that one
+                    // reports the broker Test & Apply outcome, this one reports the catalogue
+                    // refresh — two independent operations that must not clobber each other's
+                    // result, and the feedback belongs where the action was taken.
+                    when (val state = catalogueRefreshState) {
+                        ApplyState.Testing -> {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(18.dp),
+                                    color = AmberPrimary,
+                                    strokeWidth = 2.dp
+                                )
+                                Text("Refreshing catalogue…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+                            }
+                        }
+                        is ApplyState.Success -> {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
+                                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
+                            }
+                        }
+                        is ApplyState.Failure -> {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
+                                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
+                            }
+                        }
+                        ApplyState.Idle -> {}
                     }
                 }
             }
@@ -174,19 +248,10 @@ fun SettingsScreen(
                 }
 
                 PinState.Unlocked -> {
-                    ConfigSection(title = "Station") {
-                        SettingsTextField(
-                            value = draft.deviceId,
-                            label = "Device ID",
-                            onValueChange = { viewModel.updateDraft(draft.copy(deviceId = it)) }
-                        )
-                        SettingsTextField(
-                            value = draft.wasteCollectionTopic,
-                            label = "Collection Topic",
-                            onValueChange = { viewModel.updateDraft(draft.copy(wasteCollectionTopic = it)) }
-                        )
-                    }
-
+                    // Neither the Device ID nor the collection topic is a field here any more:
+                    // the id is derived on-device (base standard §2) and the topic is fixed for
+                    // Station 4. Both are read-only rows in the Diagnostics card above. What is
+                    // left is genuinely deployment-configured — the broker.
                     ConfigSection(title = "Connection") {
                         SettingsTextField(
                             value = draft.mqttHost,

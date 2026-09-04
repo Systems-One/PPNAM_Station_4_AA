@@ -30,9 +30,8 @@ class WasteCollectionResultChannelTest {
         operatorSessionId = operatorSessionId,
         collectionId = collectionId,
         bagCode = bagCode,
-        machineCode = "EXT-04",
-        machineName = "EXT-04",
-        machineOperatorUserId = "MO-00427",
+        jobNumber = "JOB-2026-0041",
+        operatorId = "MO-00427",
         wasteTypeCode = "WT-01",
         collectedBy = "Collector One",
         collectedAtUtc = "2026-07-30T10:15:30.000Z",
@@ -187,9 +186,8 @@ class WasteCollectionResultChannelHandleIncomingTest {
         operatorSessionId = operatorSessionId,
         collectionId = collectionId,
         bagCode = bagCode,
-        machineCode = "EXT-04",
-        machineName = "EXT-04",
-        machineOperatorUserId = "MO-00427",
+        jobNumber = "JOB-2026-0041",
+        operatorId = "MO-00427",
         wasteTypeCode = "WT-01",
         collectedBy = "Collector One",
         collectedAtUtc = "2026-07-30T10:15:30.000Z",
@@ -235,7 +233,7 @@ class WasteCollectionResultChannelHandleIncomingTest {
     fun `a well-formed accepted result marks the stored PENDING row ACCEPTED and emits`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow()
-        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager())
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
         val emitted = mutableListOf<WasteCollectionResultMessage>()
         val job = launch { channel.results.toList(emitted) }
 
@@ -250,7 +248,7 @@ class WasteCollectionResultChannelHandleIncomingTest {
     fun `a well-formed rejected result marks the stored PENDING row REJECTED with error details and emits`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow()
-        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager())
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
         val emitted = mutableListOf<WasteCollectionResultMessage>()
         val job = launch { channel.results.toList(emitted) }
 
@@ -276,7 +274,7 @@ class WasteCollectionResultChannelHandleIncomingTest {
     fun `an unknown inResponseToMessageId is dropped without crashing and leaves the dao unchanged`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow()
-        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager())
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
         val emitted = mutableListOf<WasteCollectionResultMessage>()
         val job = launch { channel.results.toList(emitted) }
 
@@ -291,7 +289,7 @@ class WasteCollectionResultChannelHandleIncomingTest {
     fun `an identity-mismatched result leaves the stored row PENDING and unchanged, no emit`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow(bagCode = "BAG-01")
-        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager())
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
         val emitted = mutableListOf<WasteCollectionResultMessage>()
         val job = launch { channel.results.toList(emitted) }
 
@@ -310,7 +308,7 @@ class WasteCollectionResultChannelHandleIncomingTest {
     fun `an empty malformed JSON payload is dropped without crashing`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow()
-        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager())
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
         val emitted = mutableListOf<WasteCollectionResultMessage>()
         val job = launch { channel.results.toList(emitted) }
 
@@ -325,7 +323,7 @@ class WasteCollectionResultChannelHandleIncomingTest {
     fun `a result for an already-ACCEPTED row is a no-op, status stays ACCEPTED, no emit`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow(status = WasteOutboxEntity.Status.ACCEPTED)
-        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager())
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
         val emitted = mutableListOf<WasteCollectionResultMessage>()
         val job = launch { channel.results.toList(emitted) }
 

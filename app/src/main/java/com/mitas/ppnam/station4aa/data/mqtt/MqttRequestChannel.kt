@@ -20,10 +20,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class MqttRequestChannel(
     private val connectionManager: MqttConnectionManager,
-) {
-    companion object {
-        private const val DEFAULT_TIMEOUT_MS = 15_000L
-    }
+) : RequestChannel {
 
     private val gson = WireJson.gson
     private val pending = ConcurrentHashMap<String, CompletableDeferred<String>>()
@@ -46,13 +43,13 @@ class MqttRequestChannel(
         pending.remove(id)?.complete(raw)
     }
 
-    suspend fun <T : Any> request(
+    override suspend fun <T : Any> request(
         deviceId: String,
         requestType: String,
         responseClass: Class<T>,
         payload: Any,
-        operatorSessionId: String = "",
-        timeoutMs: Long = DEFAULT_TIMEOUT_MS,
+        operatorSessionId: String,
+        timeoutMs: Long,
     ): MqttOutcome<T> {
         ensureSubscribed(deviceId)
 

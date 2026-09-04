@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.mitas.ppnam.station4aa.data.mqtt.MqttTopics
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
 import kotlinx.coroutines.flow.Flow
@@ -28,9 +27,10 @@ class SettingsRepository(
     private val context: Context,
     private val credentialStore: SecureCredentialStore,
 ) {
+    // The retired editable "device_id" key is deliberately absent: the device id is now derived
+    // on-device (base standard §2 — see data/identity/DeviceIdentity.kt). A leftover stored value
+    // from an older install is simply never read again.
     private object Keys {
-        val DEVICE_ID              = stringPreferencesKey("device_id")
-        val WASTE_COLLECTION_TOPIC = stringPreferencesKey("waste_collection_topic")
         val MQTT_HOST              = stringPreferencesKey("mqtt_host")
         val MQTT_PORT              = intPreferencesKey("mqtt_port")
         val MQTT_USE_WEBSOCKET     = booleanPreferencesKey("mqtt_use_websocket")
@@ -41,20 +41,18 @@ class SettingsRepository(
     val settingsFlow: Flow<AppSettings> = context.dataStore.data.map { prefs ->
         val defaults = AppSettings()
         AppSettings(
-            deviceId             = prefs[Keys.DEVICE_ID]              ?: defaults.deviceId,
-            // Migrated on read: a stored value equal to the retired pre-3.1.0 default follows the
-            // 2026-08-17 rename to PPNAM/station_4/...; a deliberately custom topic is untouched.
-            wasteCollectionTopic = MqttTopics.migrateWasteCollectionTopic(
-                prefs[Keys.WASTE_COLLECTION_TOPIC] ?: defaults.wasteCollectionTopic
-            ),
             mqttHost             = prefs[Keys.MQTT_HOST]              ?: defaults.mqttHost,
             mqttPort             = prefs[Keys.MQTT_PORT]              ?: defaults.mqttPort,
             mqttUseWebSocket     = prefs[Keys.MQTT_USE_WEBSOCKET]     ?: defaults.mqttUseWebSocket,
             mqttUseTls           = prefs[Keys.MQTT_USE_TLS]           ?: defaults.mqttUseTls,
-            // No `?: "admin"`. An unprovisioned handheld reports no credential rather than
-            // silently presenting a shared one — see AppSettings.hasBrokerCredential.
-            mqttUsername         = prefs[Keys.MQTT_USERNAME].orEmpty(),
-            mqttPassword         = credentialStore.retrieve().orEmpty(),
+            // An unprovisioned handheld now falls back to the deployment's shared broker
+            // credential so it connects straight out of the box. That is a deliberate trade
+            // against the previous behaviour, which reported no credential rather than present a
+            // shared one: the default is an APK constant, so it is only as safe as the broker ACL
+            // behind it. See AppSettings' doc, and give the handhelds a scoped account before this
+            // leaves a dev deployment.
+            mqttUsername         = prefs[Keys.MQTT_USERNAME] ?: defaults.mqttUsername,
+            mqttPassword         = credentialStore.retrieve() ?: defaults.mqttPassword,
         )
     }
 
@@ -67,8 +65,6 @@ class SettingsRepository(
             credentialStore.store(settings.mqttPassword)
         }
         context.dataStore.edit { prefs ->
-            prefs[Keys.DEVICE_ID]              = settings.deviceId
-            prefs[Keys.WASTE_COLLECTION_TOPIC] = settings.wasteCollectionTopic
             prefs[Keys.MQTT_HOST]              = settings.mqttHost
             prefs[Keys.MQTT_PORT]              = settings.mqttPort
             prefs[Keys.MQTT_USE_WEBSOCKET]     = settings.mqttUseWebSocket

@@ -41,9 +41,12 @@ fun AppScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     val (dotColor, statusLabel) = when (status) {
-        ConnectionStatus.Connected    -> SuccessGreen to "Connected"
-        ConnectionStatus.Reconnecting -> WarningOrange to "Reconnecting"
-        ConnectionStatus.Offline      -> DangerRed to "Offline"
+        ConnectionStatus.Connected      -> SuccessGreen to "Connected"
+        ConnectionStatus.Reconnecting   -> WarningOrange to "Reconnecting"
+        // Broker reachable, Station 4 itself is not: publishes still leave the device and queue
+        // in the outbox, so this is a warning rather than the red "nothing works" state.
+        ConnectionStatus.StationOffline -> WarningOrange to "Station offline"
+        ConnectionStatus.Offline        -> DangerRed to "Offline"
     }
 
     var showLogoutDialog by remember { mutableStateOf(false) }

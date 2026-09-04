@@ -8,13 +8,17 @@ import java.util.UUID
 import kotlin.random.Random
 
 /**
- * One immutable waste-collection creation event, matching schema v3 of
- * `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md` — confirmed against the real
- * Station4 validator (`PPNAM.Station4.Core/Services/MqttMessageValidator.cs`) since the contract
- * doc's own §9 body still shows stale v2 text (`schemaVersion` integer `2`, no `bagCode`) left over
- * from the 2026-08-05 version bump. `bagCode` (the physical, reusable wastage-bag barcode) and
- * `collectionId` (this handheld's own globally-unique transaction ID) are two distinct required
- * fields — they are never the same value.
+ * One immutable waste-collection creation event, matching schema v4 of
+ * `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`. v4 drops
+ * `machineCode`/`machineName` — the machine is no longer scanned — and renames v3's
+ * `machineOperatorUserId` to [operatorId], the production operator who ran the machine that
+ * produced this waste. `bagCode` (the physical, reusable wastage-bag barcode) and `collectionId`
+ * (this handheld's own globally-unique transaction ID) are two distinct required fields — they are
+ * never the same value.
+ *
+ * The waste *category* is deliberately absent from the payload: it is local-only wizard state that
+ * narrows the type list and appears on the review screen, and Station 4 derives the category from
+ * the published `wasteTypeCode`.
  *
  * "Generate `messageId`, `collectionId`, and `collectedAtUtc` only for the completed transaction"
  * (contract, "Required handheld workflow" step 13) — see [create], the only place these three
@@ -27,16 +31,15 @@ data class WasteCollectionEvent(
     val operatorSessionId: String,
     val collectionId: String,
     val bagCode: String,
-    val machineCode: String,
-    val machineName: String,
-    val machineOperatorUserId: String,
+    val jobNumber: String,
+    val operatorId: String,
     val wasteTypeCode: String,
     val collectedBy: String,
     val collectedAtUtc: String,
 ) {
     companion object {
         /** The only schema version this app publishes. */
-        const val SCHEMA_VERSION = 3
+        const val SCHEMA_VERSION = 4
 
         private val TIMESTAMP_FORMATTER: DateTimeFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneOffset.UTC)
@@ -53,12 +56,11 @@ data class WasteCollectionEvent(
          * zero. A future revision with a real sequence source should replace this.
          */
         fun create(
-            machineCode: String,
-            machineName: String,
+            bagCode: String,
+            jobNumber: String,
+            operatorId: String,
             wasteTypeCode: String,
             collectedBy: String,
-            machineOperatorUserId: String,
-            bagCode: String,
             deviceId: String,
             operatorSessionId: String,
             now: Instant = Instant.now(),
@@ -68,9 +70,8 @@ data class WasteCollectionEvent(
             operatorSessionId = operatorSessionId.trim(),
             collectionId = generateCollectionId(now),
             bagCode = bagCode.trim(),
-            machineCode = machineCode.trim(),
-            machineName = machineName.trim(),
-            machineOperatorUserId = machineOperatorUserId.trim(),
+            jobNumber = jobNumber.trim(),
+            operatorId = operatorId.trim(),
             wasteTypeCode = wasteTypeCode.trim(),
             collectedBy = collectedBy.trim(),
             collectedAtUtc = TIMESTAMP_FORMATTER.format(now),
@@ -90,9 +91,8 @@ data class WasteCollectionEvent(
         operatorSessionId = operatorSessionId,
         collectionId = collectionId,
         bagCode = bagCode,
-        machineCode = machineCode,
-        machineName = machineName,
-        machineOperatorUserId = machineOperatorUserId,
+        jobNumber = jobNumber,
+        operatorId = operatorId,
         wasteTypeCode = wasteTypeCode,
         collectedBy = collectedBy,
         collectedAtUtc = collectedAtUtc,

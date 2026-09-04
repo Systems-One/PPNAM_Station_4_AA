@@ -5,15 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
+import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
-import com.mitas.ppnam.station4aa.domain.model.WasteTypeCatalog
+import com.mitas.ppnam.station4aa.domain.model.WasteType
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
 import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
 import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
@@ -21,22 +24,28 @@ import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
 import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
  * Drives the scan-driven waste collection wizard implementing
- * `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`'s "Required handheld workflow",
- * per `docs/superpowers/specs/2026-08-05-scan-driven-waste-wizard-design.md`. All step transitions
- * (scan machine → scan operator → select+confirm waste type → scan bag) only mutate local
- * [wizardController] state; [onReviewConfirmed] is the wizard's one and only MQTT publish point.
+ * `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`'s
+ * "Required handheld workflow", per
+ * `docs/superpowers/specs/2026-09-02-phase-1-wastage-bag-flow-design.md`. All step transitions
+ * (scan bag → scan job → scan operator → select category → select waste type → review) only mutate
+ * local [wizardController] state; [onReviewConfirmed] is the wizard's one and only MQTT publish
+ * point.
  */
 class WasteGatheringViewModel(
     private val settingsRepository: SettingsRepository,
@@ -45,12 +54,18 @@ class WasteGatheringViewModel(
     private val sessionHolder: OperatorSessionHolder,
     private val authUseCase: AuthUseCase,
     private val scanEventBus: ScanEventBus,
+    private val catalogueRepository: WasteCatalogueRepository,
+    private val syncCatalogue: SyncWasteCatalogueUseCase,
+    /** The derived, immutable scanner identity (base standard §2) — stamped into every published
+     * waste-collection event, never read from Settings. */
+    private val deviceId: String,
 ) : ViewModel() {
 
     private val wizardController = WasteWizardController()
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
         connectionManager.connectionState,
+        connectionManager.stationOnline,
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
 
     /** Durably queued events awaiting PUBACK — surfaced so the operator can see unsynced work
@@ -71,6 +86,19 @@ class WasteGatheringViewModel(
 
     private val _draft = MutableStateFlow(wizardController.draft)
     val draft: StateFlow<WasteTransactionDraft> = _draft.asStateFlow()
+
+    /** Categories offered on SELECT_CATEGORY, straight from the cached catalogue. */
+    val categories: StateFlow<List<WasteCategory>> = catalogueRepository.categories
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    /** Types offered on SELECT_WASTE_TYPE — only those in the chosen category. Empty until a
+     * category is chosen, which is exactly when the step is unreachable. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val typesForSelectedCategory: StateFlow<List<WasteType>> = _draft
+        .flatMapLatest { current ->
+            current.category?.let { catalogueRepository.typesFor(it.code) } ?: flowOf(emptyList())
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     /** Set by a failed scan or manual-entry attempt on the active step, or by a failed
      * [WasteCollectionValidator.validateCollectedBy] check on REVIEW's Confirm; cleared on every
@@ -125,23 +153,49 @@ class WasteGatheringViewModel(
                 // wizard has already moved on to the next one.
             }
         }
+        // Refresh the catalogue whenever we have both a session and a live broker link — that
+        // covers first login and every reconnect. Failure is deliberately silent here: the cached
+        // or seeded catalogue stays usable and Settings → Diagnostics is where staleness shows.
+        viewModelScope.launch {
+            combine(
+                connectionManager.connectionState,
+                sessionHolder.session,
+            ) { state, activeSession -> state to activeSession }
+                .filter { (state, activeSession) ->
+                    state == MqttConnectionState.CONNECTED && activeSession != null
+                }
+                .collect { (_, activeSession) ->
+                    syncCatalogue.sync(activeSession!!.operatorSessionId)
+                }
+        }
     }
 
-    fun onMachineCodeSubmitted(raw: String) {
-        syncFromController(wizardController.submitMachineCode(raw))
+    fun onBagCodeSubmitted(raw: String) {
+        syncFromController(wizardController.submitBagCode(raw))
+    }
+
+    fun onJobNumberSubmitted(raw: String) {
+        syncFromController(wizardController.submitJobNumber(raw))
     }
 
     fun onOperatorIdSubmitted(raw: String) {
         syncFromController(wizardController.submitOperatorId(raw))
     }
 
-    fun onWasteTypeConfirmed(type: WasteTypeCatalog) {
+    fun onCategoryConfirmed(category: WasteCategory) {
+        wizardController.confirmCategory(category)
+        syncFromController(null)
+    }
+
+    fun onWasteTypeConfirmed(type: WasteType) {
         wizardController.confirmWasteType(type)
         syncFromController(null)
     }
 
-    fun onBagCodeSubmitted(raw: String) {
-        syncFromController(wizardController.submitBagCode(raw))
+    /** Review-screen correction: jump to one capture step and come back once it is satisfied. */
+    fun onEditField(target: WizardStep) {
+        wizardController.editField(target)
+        syncFromController(null)
     }
 
     /** Available on every step, including the review dialog. Always a full reset — there is no
@@ -168,12 +222,10 @@ class WasteGatheringViewModel(
         if (_isSubmitting.value) return
 
         val current = wizardController.draft
-        val machineCode = requireNotNull(current.machineCode) { "REVIEW reached without machineCode" }
-        val machineOperatorUserId = requireNotNull(current.machineOperatorUserId) {
-            "REVIEW reached without machineOperatorUserId"
-        }
-        val wasteType = requireNotNull(current.wasteType) { "REVIEW reached without wasteType" }
         val bagCode = requireNotNull(current.bagCode) { "REVIEW reached without bagCode" }
+        val jobNumber = requireNotNull(current.jobNumber) { "REVIEW reached without jobNumber" }
+        val operatorId = requireNotNull(current.operatorId) { "REVIEW reached without operatorId" }
+        val wasteType = requireNotNull(current.wasteType) { "REVIEW reached without wasteType" }
         val operatorSessionId = requireNotNull(session.value?.operatorSessionId) {
             "REVIEW reached without an active operator session"
         }
@@ -190,18 +242,17 @@ class WasteGatheringViewModel(
 
         _isSubmitting.value = true
         // requireNotNull/validation guards above fail fast, synchronously, before a coroutine is
-        // even launched. `settingsRepository.current()` is `suspend`, so event construction itself
-        // moves inside the launch — it cannot run on the synchronous path above.
+        // even launched. `publisher.submit` is `suspend`, so the publish itself lives inside the
+        // launch — it cannot run on the synchronous path above.
         viewModelScope.launch {
             try {
                 val event = WasteCollectionEvent.create(
-                    machineCode = machineCode,
-                    machineName = machineCode,
+                    bagCode = bagCode,
+                    jobNumber = jobNumber,
+                    operatorId = operatorId,
                     wasteTypeCode = wasteType.code,
                     collectedBy = collectedByValue,
-                    machineOperatorUserId = machineOperatorUserId,
-                    bagCode = bagCode,
-                    deviceId = settingsRepository.current().deviceId,
+                    deviceId = deviceId,
                     operatorSessionId = operatorSessionId,
                 )
                 publisher.submit(event)

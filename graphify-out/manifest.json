@@ -10,313 +10,8 @@
     "semantic_hash": ""
   },
   "app/build.gradle.kts": {
-    "mtime": 1785396587.791424,
-    "ast_hash": "51b4a1c48f410e388b43c9e79f92edcc",
-    "semantic_hash": ""
-  },
-  "app/src/androidTest/java/com/ppnam/station4aa/ExampleInstrumentedTest.kt": {
-    "mtime": 1785393811.8648872,
-    "ast_hash": "33886b8206e067693106984017ff8a96",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/MainActivity.kt": {
-    "mtime": 1785394845.8659725,
-    "ast_hash": "0d80d54d2a3f062735f9c59a5f3d69a3",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/PpnamApplication.kt": {
-    "mtime": 1785399488.156856,
-    "ast_hash": "427a9765aa78fffddcad1f781d6dd508",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/AppContainer.kt": {
-    "mtime": 1785932933.5013704,
-    "ast_hash": "00ff5a2edba39971c5fec38dc44a1fdc",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/auth/ScramCrypto.kt": {
-    "mtime": 1785399288.3900452,
-    "ast_hash": "8ddfdcb4dc9631b09b25798599ae14ae",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/auth/ScramExchange.kt": {
-    "mtime": 1785399303.9848144,
-    "ast_hash": "dfd8acc188fcaf2eedf09b2d3b8909be",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxDao.kt": {
-    "mtime": 1785932933.5013704,
-    "ast_hash": "9196866acb175ca4d91914c1adb63d34",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxDatabase.kt": {
-    "mtime": 1785932933.5023715,
-    "ast_hash": "d8a8441dde36872d59ba7c80da4e4fae",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/local/WasteOutboxEntity.kt": {
-    "mtime": 1785932933.5023715,
-    "ast_hash": "86d54c79abe3c52cf692b85dc927e01c",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/MqttClientFactory.kt": {
-    "mtime": 1785396745.2800417,
-    "ast_hash": "e53ae00fddfc74e2954867c3116ef913",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/MqttConnectionManager.kt": {
-    "mtime": 1786967483.9886608,
-    "ast_hash": "32cfdb684ca418000291169a8d4e3a6f",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/MqttOutcome.kt": {
-    "mtime": 1785399238.8209898,
-    "ast_hash": "1d1d0479dec5b1b54d828709d630ae4c",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/MqttRequestChannel.kt": {
-    "mtime": 1786967500.2156258,
-    "ast_hash": "309a1182689f4d9dc1b5aeb1fb4c720b",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/MqttSchema.kt": {
-    "mtime": 1785399181.2580307,
-    "ast_hash": "fe9df81d17b39adce6f7390f1c908fec",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/MqttTopics.kt": {
-    "mtime": 1786967376.8968174,
-    "ast_hash": "aaca58f2b661b62c61965d044c337ded",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/RequestEnvelope.kt": {
-    "mtime": 1785399189.4966602,
-    "ast_hash": "b516d6d95cfce31627c448780796881d",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/WasteCollectionPublisher.kt": {
-    "mtime": 1785932933.5047503,
-    "ast_hash": "243d10c03bf16166b35af0746cc5c5dc",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/WasteCollectionResultChannel.kt": {
-    "mtime": 1786967500.1616304,
-    "ast_hash": "4f90de7235f7022a5a90fe8ae539af59",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/WireJson.kt": {
-    "mtime": 1785399203.446174,
-    "ast_hash": "57a6b2304fa3f770ff6c5d079d337a88",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/dto/AuthMessages.kt": {
-    "mtime": 1785399229.8474498,
-    "ast_hash": "25e735fac7ca7dd4b787a2bad4c1021a",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/dto/ResponseEnvelope.kt": {
-    "mtime": 1785399214.0926056,
-    "ast_hash": "87470318a66f49138beee6f0ca6a888c",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/dto/WasteCollectionMessage.kt": {
-    "mtime": 1785926857.3415358,
-    "ast_hash": "742a881296b526d9bd70c2de5cf2c48d",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessage.kt": {
-    "mtime": 1786967500.1798148,
-    "ast_hash": "0b2af2125359fc01f3252d68c1665e60",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/rfid/DataWedgeReceiver.kt": {
-    "mtime": 1785399372.9599614,
-    "ast_hash": "ad203e0928850d46cdcb5ec747488d95",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/rfid/ScanEventBus.kt": {
-    "mtime": 1785399357.640809,
-    "ast_hash": "b3d26cddce98046486bbb12209591dad",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/security/SecureCredentialStore.kt": {
-    "mtime": 1785394566.1114,
-    "ast_hash": "72fd90b7aa452f835840ff0f3b1cd40c",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/session/OperatorSessionHolder.kt": {
-    "mtime": 1785399326.9755075,
-    "ast_hash": "36c0301580e4c3f13017d36f1eab9d7b",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/data/settings/SettingsRepository.kt": {
-    "mtime": 1786967402.337028,
-    "ast_hash": "86ca044b8288f4c6a78f7a4b42ae3a1c",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/model/AppSettings.kt": {
-    "mtime": 1786967397.165355,
-    "ast_hash": "60940b18b9a1acbe49fed27d4c0230c9",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/model/SessionState.kt": {
-    "mtime": 1785399316.618005,
-    "ast_hash": "31decb2c48690a11674718b3a217b142",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/model/WasteCollectionEvent.kt": {
-    "mtime": 1785926857.342537,
-    "ast_hash": "a81b43d83b6ea6e5e61165e5f9a88565",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/model/WasteTypeCatalog.kt": {
-    "mtime": 1785396957.7168021,
-    "ast_hash": "e5fb54f4325444d7dff767a8a10c6bb2",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/usecase/AuthUseCase.kt": {
-    "mtime": 1785399348.230415,
-    "ast_hash": "b255cd754f4c0db791dd476a34992006",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/validation/WasteCollectionValidator.kt": {
-    "mtime": 1785926857.342537,
-    "ast_hash": "c840f4a31cb6f12b9cdd2c69f1eca01e",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/wizard/ScanDispatchResult.kt": {
-    "mtime": 1785926857.3435369,
-    "ast_hash": "8c56fefcf78740ae4ba09aea4165ad42",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/wizard/WasteTransactionDraft.kt": {
-    "mtime": 1785926857.3445375,
-    "ast_hash": "4bd05d60039583156a7fe14a1166a5af",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/wizard/WasteWizardController.kt": {
-    "mtime": 1785926857.3445375,
-    "ast_hash": "1459b1367b35be2e0e1aa99558ad457d",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/domain/wizard/WizardStep.kt": {
-    "mtime": 1785926857.3445375,
-    "ast_hash": "1e71296570f2fa073cb30ee4a5eb73ae",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/navigation/AppNavGraph.kt": {
-    "mtime": 1785926857.3458245,
-    "ast_hash": "4751a631189626dae883dee45e060475",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/navigation/NavRoutes.kt": {
-    "mtime": 1785399503.885371,
-    "ast_hash": "e617e444dc0a695c50019e5bffe6de01",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/components/AppScaffold.kt": {
-    "mtime": 1785396816.3109517,
-    "ast_hash": "5981720c772f89878909dbc41e82e3e4",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/components/ConnectionStatus.kt": {
-    "mtime": 1785396793.620565,
-    "ast_hash": "b9d09f4390cc96471717f6dccd290697",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/login/LoginScreen.kt": {
-    "mtime": 1785399752.379071,
-    "ast_hash": "452d099e57cc6e2d15aec410c73ef6a2",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/login/LoginViewModel.kt": {
-    "mtime": 1785399397.40094,
-    "ast_hash": "a75b08596abece14fbd5ad93fcef1481",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/session/SessionWatcher.kt": {
-    "mtime": 1785399443.3033404,
-    "ast_hash": "120ea93a9522f85c23fdb3ad5defca6a",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/settings/SettingsScreen.kt": {
-    "mtime": 1785932933.5082355,
-    "ast_hash": "4f21a1486da668ae9df074644782fcd6",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/settings/SettingsViewModel.kt": {
-    "mtime": 1785399623.8110616,
-    "ast_hash": "7ccb150c338772e9b5bd2a905c18ff89",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/theme/Color.kt": {
-    "mtime": 1785393652.5396316,
-    "ast_hash": "089d3fd1cf5515f8bb732dd3d6cccf6f",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/theme/Theme.kt": {
-    "mtime": 1785393658.9402175,
-    "ast_hash": "2550869a82b572b21cfddacec5d75399",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/theme/Type.kt": {
-    "mtime": 1785393666.4533274,
-    "ast_hash": "d0031becf37b51ba08998cfcf39a7feb",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt": {
-    "mtime": 1785932933.5092332,
-    "ast_hash": "457e92b55fb3f6556c7e559293476182",
-    "semantic_hash": ""
-  },
-  "app/src/main/java/com/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt": {
-    "mtime": 1785932933.5092332,
-    "ast_hash": "07f3a60d759ff734a9c5e429d4faf523",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/ExampleUnitTest.kt": {
-    "mtime": 1785393816.8340018,
-    "ast_hash": "846c51a6d3ccb4536e92911d9add07a2",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/data/auth/ScramCryptoTest.kt": {
-    "mtime": 1785399829.4435165,
-    "ast_hash": "ef5a605b21e25b63443c74ab41289d62",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/data/mqtt/MqttTopicsTest.kt": {
-    "mtime": 1786967300.4512997,
-    "ast_hash": "c38c6c5f2d7173f43ae6bdc7db47cc81",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/data/mqtt/WasteCollectionResultChannelTest.kt": {
-    "mtime": 1785932933.510233,
-    "ast_hash": "f36379c836139c588ba1c43b831316c2",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessageTest.kt": {
-    "mtime": 1785932933.5112329,
-    "ast_hash": "61907f1a3654d62c57258977f3b5646e",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/domain/model/SessionStateTest.kt": {
-    "mtime": 1785399844.5897472,
-    "ast_hash": "3cbccd1dc364e6013c650cfe0a3d817e",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/domain/model/WasteCollectionEventTest.kt": {
-    "mtime": 1785926857.3481097,
-    "ast_hash": "fd8bd62d6e82fae3ab17f79debd07a30",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/domain/validation/WasteCollectionValidatorTest.kt": {
-    "mtime": 1785926857.349398,
-    "ast_hash": "c76fa623af6dcd55695bd2aba95da0ec",
-    "semantic_hash": ""
-  },
-  "app/src/test/java/com/ppnam/station4aa/domain/wizard/WasteWizardControllerTest.kt": {
-    "mtime": 1785926857.353225,
-    "ast_hash": "265ac132f9e37c13296c4c1128a51081",
+    "mtime": 1787752499.215526,
+    "ast_hash": "fb149b6783306faf67f3b43077ec87a2",
     "semantic_hash": ""
   },
   "build.gradle.kts": {
@@ -335,18 +30,18 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1785400063.5736816,
-    "ast_hash": "86d69003d0cdbd6d47c66c42148cc474",
+    "mtime": 1788504861.9502995,
+    "ast_hash": "68660e8078d9f5bd54ac57e42e9afc1b",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-08-05-scan-driven-waste-wizard.md": {
-    "mtime": 1785920817.4732893,
-    "ast_hash": "d413c2e61bb5bff10389f0088d5d7221",
+    "mtime": 1787752499.219526,
+    "ast_hash": "82067e752fb935bdeefd770bd8517432",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-08-05-waste-collection-result-alignment.md": {
-    "mtime": 1785929713.490605,
-    "ast_hash": "0f94103361fbdaef2c27fb3d61fe8f71",
+    "mtime": 1787752499.2205262,
+    "ast_hash": "a2ed86b3e9b2486b26f57750818dd76e",
     "semantic_hash": ""
   },
   "docs/superpowers/specs/2026-08-05-scan-driven-waste-wizard-design.md": {
@@ -442,6 +137,476 @@
   "app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png": {
     "mtime": 1787749201.7412028,
     "ast_hash": "40462ae112a722e21302f49424c96266",
+    "semantic_hash": ""
+  },
+  "app/src/androidTest/java/com/mitas/ppnam/station4aa/ExampleInstrumentedTest.kt": {
+    "mtime": 1787752499.1306686,
+    "ast_hash": "934329f6697cbdd062f1699451550b68",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/MainActivity.kt": {
+    "mtime": 1787752499.2017412,
+    "ast_hash": "bee3697fc6f6ec1c794cf07aeff19dba",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/PpnamApplication.kt": {
+    "mtime": 1787752499.2027538,
+    "ast_hash": "a1708e19fd82a96e0797b84932cea017",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/AppContainer.kt": {
+    "mtime": 1788504692.8965747,
+    "ast_hash": "ff8b9df23b6b579cbc525fe690cfe58c",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/auth/ScramCrypto.kt": {
+    "mtime": 1787752499.1318088,
+    "ast_hash": "eeda78bf622ce602817dc6e1d81d5518",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/auth/ScramExchange.kt": {
+    "mtime": 1787752499.1318088,
+    "ast_hash": "64e1e4f907763bd75d3610b94403b57d",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/identity/DeviceIdentity.kt": {
+    "mtime": 1788246935.9842484,
+    "ast_hash": "632c8a29199c2e28affea9ab90787d6a",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/local/WasteOutboxDao.kt": {
+    "mtime": 1787752499.1332479,
+    "ast_hash": "45fbbd51158c2a9efb3bea409a9cb933",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/local/WasteOutboxDatabase.kt": {
+    "mtime": 1788354187.0639958,
+    "ast_hash": "007ed32a707aebf0292611f7e34c1e97",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/local/WasteOutboxEntity.kt": {
+    "mtime": 1788354187.0639958,
+    "ast_hash": "3e3f222a8bfdcabba4513b0f710bbecf",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttClientFactory.kt": {
+    "mtime": 1788506231.6326785,
+    "ast_hash": "aa386b5575d323671b08591e6cd97e5c",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttConnectionManager.kt": {
+    "mtime": 1788327211.307058,
+    "ast_hash": "7d212b9b7a09970f5a06fac1e6697810",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttOutcome.kt": {
+    "mtime": 1787752499.1417322,
+    "ast_hash": "428225be6abc7b71f0687b9527b63578",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttRequestChannel.kt": {
+    "mtime": 1788354187.0639958,
+    "ast_hash": "5a979e647efc273444509ab36482d11f",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttSchema.kt": {
+    "mtime": 1787752499.1437662,
+    "ast_hash": "f18c5c13433809108f303ae6c2fbd017",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttTopics.kt": {
+    "mtime": 1788504198.9455316,
+    "ast_hash": "0ea827259a7b9e62cd52c69e064db4be",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/RequestEnvelope.kt": {
+    "mtime": 1787752499.1463964,
+    "ast_hash": "16fe53868f0498c922b381d12acf1f4e",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/WasteCollectionPublisher.kt": {
+    "mtime": 1788504205.4788353,
+    "ast_hash": "7020bee376e5c1f04e1e67f0e00a4631",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/WasteCollectionResultChannel.kt": {
+    "mtime": 1787752499.1493926,
+    "ast_hash": "726660224df7a44685fdd8d145717cce",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/WireJson.kt": {
+    "mtime": 1787752499.1513927,
+    "ast_hash": "b4005a40208c84e2002873259ffa4304",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/AuthMessages.kt": {
+    "mtime": 1787752499.135247,
+    "ast_hash": "25ab5c4e23c0bb873642242e6af0b033",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/ResponseEnvelope.kt": {
+    "mtime": 1787752499.1367536,
+    "ast_hash": "d9678bfba3b7defadde405c07aa858d4",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCollectionMessage.kt": {
+    "mtime": 1788354187.0657475,
+    "ast_hash": "e3d17f21946fd8b515eee48545787706",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessage.kt": {
+    "mtime": 1787752499.1377606,
+    "ast_hash": "1dca899412f1664f432ab3a60e5dd8c4",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/rfid/DataWedgeReceiver.kt": {
+    "mtime": 1787752499.1529014,
+    "ast_hash": "1e16489491bca1885a5d11399447407c",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/rfid/ScanEventBus.kt": {
+    "mtime": 1787752499.1539125,
+    "ast_hash": "35adcc8607d1b5fd511b7b639410f4a3",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/security/SecureCredentialStore.kt": {
+    "mtime": 1787752499.1549127,
+    "ast_hash": "896751577f61cbe8cf54076cd915ab3d",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/session/OperatorSessionHolder.kt": {
+    "mtime": 1787752499.1574228,
+    "ast_hash": "26b8237753a7d349616bd41f48c19dcf",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/settings/SettingsRepository.kt": {
+    "mtime": 1788506298.1753373,
+    "ast_hash": "6790346c3b6452ffb60bbb81232ced42",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/AppSettings.kt": {
+    "mtime": 1788506253.9767802,
+    "ast_hash": "b3d1922d49a809b34256d0a2e6528600",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/SessionState.kt": {
+    "mtime": 1787752499.1611304,
+    "ast_hash": "ac05ef63b046fd14a1275dd33db2e26b",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/WasteCollectionEvent.kt": {
+    "mtime": 1788354187.0677526,
+    "ast_hash": "ea2cb3b909759088c8548e457c8b4112",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/AuthUseCase.kt": {
+    "mtime": 1788247052.6010516,
+    "ast_hash": "818c4f24363e4f970e4c58fcb46481f7",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/validation/WasteCollectionValidator.kt": {
+    "mtime": 1788354187.0687525,
+    "ast_hash": "124263be2c93c4541c3a02c24bdc9e5a",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/wizard/ScanDispatchResult.kt": {
+    "mtime": 1787752499.1656494,
+    "ast_hash": "ba5bc542fc537c1fee3c22e7149dae2d",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/wizard/WasteTransactionDraft.kt": {
+    "mtime": 1788354187.0697567,
+    "ast_hash": "ed9d578fb5ee4f5221a09f28137d41a7",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/wizard/WasteWizardController.kt": {
+    "mtime": 1788354187.0697567,
+    "ast_hash": "c22255a68526e3c6271a6ab4dda9f804",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/wizard/WizardStep.kt": {
+    "mtime": 1788354187.070755,
+    "ast_hash": "f6dec26120efcb3b206dfb127e382259",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt": {
+    "mtime": 1788505677.0267024,
+    "ast_hash": "baccaad83cccbeee4ad5188f469b493f",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/navigation/NavRoutes.kt": {
+    "mtime": 1788505657.0988848,
+    "ast_hash": "3855bad85209bc511abb568e58dbd3e8",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt": {
+    "mtime": 1788327236.4100676,
+    "ast_hash": "8c37634e52cdbf432583734232284011",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/ConnectionStatus.kt": {
+    "mtime": 1788327228.5645683,
+    "ast_hash": "0b6cb7b6e0fe78b0ba79bbd6071dfd59",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginScreen.kt": {
+    "mtime": 1787752499.1846595,
+    "ast_hash": "1f4fed9cccdef5acd98c722792219c85",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginViewModel.kt": {
+    "mtime": 1788327247.674498,
+    "ast_hash": "f89340f4c6035dbac74f01e312ddcbb6",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/session/SessionWatcher.kt": {
+    "mtime": 1787752499.18818,
+    "ast_hash": "9920608bb5e54a24331f209686870204",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt": {
+    "mtime": 1788505761.83052,
+    "ast_hash": "3379cade087aba36bbf1ce09d487792c",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt": {
+    "mtime": 1788418935.9342978,
+    "ast_hash": "a3742924768f4fbffc714b460c42e8d1",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Color.kt": {
+    "mtime": 1787752499.193701,
+    "ast_hash": "8bb8e3b949cbb9b9b4c78b496af650b8",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt": {
+    "mtime": 1787752499.197701,
+    "ast_hash": "1cb08a0de890888744929dddadbb5dcd",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Type.kt": {
+    "mtime": 1787752499.1987026,
+    "ast_hash": "998c9c82c5960ee945edf41233cd87a5",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt": {
+    "mtime": 1788505701.5915494,
+    "ast_hash": "69f37cbc6055f4a7275b8ceb9e905ce9",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt": {
+    "mtime": 1788354187.0745082,
+    "ast_hash": "9010ccf33170fc9730c8d7f9ae5c4fcc",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/ExampleUnitTest.kt": {
+    "mtime": 1787752499.2145278,
+    "ast_hash": "9ee6138dd5d218eec002acef1bee3b50",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/auth/ScramCryptoTest.kt": {
+    "mtime": 1787752499.20651,
+    "ast_hash": "1a030d76c3871fb2f8087cce8148d874",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/MqttTopicsTest.kt": {
+    "mtime": 1788504170.363116,
+    "ast_hash": "edcce295a29526ecb2ee9c6dc4b17cd3",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/WasteCollectionResultChannelTest.kt": {
+    "mtime": 1788354187.078076,
+    "ast_hash": "78158640f4b8bbfa0898b0f84a03acb6",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessageTest.kt": {
+    "mtime": 1787752499.2075174,
+    "ast_hash": "9e4f5d0d2c88c33312f48d7ee4dd4be7",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/model/SessionStateTest.kt": {
+    "mtime": 1787752499.2095187,
+    "ast_hash": "63466f776dd49cc5fde8a562a5ca664b",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/model/WasteCollectionEventTest.kt": {
+    "mtime": 1788354187.078076,
+    "ast_hash": "0e5d2ff3d21562f2074b17175a3e56cc",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/validation/WasteCollectionValidatorTest.kt": {
+    "mtime": 1788354187.08009,
+    "ast_hash": "ff93bee61100d816c46b65edf24deda1",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/wizard/WasteWizardControllerTest.kt": {
+    "mtime": 1788354187.08009,
+    "ast_hash": "33ea562e771d64c7e7450c17afe125f9",
+    "semantic_hash": ""
+  },
+  ".github/workflows/release.yml": {
+    "mtime": 1788178394.8268614,
+    "ast_hash": "e28928d6eb36dfd9a23a65400f944f53",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/ui/components/ConnectionStatusTest.kt": {
+    "mtime": 1788327298.6947815,
+    "ast_hash": "1bbef76cc8b5f5f0847ff6a2587f1a28",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueRepository.kt": {
+    "mtime": 1788354187.062123,
+    "ast_hash": "be1f96800828f92e5b5fe06b9e1d6834",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueSeed.kt": {
+    "mtime": 1788354187.062123,
+    "ast_hash": "8738241abb908955113252252c3c4903",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/local/CatalogueEntities.kt": {
+    "mtime": 1788354187.062123,
+    "ast_hash": "51eb140935d9f63a6a3a5229e6976636",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/local/WasteCatalogueDao.kt": {
+    "mtime": 1788354187.0634902,
+    "ast_hash": "0429acc5dc37ed2a4c1eb5308d032573",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/RequestChannel.kt": {
+    "mtime": 1788354187.0639958,
+    "ast_hash": "ad742fa119f4b28cb4eda06d39c249e1",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCatalogueMessages.kt": {
+    "mtime": 1788354187.0657475,
+    "ast_hash": "0fd0170231977e6e45c1d03818b1fbf0",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/CatalogueMeta.kt": {
+    "mtime": 1788354187.0667539,
+    "ast_hash": "79d3234f39c73922a577d45a7e1f49d2",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/WasteCategory.kt": {
+    "mtime": 1788354187.0667539,
+    "ast_hash": "f045980f67fdd50532242ec3d495325b",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/WasteType.kt": {
+    "mtime": 1788354187.0677526,
+    "ast_hash": "80bb8474e7c7755217a5d5ff6c1a399e",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCase.kt": {
+    "mtime": 1788354187.0677526,
+    "ast_hash": "893b255e4a9497a059ff6e6b2c47602d",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueRepositoryTest.kt": {
+    "mtime": 1788354187.0759244,
+    "ast_hash": "070b818911d94a8f55215aed81a57483",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/catalogue/WasteCatalogueSeedTest.kt": {
+    "mtime": 1788354187.076929,
+    "ast_hash": "426319c3275314ca534bc3cb7f203bd2",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/local/CatalogueEntitiesTest.kt": {
+    "mtime": 1788354187.076929,
+    "ast_hash": "72c61bd10881f2eb42685ddd311d85ed",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/SyncWasteCatalogueUseCaseTest.kt": {
+    "mtime": 1788354187.0790904,
+    "ast_hash": "2710abb90eb11776fe9e791d5b658893",
+    "semantic_hash": ""
+  },
+  "docs/README-Wastage-Bag-Process-Flow.md": {
+    "mtime": 1788354187.0820901,
+    "ast_hash": "d00555c441f87f0102c0d305c99036a2",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-02-phase-1-wastage-bag-flow.md": {
+    "mtime": 1788330618.853292,
+    "ast_hash": "5b7294fcb34baf685e0fef24e6229fce",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-02-phase-1-wastage-bag-flow-design.md": {
+    "mtime": 1788329999.2166803,
+    "ast_hash": "2ad4727199d5f1da909e123a4405f849",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/CatalogueStatus.kt": {
+    "mtime": 1788354187.0717537,
+    "ast_hash": "a039efa8e4dfa5ff52a9b5ef02604ba2",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/ui/settings/CatalogueStatusTest.kt": {
+    "mtime": 1788354187.0810905,
+    "ast_hash": "783d7edc973b8d33f52edb11a1f294d6",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/AppContainerTest.kt": {
+    "mtime": 1788354187.0759244,
+    "ast_hash": "61698d7b8b2da6a0b60ff1511c933a10",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessages.kt": {
+    "mtime": 1788504421.125785,
+    "ast_hash": "f90e7468df8dc124468a7e70398cfe73",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/capture/CaptureRefusal.kt": {
+    "mtime": 1788504395.1839025,
+    "ast_hash": "9d6ce27d9c2b78c0081bf8c01bb6be02",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/RequestWasteCaptureUseCase.kt": {
+    "mtime": 1788504582.4984207,
+    "ast_hash": "880ab76e79e5105ef316ca585e49972d",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt": {
+    "mtime": 1788504666.7214956,
+    "ast_hash": "3e6b47470a26bc6005a1f5d22df9dd07",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagViewModel.kt": {
+    "mtime": 1788504635.7767265,
+    "ast_hash": "672cac287d2da52c0ef822382885e989",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessagesTest.kt": {
+    "mtime": 1788504773.7773101,
+    "ast_hash": "c1f07bd06a614ffa883938efbe6298cd",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/capture/CaptureRefusalTest.kt": {
+    "mtime": 1788504337.678702,
+    "ast_hash": "1209ed469dc062f5759aa8c7627deeda",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/RequestWasteCaptureUseCaseTest.kt": {
+    "mtime": 1788504555.1437685,
+    "ast_hash": "8901701009b8694a7b58bd25f3da8305",
+    "semantic_hash": ""
+  },
+  "app/src/androidTest/java/com/mitas/ppnam/station4aa/ui/home/HomeScreenTest.kt": {
+    "mtime": 1788505950.6992972,
+    "ast_hash": "7839900de430e4fbdccb0b0849e161f1",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt": {
+    "mtime": 1788505846.6144712,
+    "ast_hash": "f36b285a4636843f0073f33f8914596f",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeViewModel.kt": {
+    "mtime": 1788505633.9949017,
+    "ast_hash": "1cf11fb9c09d3c7c8898cd3ab8545ad5",
     "semantic_hash": ""
   }
 }

@@ -1,45 +1,63 @@
 package com.mitas.ppnam.station4aa.data.mqtt
 
 /**
- * Wire topics for the two independent things this app talks to over MQTT, both nested under the
- * per-station namespace `PPNAM/station_4/...` (contract v3.1.0, 2026-08-17: the previously
- * un-namespaced `station4/...` and `PPNAM/{deviceId}/...` topics moved into the station tree;
- * payloads unchanged).
+ * Every topic this app touches, all inside the per-station namespace `PPNAM/station_4/...`.
  *
- * [WASTE_COLLECTION] is from the normative contract at
- * `C:\Dev\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`: one Settings-configured
- * publish-only topic, no application-level ACK — "the scanner-visible PUBACK... does not confirm
- * that Station 4 accepted the business event."
+ * The normative shape is the fleet topic structure at
+ * `C:\Dev\Clients\PPNAM\MQTT_TOPIC_STRUCTURE.md` §1 (the fleet authority for hierarchy, which
+ * `C:\Dev\Clients\PPNAM\Andriod\MQTT_BASE_README.md` §1 mirrors for the Android apps):
  *
- * [request]/[responseWildcard] are a *different*, deliberately mirrored contract: Station 2 AA's
- * operator-login request/response pattern (`PPNAM/station_2/{deviceId}/req|res/...`), ported on
- * request so Station 4's login works the same way Station 2's does — with `station_4` as the
- * namespace segment so Station 4 never answers Station 2 traffic on a shared broker. There is no
- * evidence Station 4's actual backend (`C:\Dev\PPNAM-Station-4`) implements a matching MQTT auth
- * service yet — its only login today is a local SQL Server check inside the WPF desktop app,
- * unreachable from this handheld — so this topic family is speculative/forward-looking the same
- * way schema v2 publishing was before Station 4 supported it. See `data/mqtt/MqttRequestChannel.kt`.
+ * ```
+ * PPNAM/station_4                              station presence   (retained online/offline + LWT)
+ * PPNAM/station_4/{deviceId}                   scanner presence   (retained online/offline + LWT)
+ * PPNAM/station_4/{deviceId}/req/{type}        scanner -> station request
+ * PPNAM/station_4/{deviceId}/res/{type}        station -> scanner response
+ * PPNAM/station_4/res/{type}                   station broadcast  (reserved; Station 4 never uses it)
+ * ```
  *
- * [devicePresence] is the fleet-wide presence convention: retained `online`/`offline` (and the
- * Last Will) on the device's base node `PPNAM/station_4/{deviceId}` — no `/status` sub-topic.
+ * Those five shapes are now the *whole* list. Contract 5.0.0 aligned Station 4 with the base
+ * standard and made the waste collection an ordinary scanner request
+ * ([wasteCollectionRequest]) answered on the existing [wasteCollectionResult], retiring the
+ * station-scoped `PPNAM/station_4/waste/collection` topic that predated it. Nothing here is
+ * configurable at either end — the base standard fixes the hierarchy, so contract §17.45 requires
+ * that "Settings exposes no topic to configure". This app's Settings shows the collection topic
+ * read-only under Diagnostics purely so support can reconcile it against the broker ACL.
+ *
+ * That retirement also freed the `waste` segment: `res` is now the only name reserved directly
+ * under the station node (§3), so `waste` is an ordinary — if unlikely — derived device id again,
+ * and [validateSegment] must not refuse it.
+ *
+ * [request]/[responseWildcard] carry the schema 4.1 request/response exchange: the operator SCRAM
+ * login mirrored from Station 2 AA, the waste catalogue sync ([SyncWasteCatalogueUseCase]), and
+ * since contract 5.1.0 the handheld-triggered weigh ([WASTE_CAPTURE_REQUESTED], §9.2). Station 4's
+ * backend answers all three — see `MqttScramAuthenticationService.cs`, `MqttCatalogueProcessor.cs`
+ * and its capture processor in the sibling WPF repo.
+ *
+ * [STATION_PRESENCE] and [devicePresence] are the presence convention: retained `online`/`offline`
+ * (and the Last Will) on the base node itself, never a `/status` sub-topic.
  */
 object MqttTopics {
 
     private const val STATION_BASE = "PPNAM/station_4"
 
-    /** Default collection topic. Deployments may configure an exact override in Settings. */
-    const val WASTE_COLLECTION = "$STATION_BASE/waste/collection"
-
-    /** The pre-v3.1.0 default collection topic, before the per-station namespace move. */
-    private const val LEGACY_WASTE_COLLECTION = "station4/waste/collection"
-
     /**
-     * Maps a stored Settings value equal to the retired default onto the renamed default, so
-     * existing installs follow the topic restructure without re-provisioning. A deliberately
-     * custom topic is returned unchanged.
+     * The one literal segment Station 4's contract uses directly under its base node. Per the
+     * fleet standard §1 and contract §3 it can never be a device id: it is the station-broadcast
+     * tree, and a scanner that claimed it would have Station 4 answering into a subtree addressed
+     * to every handheld at once.
      */
-    fun migrateWasteCollectionTopic(stored: String): String =
-        if (stored == LEGACY_WASTE_COLLECTION) WASTE_COLLECTION else stored
+    private val RESERVED_SEGMENTS = setOf("res")
+
+    /** Station 4's own base node — carries the station's retained presence payload (contract
+     * v3.1.0). The scanner subscribes to it so "station offline" is distinguishable from
+     * "broker disconnected". */
+    const val STATION_PRESENCE = STATION_BASE
+
+    /** `{type}` for the contract 5.1.0 §9.2 handheld weigh, published via [request]. */
+    const val WASTE_CAPTURE_REQUESTED = "waste_capture_requested"
+
+    /** `{type}` for the contract 5.0.0 collection event, published via [wasteCollectionRequest]. */
+    const val WASTE_COLLECTION_REQUESTED = "waste_collection_requested"
 
     fun request(deviceId: String, requestType: String): String {
         validateSegment(deviceId, "deviceId")
@@ -52,9 +70,18 @@ object MqttTopics {
         return "$STATION_BASE/$deviceId/res/+"
     }
 
+    /**
+     * The collection event's topic (contract §3/§9). Since 5.0.0 this is an ordinary request on
+     * the publishing handheld's own subtree, not a shared station topic, so [deviceId] MUST be the
+     * `deviceId` carried in the payload: Station 4 refuses a mismatch **without publishing a
+     * reply**, because the reply is addressed by the topic's id.
+     */
+    fun wasteCollectionRequest(deviceId: String): String = request(deviceId, WASTE_COLLECTION_REQUESTED)
+
     /** The `waste_collection_result` response topic (contract §3/§12), validated the same way
-     * every other deviceId-derived topic in this file is — [deviceId] is operator-editable Settings
-     * input and must not be allowed to smuggle an MQTT wildcard segment into a subscription. */
+     * every other deviceId-derived topic in this file is — [deviceId] is derived on-device now
+     * (base standard §2), but defence in depth still refuses to let any value smuggle an MQTT
+     * wildcard or a reserved segment into a subscription. */
     fun wasteCollectionResult(deviceId: String): String {
         validateSegment(deviceId, "deviceId")
         return "$STATION_BASE/$deviceId/res/waste_collection_result"
@@ -70,6 +97,9 @@ object MqttTopics {
         require(value.isNotBlank()) { "$name must not be blank" }
         require(value.none { it == '/' || it == '+' || it == '#' }) {
             "$name must not contain '/', '+' or '#': was '$value'"
+        }
+        require(value !in RESERVED_SEGMENTS) {
+            "$name must not be a reserved station segment ${RESERVED_SEGMENTS.sorted()}: was '$value'"
         }
     }
 }
