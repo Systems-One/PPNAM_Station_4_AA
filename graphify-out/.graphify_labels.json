@@ -55,5 +55,11 @@
   "53": ".advanceTo",
   "54": "ScanDispatchResult",
   "55": "WasteCatalogueSeedTest",
-  "56": "PPNAM Station 4 — Final Wastage Bag Process"
+  "56": "PPNAM Station 4 — Final Wastage Bag Process",
+  "57": "HomeScreenTest",
+  "58": "WasteGatheringScreen",
+  "59": "WeighBagViewModel",
+  "60": "AppScaffold",
+  "61": "WeighBagScreen",
+  "62": "WasteTransactionDraft"
 }

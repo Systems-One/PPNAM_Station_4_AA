@@ -25,6 +25,7 @@
   "23": ".build",
   "24": "ScanEvent",
   "25": ".onCreate",
+  "26": ".request",
   "27": "MqttSchema",
   "28": "DataWedgeReceiver",
   "29": "Repo Rules",
@@ -46,7 +47,13 @@
   "45": "WasteCatalogueRepository",
   "46": "Final wastage bag process, Phase 1 — design",
   "47": "Global Constraints",
+  "48": "WasteGatheringViewModel",
+  "49": "WasteType",
   "50": ".sync",
+  "51": "CaptureRefusalTest",
+  "52": "CaptureRefusals",
+  "53": ".advanceTo",
+  "54": "ScanDispatchResult",
   "55": "WasteCatalogueSeedTest",
   "56": "PPNAM Station 4 — Final Wastage Bag Process"
 }

@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1788419050.4623697,
-    "ast_hash": "1d3ff3d1c3dbe5d13da46ab69e51f04c",
+    "mtime": 1788504861.9502995,
+    "ast_hash": "68660e8078d9f5bd54ac57e42e9afc1b",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-08-05-scan-driven-waste-wizard.md": {
@@ -155,8 +155,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/data/AppContainer.kt": {
-    "mtime": 1788418935.9332955,
-    "ast_hash": "23097e3578b90d7521df48311ed4493a",
+    "mtime": 1788504692.8965747,
+    "ast_hash": "ff8b9df23b6b579cbc525fe690cfe58c",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/data/auth/ScramCrypto.kt": {
@@ -215,8 +215,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/MqttTopics.kt": {
-    "mtime": 1788418954.6526806,
-    "ast_hash": "0db495dd7255de4bc2583a4280e83b91",
+    "mtime": 1788504198.9455316,
+    "ast_hash": "0ea827259a7b9e62cd52c69e064db4be",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/RequestEnvelope.kt": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/WasteCollectionPublisher.kt": {
-    "mtime": 1788418935.9322896,
-    "ast_hash": "0db3a6120cffceafbe8899f15648f06a",
+    "mtime": 1788504205.4788353,
+    "ast_hash": "7020bee376e5c1f04e1e67f0e00a4631",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/WasteCollectionResultChannel.kt": {
@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/AppSettings.kt": {
-    "mtime": 1788418908.438142,
-    "ast_hash": "d3b29adb5e406881705044258f8f5a00",
+    "mtime": 1788504230.0099063,
+    "ast_hash": "ca64574fa046a8763ce7b07991f7e56f",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/SessionState.kt": {
@@ -330,13 +330,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/navigation/AppNavGraph.kt": {
-    "mtime": 1788354187.0717537,
-    "ast_hash": "b2f61696020b385261040036a7bf9d07",
+    "mtime": 1788504708.2716286,
+    "ast_hash": "5abb66a50f8264a52f9a6d5cfced33c9",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/navigation/NavRoutes.kt": {
-    "mtime": 1787752499.1776571,
-    "ast_hash": "4117aa46f8fdc42af0298d83bea1cd81",
+    "mtime": 1788504696.9919455,
+    "ast_hash": "66a0e7fc71a9145c182545cad663d6bb",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt": {
-    "mtime": 1788418935.9352908,
-    "ast_hash": "a9218e7e16bde15bcb0810aa7ddad088",
+    "mtime": 1788504221.8034546,
+    "ast_hash": "9119ecb447b03a56efb207bd41d42250",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt": {
@@ -390,8 +390,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt": {
-    "mtime": 1788354187.0745082,
-    "ast_hash": "1b61efd1430cfcf7486d6d720f9b59d3",
+    "mtime": 1788504721.8395736,
+    "ast_hash": "775db4e39d08a37586aee2d902ea1619",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt": {
@@ -410,8 +410,8 @@
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/MqttTopicsTest.kt": {
-    "mtime": 1788418967.539842,
-    "ast_hash": "f209b5d2d9dbe630a283cfb3d5ad7e16",
+    "mtime": 1788504170.363116,
+    "ast_hash": "edcce295a29526ecb2ee9c6dc4b17cd3",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/WasteCollectionResultChannelTest.kt": {
@@ -552,6 +552,46 @@
   "app/src/test/java/com/mitas/ppnam/station4aa/data/AppContainerTest.kt": {
     "mtime": 1788354187.0759244,
     "ast_hash": "61698d7b8b2da6a0b60ff1511c933a10",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessages.kt": {
+    "mtime": 1788504421.125785,
+    "ast_hash": "f90e7468df8dc124468a7e70398cfe73",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/capture/CaptureRefusal.kt": {
+    "mtime": 1788504395.1839025,
+    "ast_hash": "9d6ce27d9c2b78c0081bf8c01bb6be02",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/usecase/RequestWasteCaptureUseCase.kt": {
+    "mtime": 1788504582.4984207,
+    "ast_hash": "880ab76e79e5105ef316ca585e49972d",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt": {
+    "mtime": 1788504666.7214956,
+    "ast_hash": "3e6b47470a26bc6005a1f5d22df9dd07",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagViewModel.kt": {
+    "mtime": 1788504635.7767265,
+    "ast_hash": "672cac287d2da52c0ef822382885e989",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessagesTest.kt": {
+    "mtime": 1788504773.7773101,
+    "ast_hash": "c1f07bd06a614ffa883938efbe6298cd",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/capture/CaptureRefusalTest.kt": {
+    "mtime": 1788504337.678702,
+    "ast_hash": "1209ed469dc062f5759aa8c7627deeda",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/RequestWasteCaptureUseCaseTest.kt": {
+    "mtime": 1788504555.1437685,
+    "ast_hash": "8901701009b8694a7b58bd25f3da8305",
     "semantic_hash": ""
   }
 }
