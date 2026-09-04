@@ -17,6 +17,8 @@ import com.mitas.ppnam.station4aa.ui.settings.SettingsScreen
 import com.mitas.ppnam.station4aa.ui.settings.SettingsViewModel
 import com.mitas.ppnam.station4aa.ui.waste.WasteGatheringScreen
 import com.mitas.ppnam.station4aa.ui.waste.WasteGatheringViewModel
+import com.mitas.ppnam.station4aa.ui.weigh.WeighBagScreen
+import com.mitas.ppnam.station4aa.ui.weigh.WeighBagViewModel
 
 @Composable
 fun AppNavGraph() {
@@ -70,6 +72,26 @@ fun AppNavGraph() {
                 }
             )
             WasteGatheringScreen(
+                onSettings = { navController.navigate(NavRoutes.SETTINGS) },
+                onWeighBag = { navController.navigate(NavRoutes.WEIGH_BAG) },
+                viewModel = viewModel,
+            )
+        }
+        composable(NavRoutes.WEIGH_BAG) {
+            val viewModel: WeighBagViewModel = viewModel(
+                factory = viewModelFactory {
+                    initializer {
+                        WeighBagViewModel(
+                            connectionManager = container.connectionManager,
+                            sessionHolder = container.operatorSessionHolder,
+                            scanEventBus = container.scanEventBus,
+                            requestCapture = container.requestWasteCaptureUseCase,
+                        )
+                    }
+                }
+            )
+            WeighBagScreen(
+                onBack = { navController.popBackStack() },
                 onSettings = { navController.navigate(NavRoutes.SETTINGS) },
                 viewModel = viewModel,
             )

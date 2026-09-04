@@ -53,7 +53,11 @@ class WasteCollectionPublisher(
 
     private suspend fun attemptPublish(event: WasteCollectionEvent) {
         resultChannel.ensureSubscribed(event.deviceId)
-        val topic = MqttTopics.WASTE_COLLECTION
+        // Contract 5.0.0: the collection is a request on this handheld's own subtree, and its
+        // topic device segment MUST equal the payload's `deviceId` — Station 4 refuses a mismatch
+        // without a reply. Deriving the topic from the very event being published is what makes
+        // that true by construction, including for a row replayed by `retryPending`.
+        val topic = MqttTopics.wasteCollectionRequest(event.deviceId)
         val payload = gson.toJson(event.toWireMessage()).toByteArray(StandardCharsets.UTF_8)
         connectionManager.publish(topic, payload)
         outboxDao.recordAttempt(event.messageId, System.currentTimeMillis())

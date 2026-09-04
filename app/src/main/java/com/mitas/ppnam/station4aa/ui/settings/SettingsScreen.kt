@@ -118,9 +118,10 @@ fun SettingsScreen(
 
                     HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
 
-                    // Read-only by design: the collection topic is fixed for Station 4, not
-                    // configured. This row exists so support can read off what the handheld
-                    // actually publishes to when reconciling against the broker ACL.
+                    // Read-only by design: contract §17.45 requires Settings to expose no topic to
+                    // configure. This row exists so support can read off what the handheld actually
+                    // publishes to when reconciling against the broker ACL — which since contract
+                    // 5.0.0 is inside this scanner's own subtree, so it varies by device.
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             "PUBLISHES TO",
@@ -128,7 +129,7 @@ fun SettingsScreen(
                             color = TextMuted
                         )
                         Text(
-                            MqttTopics.WASTE_COLLECTION,
+                            MqttTopics.wasteCollectionRequest(viewModel.deviceId),
                             style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
                             color = TextPrimary
                         )

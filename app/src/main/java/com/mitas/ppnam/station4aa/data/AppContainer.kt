@@ -16,6 +16,7 @@ import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +28,7 @@ private const val TAG = "AppContainer"
 
 /**
  * Station 4 has no Hilt (see the "minimal architecture" scope decision), so this is the one place
- * that wires up the shared, process-lifetime instances screens' ViewModels are constructed with —
+ * that wires up the shared, process-lifetime instances screens' ViewModels are constructed with â
  * a single MqttConnectionManager, SettingsRepository, WasteCollectionPublisher, and login stack
  * so every screen observes the same connection state, outbox, and operator session instead of
  * each opening its own.
@@ -35,7 +36,7 @@ private const val TAG = "AppContainer"
 class AppContainer(context: Context) {
     private val appContext = context.applicationContext
 
-    /** The derived, immutable scanner identity (base standard §2) — derived once here (then
+    /** The derived, immutable scanner identity (base standard Â§2) â derived once here (then
      * cached/persisted by [DeviceIdentity]) and handed to everything that stamps a deviceId into
      * an MQTT topic, envelope, or payload. Never a Settings value. */
     val deviceId: String = DeviceIdentity.deviceId(appContext)
@@ -56,7 +57,7 @@ class AppContainer(context: Context) {
     )
     val wasteCatalogueRepository = WasteCatalogueRepository(outboxDatabase.wasteCatalogueDao())
 
-    // Login exchange, mirrored from Station 2 AA — see MqttTopics' class doc for why this talks
+    // Login exchange, mirrored from Station 2 AA â see MqttTopics' class doc for why this talks
     // to a backend Station 4 doesn't demonstrably implement yet.
     val operatorSessionHolder = OperatorSessionHolder()
     private val requestChannel = MqttRequestChannel(connectionManager)
@@ -65,6 +66,13 @@ class AppContainer(context: Context) {
     val syncWasteCatalogueUseCase = SyncWasteCatalogueUseCase(
         requestChannel = requestChannel,
         repository = wasteCatalogueRepository,
+        deviceId = deviceId,
+    )
+
+    /** Contract 5.1.0 §9.2 — asks Station 4 to weigh a bag on its scale. Interactive, so unlike
+     * [wasteCollectionPublisher] it has no durable outbox behind it. */
+    val requestWasteCaptureUseCase = RequestWasteCaptureUseCase(
+        requestChannel = requestChannel,
         deviceId = deviceId,
     )
 

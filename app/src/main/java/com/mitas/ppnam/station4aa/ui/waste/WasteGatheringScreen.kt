@@ -45,6 +45,7 @@ import com.mitas.ppnam.station4aa.ui.theme.WarningOrange
 @Composable
 fun WasteGatheringScreen(
     onSettings: () -> Unit,
+    onWeighBag: () -> Unit,
     viewModel: WasteGatheringViewModel,
 ) {
     val connectionStatus by viewModel.connectionStatus.collectAsState()
@@ -179,6 +180,14 @@ fun WasteGatheringScreen(
 
             TextButton(onClick = { viewModel.onCancelTransaction() }) {
                 Text("Cancel transaction", color = WarningOrange)
+            }
+
+            // Contract 5.1.0 §9.2. Deliberately not part of the wizard: a weigh is keyed only by
+            // bag code and happens later, at the scale, so it must reach any pending bag — not
+            // just the transaction in progress here. Leaving the wizard mid-transaction is safe;
+            // the draft is held in the ViewModel and is still here on return.
+            TextButton(onClick = onWeighBag) {
+                Text("Weigh a bag at the station", color = AmberPrimary)
             }
         }
     }
