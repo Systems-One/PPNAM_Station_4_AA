@@ -139,7 +139,17 @@ git commit -m "docs: record C72 RFID delivery probe findings"
 
 ### Task 1: Role parsing across the fleet boundary
 
-`fleet.badges.role` is a free-text `VARCHAR(50)` from central. The local enum is `StationRole { Worker, Manager, Administrator }`, and the existing `UserRoleLabels.Display` renders `Worker` as `"Operator"` — so a round-tripped role arrives spelled differently than the enum. Parsing must accept both vocabularies and fall back to **least privilege**.
+`fleet.badges.role` is a free-text `VARCHAR(50)` from central. The local enum is
+`StationRole { Worker, Manager, Administrator, Officer }` (four values — verified at
+`Station4Models.cs:3-9`), and the existing `UserRoleLabels.Display` renders `Worker` as
+`"Operator"` while `Officer`, `Manager` and `Administrator` render as `"Officer"`, `"Manager"` and
+`"Admin"`. A round-tripped role therefore arrives spelled differently than the enum. Parsing must
+accept both vocabularies and fall back to **least privilege**.
+
+`Officer` matters and must not be dropped: `SecurityServices.cs:154` grants it the same
+`CaptureWaste` rights as `Manager`, and `Station4SchemaSql.cs`'s role CHECK constraints admit
+`'Officer'` for `station4_users`, `operator_sessions` and `audit_events` — so a replicated badge
+carrying that role is expected, and silently demoting it to `Worker` would strip real permissions.
 
 **Files:**
 - Modify: `PPNAM.Station4.Core/Security/SecurityServices.cs` (the `UserRoleLabels` class, around line 103)
@@ -170,6 +180,8 @@ public sealed class UserRoleLabelsParseTests
     [InlineData("manager", StationRole.Manager)]
     [InlineData("Worker", StationRole.Worker)]
     [InlineData("Operator", StationRole.Worker)]
+    [InlineData("Officer", StationRole.Officer)]
+    [InlineData("officer", StationRole.Officer)]
     public void Parse_AcceptsBothEnumNamesAndDisplayLabels(string value, StationRole expected) =>
         Assert.Equal(expected, UserRoleLabels.Parse(value));
 
@@ -182,12 +194,17 @@ public sealed class UserRoleLabelsParseTests
     public void Parse_FallsBackToLeastPrivilege(string? value) =>
         Assert.Equal(StationRole.Worker, UserRoleLabels.Parse(value));
 
-    [Theory]
-    [InlineData(StationRole.Worker)]
-    [InlineData(StationRole.Manager)]
-    [InlineData(StationRole.Administrator)]
-    public void Parse_RoundTripsEveryDisplayLabel(StationRole role) =>
-        Assert.Equal(role, UserRoleLabels.Parse(UserRoleLabels.Display(role)));
+    // Driven from the enum rather than a hand-listed set: a role added to StationRole later must
+    // fail this test until Parse handles it. A hand-listed theory is exactly how Officer was
+    // missed the first time this task was written.
+    [Fact]
+    public void Parse_RoundTripsEveryDisplayLabel()
+    {
+        foreach (var role in Enum.GetValues<StationRole>())
+        {
+            Assert.Equal(role, UserRoleLabels.Parse(UserRoleLabels.Display(role)));
+        }
+    }
 }
 ```
 
@@ -205,12 +222,15 @@ In `PPNAM.Station4.Core/Security/SecurityServices.cs`, add to `UserRoleLabels`:
     /// The inverse of <see cref="Display"/>, tolerant of the fleet's spellings. Central's
     /// replicated role column is free text, so this accepts both the enum names and the display
     /// labels. Anything unrecognised — including null and blank — is Worker: an unreadable role
-    /// must never widen access.
+    /// must never widen access. Every value of <see cref="StationRole"/> must appear here, or a
+    /// badge carrying that role is silently demoted; Parse_RoundTripsEveryDisplayLabel enforces it.
     /// </summary>
     public static StationRole Parse(string? value) => (value ?? string.Empty).Trim().ToLowerInvariant() switch
     {
         "administrator" or "admin" => StationRole.Administrator,
         "manager" => StationRole.Manager,
+        "officer" => StationRole.Officer,
+        "worker" or "operator" => StationRole.Worker,
         _ => StationRole.Worker
     };
 ```
@@ -218,7 +238,7 @@ In `PPNAM.Station4.Core/Security/SecurityServices.cs`, add to `UserRoleLabels`:
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `dotnet test PPNAM.Station4.Tests/PPNAM.Station4.Tests.csproj --filter UserRoleLabelsParseTests`
-Expected: PASS (16 cases).
+Expected: PASS (18 InlineData cases + the enum-driven round-trip).
 
 - [ ] **Step 5: Commit**
 
