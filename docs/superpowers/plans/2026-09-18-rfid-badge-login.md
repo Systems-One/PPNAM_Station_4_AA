@@ -1203,35 +1203,48 @@ message `reader_logout_requested` uses. An accepted reply carries `operatorSessi
 | `badge_lookup_unavailable` | The badge directory could not be read. | Yes, or sign in with a username and password, which still works while the directory is down. |
 ```
 
-- [ ] **Step 2: Add the row to the authentication request table**
+- [ ] **Step 2: Add the topics row to the identity table**
 
-Find the table listing `scram_start_requested`, `scram_proof_requested` and `reader_logout_requested`, and add:
+This document has **no** request/response table — that one lives in `MQTT_BASE_README.md` and already lists `login_requested`, so it needs no edit. What this document has is the identity table at the top (lines 3–13), whose last rows are `Collection topic`, `Catalogue topics` and `Capture topics`. Add a fourth in the same style, immediately after `Capture topics`:
 
 ```markdown
-| `login_requested` | `operator_context` | Badge login. Resolves a badge tag against the fleet mirror and issues a session. |
+| Badge login topics | `PPNAM/station_4/{deviceId}/req/login_requested` and `.../res/operator_context` |
 ```
 
-- [ ] **Step 3: Bump the version**
+- [ ] **Step 3: Add the three error codes to §15**
 
-Update the document's version identifier from `5.1.1` to `5.2.0`, including any header, changelog or history section the document keeps. Search for `5.1.1` and update every occurrence that refers to this document's own version:
+§15 "Stable error and quarantine codes" has an `### Authentication` subsection holding a `| Code | Meaning |` table that ends with `retained_message_not_allowed`. Append three rows to **that** table:
 
-```bash
-grep -n "5\.1\.1" DOCS/Station4_Wastage_MQTT_Contract.md
+```markdown
+| `badge_invalid` | Badge tag missing, blank, over 128 characters, or outside `A-Z 0-9 - _`. |
+| `badge_unknown` | No active, non-deleted badge matches. Also returned for an inactive or soft-deleted badge, and for a mirror row whose `operator_id` is not a user id — the station does not confirm that a badge exists but is switched off. |
+| `badge_lookup_unavailable` | The badge directory could not be read. Sign in with a username and password instead, which still works while the directory is down. |
 ```
 
-- [ ] **Step 4: Verify no contradiction remains**
+- [ ] **Step 4: Bump the version and add a changelog entry**
+
+Two edits in the header block. First, line 5's `| Document version | 5.1.1 |` becomes `5.2.0`, and `| Last updated | 2026-09-03 |` becomes `2026-09-18`. Then add a new entry at the **top** of the `Changelog:` list, above the `5.1.1` entry, matching the existing entries' style:
+
+```markdown
+- **5.2.0 (2026-09-18)** — **Badge login.** Station 4 now exposes Station 2's `login_requested`/`operator_context` exchange, which §7 previously stated was not a Station 4 authentication request. A badge tag resolves against the replicated `fleet.badges` mirror, which is authoritative for `displayName` and `role`; the station's own user record fills only what the mirror leaves null. A badge active in the mirror signs in even when the matching Station 4 account is disabled, so badge revocation is a central operation and replication lag is revocation lag. Badge login is online-only and never uses the offline user cache that password login may use. Adds `badge_invalid`, `badge_unknown` and `badge_lookup_unavailable`.
+```
+
+Do not touch the `5.1.1` version string inside that older changelog entry — it is a historical record, not this document's version.
+
+- [ ] **Step 5: Verify no contradiction remains**
 
 ```bash
 grep -n -i "does not currently expose\|not a Station 4 authentication request" DOCS/Station4_Wastage_MQTT_Contract.md
+grep -n "Document version" DOCS/Station4_Wastage_MQTT_Contract.md
 ```
 
-Expected: no output.
+Expected: the first returns nothing; the second shows `5.2.0`.
 
-- [ ] **Step 5: Update the Android repo's CLAUDE.md contract version reference**
+- [ ] **Step 6: Update the Android repo's CLAUDE.md contract version reference**
 
 In `C:\Dev\Clients\PPNAM\Andriod\PPNAM_Station_4_AA\CLAUDE.md`, change the contract version from **5.1.1** to **5.2.0**.
 
-- [ ] **Step 6: Commit (both repos)**
+- [ ] **Step 7: Commit (both repos)**
 
 ```bash
 # Windows repo
