@@ -50,7 +50,7 @@ work:
 | What does a badge scan need to sign someone in? | **Badge tag alone**, exactly as Station 2 AA does it. Keeps schema 4.1 identical fleet-wide and adds no payload fields. |
 | Badge login while SQL Server is down? | **No — online only, fail clearly.** Password login still works offline via the existing user cache, so nobody is locked out; they fall back. |
 | Where is a badge scan live? | **Login screen only** (Station 2 parity). No app-wide listener, no mid-workflow operator switching, no data-loss questions. |
-| Who may badge in? | **Prefer local, fall back to the fleet mirror.** A Station 4 account wins when one exists; otherwise the replicated mirror's identity and role are accepted. |
+| Who may badge in? | **Prefer the central replica, fall back to local.** The replicated `fleet.badges` mirror is authoritative for identity and role; the local Station 4 account only supplies fields the mirror leaves null. An active badge in the mirror signs in even when the local account is disabled. |
 
 The fourth decision is the only permissive one, and it carries a risk accepted knowingly: two
 identity sources can disagree about the same person's role. Mitigation is in §2.
@@ -86,7 +86,6 @@ New error codes, all returned with `accepted: false`:
 |---|---|
 | `badge_invalid` | The `badgeTag` is missing, blank, or outside the accepted length/charset. |
 | `badge_unknown` | No matching active, non-deleted row in `fleet.badges`. A row that exists but is inactive or soft-deleted also returns this, deliberately — see §2. |
-| `badge_inactive` | The badge resolved to a Station 4 account that is disabled locally. |
 | `badge_lookup_unavailable` | The badge directory could not be read (SQL Server down). Distinct from `badge_unknown` on purpose — see §3. |
 
 The contract document bumps **5.1.1 → 5.2.0** (additive feature, minor). Two edits:
@@ -115,24 +114,32 @@ present as "every badge is unknown", so it gets a dedicated test.
 free of characters the column cannot hold. A failure returns `badge_invalid` without touching SQL,
 mirroring how `StartCoreAsync` validates username and nonce lengths up front.
 
-**Two distinct "no" answers, deliberately.** An inactive or soft-deleted badge row is filtered out by
-the query and so returns `badge_unknown`, not a code that confirms the badge exists. `badge_inactive`
-is reserved for the narrower case in step 4, where the badge is live in the mirror but the Station 4
-account it maps to is disabled locally — a state a local administrator caused and can reverse.
+**One "no" answer for an unusable badge.** The query filters on `is_active = 1 AND is_deleted = 0`,
+so a badge that is absent, inactive or soft-deleted is indistinguishable in the response: all three
+return `badge_unknown`. The station does not confirm that a badge exists but is switched off.
 
-**Identity resolution**, implementing the "prefer local, fall back to the mirror" decision:
+**Identity resolution**, implementing the "prefer the central replica, fall back to local" decision.
+The mirror is authoritative; the local account is consulted only to fill gaps:
 
-1. Resolve `badgeTag` → `fleet.badges` row. No row → `badge_unknown`.
-2. Look up `operator_id` in Station 4's own user table.
-3. **Hit, and active** → session identity is the local `StationUser`. Local role wins.
-4. **Hit, but inactive** → `badge_inactive`. A locally disabled account is not rescued by the mirror.
-5. **Miss** → synthesise the session identity from the mirror's `display_name` and `role`.
+1. Resolve `badgeTag` → `fleet.badges` row. No row → `badge_unknown`. The mirror is the sole
+   gatekeeper: this is the only check that can refuse a badge.
+2. Look up `operator_id` in Station 4's own user table. A miss is normal, not an error.
+3. Build the session identity **field by field**, mirror first: `display_name` and `role` are taken
+   from `fleet.badges` when non-null, and from the local `StationUser` only where the mirror's column
+   is null. Both columns are nullable in the schema, which is precisely why this is a per-field
+   fallback and not a wholesale choice of one source.
+4. If neither source supplies a field, it is empty — an absent role is not invented.
 
-**Mitigating the accepted risk.** Because two sources can supply a role, each session records which
-one resolved it, and that value is carried into the session audit outbox. A role disagreement
-between Station 4's user table and the replicated mirror is then diagnosable after the fact instead
-of silently changing what an operator may do. This is deliberately a record, not an enforcement
-mechanism — the decision was to let the mirror work.
+**The local account cannot refuse a badge.** Per the decision above, an active mirror badge signs its
+operator in even when the Station 4 account it maps to is disabled. This is a deliberate consequence
+of making central authoritative, and it means disabling a local account is **not** a revocation path
+for badge login — revocation happens centrally. §8 records the operational consequence; a dedicated
+test pins the behaviour so it cannot be "fixed" by accident later.
+
+**Diagnosing disagreement.** Each session records which source supplied its identity fields, and
+that value is carried into the session audit outbox. Where the local account and the mirror disagree
+about the same person's role, the session shows which one was applied. This is a record, not an
+enforcement mechanism — the decision was to let central win.
 
 ## 3. Online-only failure
 
@@ -162,9 +169,12 @@ session audit outbox inside one transaction — so contract §7's "a new success
 previous active session on the same handheld" is satisfied **for free**, with no new code and no
 second implementation to keep in step.
 
-`RecordSuccessfulLoginAsync` fires only when a local Station 4 user backed the session. A
-mirror-only identity has no local row whose last-login could be updated, and inventing one would
-create exactly the kind of shadow account the local-first rule is meant to avoid.
+`RecordSuccessfulLoginAsync` fires whenever a matching local Station 4 account exists, independently
+of whether the mirror or that account supplied the session's display name and role — last-login is
+telemetry about the account, not about which source won. When the badge resolves to an operator with
+no local account at all there is no row to update, and none is created: the mirror is the directory,
+and materialising shadow accounts from it would put Station 4 back in the business of owning identity
+that the central-first decision just moved away.
 
 Session lifetime, state values (`Active` / `Closed`) and device binding are unchanged — badge login
 produces a session indistinguishable from a SCRAM one apart from how it was authenticated.
@@ -207,18 +217,25 @@ the vendor `com.rscja` SDK — which is **not** present on this machine and woul
 discovering that early matters more than any other single step here.
 
 **UX.** `LoginUiState` gains a badge-read acknowledgement so a scan is visibly received before the
-network round-trip, and the four new error codes map to operator-readable text. In particular
+network round-trip, and the three new error codes map to operator-readable text. In particular
 `badge_lookup_unavailable` must say to sign in with username and password, since that is the action
 that will actually work. Today all of these present as an undifferentiated timeout.
 
 ## 7. Testing
 
-Backend, alongside `MqttAuthenticationTests`: unknown tag, inactive badge, soft-deleted badge, tag
-normalisation (mixed case and surrounding whitespace resolve), SQL unavailable →
-`badge_lookup_unavailable` and *not* `badge_unknown`, `messageId` replay returning the stored
-response, same id with different body → `message_id_reused`, previous active session closed and
-audited on a new badge login, and both identity-resolution paths including the locally-inactive
-refusal.
+Backend, alongside `MqttAuthenticationTests`: unknown tag, inactive badge and soft-deleted badge all
+returning `badge_unknown`, tag normalisation (mixed case and surrounding whitespace resolve), SQL
+unavailable → `badge_lookup_unavailable` and *not* `badge_unknown`, `messageId` replay returning the
+stored response, same id with different body → `message_id_reused`, and previous active session
+closed and audited on a new badge login.
+
+Identity resolution gets its own set, because precedence is the part most likely to be quietly
+reversed by a later change: the mirror's `display_name`/`role` win over a local account that
+disagrees; a null mirror column falls back to the local account's value; a badge with no local
+account at all still signs in; neither source supplying a role yields an empty role rather than a
+guessed one; and — pinned deliberately — **a locally-disabled account with an active mirror badge is
+admitted**, with a comment pointing at this spec so the behaviour reads as intended rather than as a
+missing check.
 
 Android: `LoginViewModel` tests for badge success, each badge failure code, and that the scan
 listener re-arms after a failure so a second attempt is possible without restarting the app.
@@ -227,6 +244,14 @@ On-device: a real badge on the C72, end to end, once `fleet.badges` is confirmed
 
 ## 8. Risks and rollout
 
+- **Badge revocation is central-only, by design.** Because the central replica is authoritative, a
+  station administrator disabling a Station 4 account does **not** stop that operator badging in —
+  only deactivating or deleting the badge centrally does, and then only once replication has
+  delivered it. Station 4's own user administration remains the revocation path for *password*
+  login, so the two methods revoke through different systems. This is a deliberate consequence of
+  the central-first decision, not an oversight, but it is the fact most likely to surprise whoever
+  operates the station, so it needs to reach the SOP and not just this spec. Replication lag is
+  therefore also revocation lag.
 - **`fleet.badges` may be empty in the target deployment.** The table exists and is indexed, but it
   is populated by central replication. If nothing has been delivered, the feature is untestable
   end-to-end however correct the code is. Verify before implementation reaches the device stage.
