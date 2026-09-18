@@ -1838,3 +1838,377 @@ git commit -m "chore: graphify update after badge login"
 3. Task 8's control-intent extra keys are unverified until Task 0 runs; the task says to replace them with the probe's findings rather than trust the skeleton.
 
 **Type consistency checked:** `FleetBadge` (Task 2) is consumed with the same four positional fields in Tasks 2 and 3. `BadgeTag.Normalize` / `IsValid` / `Mask` are used as defined. `UserRoleLabels.Parse` (Task 1) is called in Task 3 only. `BadgeLoginAsync` / `PrepareBadgeLoginAsync` signatures match between Task 3's definition and Task 4's call. `LoginUiState.BadgeRead` is referenced consistently across Task 7's steps. The Android fake channel implements `RequestChannel`'s exact six-parameter signature.
+
+---
+
+## Station-half remediation (Tasks 10–11)
+
+These two tasks came out of the whole-branch review of Tasks 1–5 and **execute before Tasks 6–9**, which are the Android half in a different repository. They close the review's Critical finding and the one revocation gap the user chose to fix.
+
+Background, verified during the review: a badge holder with no `dbo.station4_users` row receives a session whose `UserId` exists in no local table. `FK_station4_wastage_captured_user` is live on fresh installs (`Station4SchemaSql.cs:251`) and on migrations (`:140`), while `FK_station4_operator_sessions_user` is dropped and never re-added (`:142-143`) — so sessions are exempt but captures are not. A capture by such an operator raises SQL error 547, which is not in the outbox's `2601 or 2627` conflict filter (`OutboxSyncService.cs:81-84`), so it lands in the generic `catch (SqlException)` (`:104`) that sets `IsOnline = false`, reports "SQL Server is unavailable", and `break`s the sync loop — stalling the entire outbox for every operator and both handhelds, permanently, while blaming the database.
+
+---
+
+### Task 10: Shadow-provision badge operators, and let the newest badge row decide
+
+**Files:**
+- Modify: `PPNAM.Station4.Core/Models/Station4Models.cs` (`FleetBadge`)
+- Modify: `PPNAM.Station4.Core/Data/IStation4Repository.cs`
+- Modify: `PPNAM.Station4.Core/Data/SqlStation4Repository.cs` (`FindBadgeAsync`, plus a new method)
+- Modify: `PPNAM.Station4.Core/Services/MqttScramAuthenticationService.cs` (`BadgeLoginCoreAsync`)
+- Modify: `PPNAM.Station4.Tests/CoreProductionTests.cs` (`TestRepository`)
+- Test: `PPNAM.Station4.Tests/MqttBadgeLoginTests.cs`
+
+**Interfaces:**
+- Consumes: `BadgeTag`, `UserRoleLabels.Parse`, `FleetBadge`, `CreateMqttOperatorSessionAsync` (existing).
+- Produces:
+  - `FleetBadge` gains `bool IsActive` and `bool IsDeleted` (six positional fields) plus an `UpdatedAtUtc` init property.
+  - `Task<bool> IStation4Repository.EnsureBadgeOperatorAsync(StationUser user, DateTime utcNow, CancellationToken cancellationToken = default)` — idempotent; returns true when a row exists afterwards.
+  - `TestRepository.EnsureBadgeOperatorCalls` (a `List<StationUser>`) and `TestRepository.EnsureBadgeOperatorException`.
+
+- [ ] **Step 1: Write the failing tests**
+
+Append to `PPNAM.Station4.Tests/MqttBadgeLoginTests.cs`, inside `MqttBadgeLoginTests`:
+
+```csharp
+    [Fact]
+    public async Task NewestBadgeRowDecides_EvenWhenAnOlderRowFromAnotherStationIsStillActive()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        var id = Guid.NewGuid();
+        // Station B's stale row is still active; station A revoked the card more recently.
+        repository.Badges.Add(new FleetBadge(
+            "E2801170ABAB", id.ToString(), "Operator One", "Operator", true, false)
+            { UpdatedAtUtc = Now.AddDays(-7) });
+        repository.Badges.Add(new FleetBadge(
+            "E2801170ABAB", id.ToString(), "Operator One", "Operator", false, false)
+            { UpdatedAtUtc = Now.AddHours(-1) });
+
+        var result = await service.BadgeLoginAsync("E2801170ABAB", "scanner_1", Now);
+
+        Assert.False(result.Success);
+        Assert.Equal("badge_unknown", result.ErrorCode);
+    }
+
+    [Fact]
+    public async Task AnInactiveBadgeIsRefusedAsUnknown()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        repository.Badges.Add(new FleetBadge(
+            "E2801170ACAC", Guid.NewGuid().ToString(), "Operator One", "Operator", false, false));
+
+        var result = await service.BadgeLoginAsync("E2801170ACAC", "scanner_1", Now);
+
+        Assert.False(result.Success);
+        Assert.Equal("badge_unknown", result.ErrorCode);
+    }
+
+    [Fact]
+    public async Task ASoftDeletedBadgeIsRefusedAsUnknown()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        repository.Badges.Add(new FleetBadge(
+            "E2801170ADAD", Guid.NewGuid().ToString(), "Operator One", "Operator", true, true));
+
+        var result = await service.BadgeLoginAsync("E2801170ADAD", "scanner_1", Now);
+
+        Assert.False(result.Success);
+        Assert.Equal("badge_unknown", result.ErrorCode);
+    }
+
+    [Fact]
+    public async Task ABadgeHolderWithNoLocalAccount_IsShadowProvisioned()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        var id = Guid.NewGuid();
+        repository.Badges.Add(new FleetBadge(
+            "E2801170AEAE", id.ToString(), "Visiting Operator", "Manager", true, false));
+
+        var result = await service.BadgeLoginAsync("E2801170AEAE", "scanner_1", Now);
+
+        Assert.True(result.Success, result.Message);
+        var provisioned = Assert.Single(repository.EnsureBadgeOperatorCalls);
+        Assert.Equal(id, provisioned.UserId);
+        Assert.Equal("Visiting Operator", provisioned.Name);
+        Assert.Equal(StationRole.Manager, provisioned.Role);
+        // A shadow account must never be usable for a password sign-in.
+        Assert.Equal(0, provisioned.ScramVerifierVersion);
+        Assert.True(provisioned.IsActive);
+    }
+
+    [Fact]
+    public async Task AnExistingLocalAccount_IsNotShadowProvisioned()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        var id = Guid.NewGuid();
+        repository.Users.Add(LocalUser(id, "Local Name", StationRole.Worker));
+        repository.Badges.Add(new FleetBadge(
+            "E2801170AFAF", id.ToString(), "Central Name", "Manager", true, false));
+
+        var result = await service.BadgeLoginAsync("E2801170AFAF", "scanner_1", Now);
+
+        Assert.True(result.Success, result.Message);
+        Assert.Empty(repository.EnsureBadgeOperatorCalls);
+    }
+
+    // The whole point of shadow-provisioning is that a capture by this operator must not violate
+    // FK_station4_wastage_captured_user and stall the outbox. If provisioning cannot be completed,
+    // issuing the session anyway would recreate exactly that failure, so the login fails closed.
+    [Fact]
+    public async Task IfShadowProvisioningFails_TheLoginIsRefusedRatherThanIssuingAStrandedSession()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        repository.EnsureBadgeOperatorException =
+            new InvalidOperationException("SQL Server is unavailable.");
+        repository.Badges.Add(new FleetBadge(
+            "E2801170B0B0", Guid.NewGuid().ToString(), "Visiting Operator", "Operator", true, false));
+
+        var result = await service.BadgeLoginAsync("E2801170B0B0", "scanner_1", Now);
+
+        Assert.False(result.Success);
+        Assert.Equal("badge_lookup_unavailable", result.ErrorCode);
+    }
+```
+
+Every existing `new FleetBadge(...)` in this file and in `CoreProductionTests.cs` gains the two new positional arguments `true, false` (active, not deleted).
+
+- [ ] **Step 2: Run the tests to verify they fail**
+
+Run: `dotnet test PPNAM.Station4.Tests/PPNAM.Station4.Tests.csproj --filter MqttBadgeLogin`
+Expected: compile failure — `FleetBadge` has four positional fields, not six, and `EnsureBadgeOperatorCalls` does not exist.
+
+- [ ] **Step 3: Extend `FleetBadge`**
+
+In `Station4Models.cs`:
+
+```csharp
+/// <summary>
+/// A row of the replicated fleet.badges mirror. DisplayName and Role are nullable in the schema,
+/// which is why badge login falls back to the local account per field rather than choosing one
+/// source outright. IsActive/IsDeleted are carried rather than filtered away in SQL so that the
+/// most recently updated row decides — including when that row is the one revoking the card.
+/// </summary>
+public sealed record FleetBadge(
+    string BadgeTag,
+    string OperatorId,
+    string? DisplayName,
+    string? Role,
+    bool IsActive,
+    bool IsDeleted)
+{
+    /// <summary>Orders rows arriving from different source stations; not part of identity.</summary>
+    public DateTime UpdatedAtUtc { get; init; }
+}
+```
+
+- [ ] **Step 4: Let the newest row decide**
+
+In `SqlStation4Repository.FindBadgeAsync`, replace the query and the reader:
+
+```csharp
+        // The newest row is the current truth, revoked or not. Filtering is_active before ordering
+        // would let a stale active row from one source station outvote a more recent revocation
+        // from another — the one direction that must never fail open.
+        const string sql = """
+SELECT TOP (1) badge_tag, operator_id, display_name, role, is_active, is_deleted, updated_at_utc
+FROM fleet.badges
+WHERE badge_tag = @tag
+ORDER BY updated_at_utc DESC;
+""";
+```
+
+Build the record with all six positional fields, reading `is_active` and `is_deleted` with `GetBoolean`, and set `UpdatedAtUtc = reader.GetDateTime(6)`.
+
+- [ ] **Step 5: Add the provisioning method to the interface**
+
+In `IStation4Repository.cs`, beside the other badge members:
+
+```csharp
+    Task<bool> EnsureBadgeOperatorAsync(StationUser user, DateTime utcNow, CancellationToken cancellationToken = default);
+```
+
+- [ ] **Step 6: Implement provisioning**
+
+In `SqlStation4Repository.cs`. Two schema traps to respect: `dbo.station4_users` has `UQ_station4_users_name UNIQUE (name)` with `name NOT NULL`, while the mirror's `display_name` is nullable — so the name must be deterministic, stable and collision-resistant. And `CK_station4_users_role` accepts only the four enum names, so the role is written with `.ToString()`, never `UserRoleLabels.Display`, which yields `Operator`/`Admin`.
+
+```csharp
+    /// <summary>
+    /// Materialises a local account for a badge holder the mirror knows and this station does not.
+    /// Without it, a capture by that operator violates FK_station4_wastage_captured_user, which the
+    /// outbox reports as "SQL Server is unavailable" and then retries forever, stalling every
+    /// station's sync. The row carries no SCRAM verifier, so it can never be used for a password
+    /// login. Idempotent: a duplicate insert from a concurrent login is success, not failure.
+    /// </summary>
+    public async Task<bool> EnsureBadgeOperatorAsync(StationUser user, DateTime utcNow, CancellationToken cancellationToken = default)
+    {
+        var suffix = user.UserId.ToString("N")[..8];
+        var preferred = string.IsNullOrWhiteSpace(user.Name)
+            ? $"Badge operator {suffix}"
+            : user.Name.Trim();
+        const string sql = """
+IF NOT EXISTS (SELECT 1 FROM dbo.station4_users WHERE user_id = @userId)
+BEGIN
+    DECLARE @candidate NVARCHAR(200) = @preferred;
+    IF EXISTS (SELECT 1 FROM dbo.station4_users WHERE name = @candidate)
+        SET @candidate = LEFT(@preferred, 180) + N' (' + @suffix + N')';
+    INSERT dbo.station4_users
+        (user_id, name, role, scram_verifier_version, is_active,
+         created_by, created_at_utc, updated_by, updated_at_utc)
+    VALUES
+        (@userId, @candidate, @role, 0, 1, @actor, @now, @actor, @now);
+END
+""";
+        await using var connection = CreateConnection();
+        await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+        await using var command = NewCommand(connection, sql);
+        command.Parameters.Add("@userId", SqlDbType.UniqueIdentifier).Value = user.UserId;
+        command.Parameters.Add("@preferred", SqlDbType.NVarChar, 200).Value = preferred;
+        command.Parameters.Add("@suffix", SqlDbType.NVarChar, 8).Value = suffix;
+        command.Parameters.Add("@role", SqlDbType.VarChar, 24).Value = user.Role.ToString();
+        command.Parameters.Add("@actor", SqlDbType.NVarChar, 200).Value = "badge-login";
+        command.Parameters.Add("@now", SqlDbType.DateTime2).Value = utcNow;
+        try
+        {
+            await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (SqlException exception) when (exception.Number is 2601 or 2627)
+        {
+            // A concurrent badge login for the same new operator won the race. The row exists,
+            // which is all this method promises.
+        }
+        return true;
+    }
+```
+
+- [ ] **Step 7: Refuse revoked badges and provision missing operators**
+
+In `MqttScramAuthenticationService.BadgeLoginCoreAsync`, after the badge is resolved and before the `Guid.TryParse` check, refuse a badge whose newest row says revoked — reported as `badge_unknown`, because the station must not confirm that a badge exists but is switched off:
+
+```csharp
+            if (!badge.IsActive || badge.IsDeleted)
+            {
+                return MqttAuthenticationResult<MqttOperatorSession>.Fail(
+                    "badge_unknown",
+                    "This badge is not registered.");
+            }
+```
+
+Then, after the identity is resolved and before the session is created, provision a missing local account. This runs only on the persisted path, and a failure refuses the login:
+
+```csharp
+        if (persistMutation && localUser is null)
+        {
+            try
+            {
+                await _repository.EnsureBadgeOperatorAsync(user, utcNow, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception exception)
+                when (exception is SqlException or InvalidOperationException)
+            {
+                // Issuing a session we could not provision would strand this operator's captures
+                // behind a foreign key and stall the outbox for everyone — fail closed instead.
+                return MqttAuthenticationResult<MqttOperatorSession>.Fail(
+                    "badge_lookup_unavailable",
+                    "The badge directory is unavailable. Sign in with your username and password.");
+            }
+        }
+```
+
+- [ ] **Step 8: Extend the test fake**
+
+In `CoreProductionTests.cs`, inside `TestRepository`:
+
+```csharp
+    public List<StationUser> EnsureBadgeOperatorCalls { get; } = [];
+    public Exception? EnsureBadgeOperatorException { get; set; }
+
+    public Task<bool> EnsureBadgeOperatorAsync(StationUser user, DateTime utcNow, CancellationToken cancellationToken = default)
+    {
+        if (EnsureBadgeOperatorException is not null) throw EnsureBadgeOperatorException;
+        EnsureBadgeOperatorCalls.Add(user);
+        Users.Add(user);
+        return Task.FromResult(true);
+    }
+```
+
+and change `FindBadgeAsync` to pick the newest matching row rather than the first, mirroring the SQL:
+
+```csharp
+        return Task.FromResult(Badges
+            .Where(x => BadgeTag.Normalize(x.BadgeTag) == normalized)
+            .OrderByDescending(x => x.UpdatedAtUtc)
+            .FirstOrDefault());
+```
+
+- [ ] **Step 9: Run the focused tests**
+
+Run: `dotnet test PPNAM.Station4.Tests/PPNAM.Station4.Tests.csproj --filter MqttBadgeLogin`
+Expected: PASS.
+
+- [ ] **Step 10: Run the full suite and build**
+
+Run `dotnet test PPNAM.Station4.Tests/PPNAM.Station4.Tests.csproj` and `dotnet build PPNAM.Station4.Core/PPNAM.Station4.Core.csproj`.
+Expected: all passing, 0 warnings. Paste both raw outputs into the report.
+
+- [ ] **Step 11: Commit**
+
+```bash
+git add -A
+git commit -m "feat: shadow-provision badge operators and let the newest badge row decide"
+```
+
+---
+
+### Task 11: Document shadow-provisioning and the revocation rules
+
+**Files:**
+- Modify: `DOCS/Station4_Wastage_MQTT_Contract.md`
+
+- [ ] **Step 1: Extend the §7 Badge login bullets**
+
+Add three bullets to the `### Badge login` list:
+
+```markdown
+- Where a badge resolves to an operator this station has no account for, Station 4 creates one from
+  the mirror on first sign-in. That account carries no password verifier and can never be used for
+  a SCRAM login; it exists so the operator's collections and captures satisfy the station's own
+  foreign keys.
+- When the same `badgeTag` exists at more than one source station, the **most recently updated row
+  decides**, whether it grants or revokes. A stale active row cannot outvote a newer revocation.
+- Revocation is performed **on the badge**, at source. Deactivating or deleting the operator's
+  *user* account centrally does **not** stop the badge: incremental replication updates users and
+  badges independently, so the badge row stays active until it is itself revoked.
+```
+
+- [ ] **Step 2: Add the changelog entry and bump the version**
+
+Add a new entry above the `5.2.0` one:
+
+```markdown
+- **5.2.1 (2026-09-18)** — Badge login corrections, no wire change. A badge resolving to an operator with no Station 4 account now provisions one from the mirror on first sign-in, without a password verifier; previously such a session could be issued but its captures violated the station's own foreign key. Where the same badge exists at several source stations, the most recently updated row now decides, so a stale active row can no longer outvote a newer revocation. Documents that revocation is performed on the badge, and that deactivating the user account centrally does not stop it.
+```
+
+Change `| Document version |` to `5.2.1`. Leave the `5.2.0` and `5.1.1` entries untouched — they are history.
+
+- [ ] **Step 3: Verify**
+
+```bash
+grep -n "Document version" DOCS/Station4_Wastage_MQTT_Contract.md
+grep -c "^- \*\*5\.2\.0 (2026-09-18)" DOCS/Station4_Wastage_MQTT_Contract.md
+```
+
+Expected: `5.2.1`, and `1` (the 5.2.0 entry survives).
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add DOCS/Station4_Wastage_MQTT_Contract.md
+git commit -m "docs: contract 5.2.1 documents shadow-provisioning and revocation rules"
+```
