@@ -1273,11 +1273,15 @@ Do not touch the `5.1.1` version string inside that older changelog entry — it
 - [ ] **Step 5: Verify no contradiction remains**
 
 ```bash
-grep -n -i "does not currently expose\|not a Station 4 authentication request" DOCS/Station4_Wastage_MQTT_Contract.md
+grep -n -i "does not currently expose\|not a Station 4 authentication request" \
+  DOCS/Station4_Wastage_MQTT_Contract.md | grep -v "5\.2\.0 (2026-09-18)"
 grep -n "Document version" DOCS/Station4_Wastage_MQTT_Contract.md
+grep -c "^- \*\*5\.1\.1 (2026-09-03)" DOCS/Station4_Wastage_MQTT_Contract.md
 ```
 
-Expected: the first returns nothing; the second shows `5.2.0`.
+Expected: the first returns nothing; the second shows `5.2.0`; the third shows `1`.
+
+The `grep -v` is deliberate and not a way of hiding a failure. Step 4's changelog entry legitimately contains the words "which §7 previously stated was not a Station 4 authentication request" — narrating the reversal is what the entry is *for*. Without the exclusion this check contradicts the text the same task inserts. What it still catches is the thing that matters: the denial surviving anywhere outside that one historical sentence. The third check guards the trap in Step 4 — that the older `5.1.1` entry was not swept up by a find-and-replace.
 
 - [ ] **Step 6: Update the Android repo's CLAUDE.md contract version reference**
 
