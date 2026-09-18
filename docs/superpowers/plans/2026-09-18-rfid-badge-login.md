@@ -627,6 +627,44 @@ public sealed class MqttBadgeLoginTests
         Assert.Equal("local", result.Value.IdentitySource);
     }
 
+    // The two tests below are what make the fallback provably PER FIELD. Without them, a wholesale
+    // implementation — "if the mirror has both a name and a role use the mirror entirely, else use
+    // the local account entirely" — passes every other test in this file. Each asserts that the two
+    // identity fields came from DIFFERENT sources, which a wholesale implementation cannot do.
+    [Fact]
+    public async Task MirrorNameWithNullRole_TakesTheRoleFromTheLocalAccount()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        var id = Guid.NewGuid();
+        repository.Users.Add(LocalUser(id, "Local Name", StationRole.Administrator));
+        repository.Badges.Add(new FleetBadge("E2801170F1F1", id.ToString(), "Central Name", null));
+
+        var result = await service.BadgeLoginAsync("E2801170F1F1", "scanner_1", Now);
+
+        Assert.True(result.Success, result.Message);
+        Assert.Equal("Central Name", result.Value!.UserName);
+        Assert.Equal(StationRole.Administrator, result.Value.Role);
+        Assert.Equal("mixed", result.Value.IdentitySource);
+    }
+
+    [Fact]
+    public async Task MirrorRoleWithNullName_TakesTheNameFromTheLocalAccount()
+    {
+        using var temp = new TempDirectory();
+        var (service, repository, _) = await CreateAsync(temp);
+        var id = Guid.NewGuid();
+        repository.Users.Add(LocalUser(id, "Local Name", StationRole.Worker));
+        repository.Badges.Add(new FleetBadge("E2801170F2F2", id.ToString(), null, "Manager"));
+
+        var result = await service.BadgeLoginAsync("E2801170F2F2", "scanner_1", Now);
+
+        Assert.True(result.Success, result.Message);
+        Assert.Equal("Local Name", result.Value!.UserName);
+        Assert.Equal(StationRole.Manager, result.Value.Role);
+        Assert.Equal("mixed", result.Value.IdentitySource);
+    }
+
     [Fact]
     public async Task BadgeWithNoLocalAccount_StillSignsIn()
     {
@@ -640,6 +678,7 @@ public sealed class MqttBadgeLoginTests
         Assert.True(result.Success, result.Message);
         Assert.Equal("Visiting Operator", result.Value!.UserName);
         Assert.Equal(StationRole.Worker, result.Value.Role);
+        Assert.Equal("central", result.Value.IdentitySource);
     }
 
     // Deliberate, per docs/superpowers/specs/2026-09-18-rfid-badge-login-design.md section 2:
@@ -887,7 +926,7 @@ In `PPNAM.Station4.Core/Services/MqttScramAuthenticationService.cs`, add `using 
 - [ ] **Step 5: Run the tests to verify they pass**
 
 Run: `dotnet test PPNAM.Station4.Tests/PPNAM.Station4.Tests.csproj --filter MqttBadgeLoginTests`
-Expected: PASS (11 tests).
+Expected: PASS (13 tests).
 
 - [ ] **Step 6: Run the full suite for regressions**
 
@@ -1127,7 +1166,7 @@ Add after `ProcessLogoutAsync`:
 - [ ] **Step 8: Run the tests to verify they pass**
 
 Run: `dotnet test PPNAM.Station4.Tests/PPNAM.Station4.Tests.csproj --filter MqttBadgeLogin`
-Expected: PASS (15 tests across both classes).
+Expected: PASS (17 tests across both classes).
 
 - [ ] **Step 9: Run the full suite**
 
