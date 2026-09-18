@@ -406,7 +406,22 @@ In `PPNAM.Station4.Core/Data/IStation4Repository.cs`, after `FindUserByNameAsync
 
 - [ ] **Step 7: Implement them in SQL**
 
-In `PPNAM.Station4.Core/Data/SqlStation4Repository.cs`, after `FindUserByNameAsync` (ends line 57). Add `using PPNAM.Station4.Core.Security;` if absent:
+In `PPNAM.Station4.Core/Data/SqlStation4Repository.cs`, after `FindUserByNameAsync`. Add `using PPNAM.Station4.Core.Security;` — it is absent.
+
+**First, factor out the shared column list.** `GetUsersAsync` and `FindUserByNameAsync` already repeat the `dbo.station4_users` SELECT column list verbatim, and `FindUserByOperatorIdAsync` would make a third copy — so a renamed column would need three sites kept in sync, and a missed one compiles fine while reading the wrong column. The file already establishes this pattern with `FleetUserSelectSql`, so follow it:
+
+```csharp
+    private const string StationUserSelectSql = """
+SELECT user_id, name, role, scram_salt, scram_iterations, scram_stored_key, scram_server_key,
+       scram_verifier_version, is_active, created_by, created_at_utc,
+       updated_by, updated_at_utc, last_login_utc, row_version
+FROM dbo.station4_users
+""";
+```
+
+Rewrite `GetUsersAsync` and `FindUserByNameAsync` to build their SQL from it (appending `ORDER BY name;` and `WHERE name = @name;` respectively) before adding the new methods. Leave the INSERT/UPDATE column lists alone — they are a different column set with no `row_version`.
+
+Then add the two new methods:
 
 ```csharp
     public async Task<FleetBadge?> FindBadgeAsync(string badgeTag, CancellationToken cancellationToken = default)
@@ -437,12 +452,7 @@ ORDER BY updated_at_utc DESC;
     public async Task<StationUser?> FindUserByOperatorIdAsync(string operatorId, CancellationToken cancellationToken = default)
     {
         if (!Guid.TryParse(operatorId, out var userId)) return null;
-        const string sql = """
-SELECT user_id, name, role, scram_salt, scram_iterations, scram_stored_key, scram_server_key,
-       scram_verifier_version, is_active, created_by, created_at_utc,
-       updated_by, updated_at_utc, last_login_utc, row_version
-FROM dbo.station4_users WHERE user_id = @userId;
-""";
+        const string sql = $"{StationUserSelectSql} WHERE user_id = @userId;";
         await using var connection = CreateConnection();
         await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = NewCommand(connection, sql);
