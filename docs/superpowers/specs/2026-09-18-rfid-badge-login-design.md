@@ -141,6 +141,14 @@ that value is carried into the session audit outbox. Where the local account and
 about the same person's role, the session shows which one was applied. This is a record, not an
 enforcement mechanism — the decision was to let central win.
 
+> **Implementation note (2026-09-18).** Planning found that persisting this costs a column on the
+> SQLite `mqtt_operator_sessions` table — created with `CREATE TABLE IF NOT EXISTS`, so existing
+> installations need a migration — *and* one on the SQL audit schema, for a single diagnostic field.
+> `docs/superpowers/plans/2026-09-18-rfid-badge-login.md` therefore delivers it as an in-memory
+> `MqttOperatorSession.IdentitySource` plus structured logging at the decision point, and flags the
+> reduction for a decision. If the persisted audit trail is wanted, that plan's Task 3 grows a
+> migration step and this paragraph stands as written.
+
 ## 3. Online-only failure
 
 `MqttScramAuthenticationService.LoadCredentialAsync` falls back to the local protected user cache
