@@ -87,12 +87,13 @@ adb devices
 
 Expected: `HC720DE260100322	device`. If it shows `unauthorized`, accept the prompt on the handheld.
 
-- [ ] **Step 2: Start an unfiltered logcat capture**
+- [ ] **Step 2: Clear the log buffer**
 
 ```bash
 adb logcat -c
-adb logcat -v time > /c/Users/Jonathan/AppData/Local/Temp/claude/rfid-probe.log &
 ```
+
+Do **not** background a `logcat` follow here: shell jobs do not survive between tool calls, so it could never be stopped and would orphan. The buffer is read with `-d` after the scan instead (Step 6), which captures the same evidence.
 
 - [ ] **Step 3: Open the Chainway UHF demo and scan a real badge**
 
@@ -114,19 +115,16 @@ Inspect its profile configuration for (a) a UHF/RFID data source and (b) an "int
 
 - [ ] **Step 5: If an intent output exists, point it at this app and verify**
 
-Set the intent action to `com.mitas.ppnam.station4aa.ACTION_SCAN`, then scan again and search the capture:
+Set the intent action to `com.mitas.ppnam.station4aa.ACTION_SCAN`, then scan again.
+
+- [ ] **Step 6: Dump the buffer and record the verdict**
 
 ```bash
+adb logcat -d -v time > /c/Users/Jonathan/AppData/Local/Temp/claude/rfid-probe.log
 grep -i "ACTION_SCAN\|rscja.*RFID\|com.scanner.broadcast" /c/Users/Jonathan/AppData/Local/Temp/claude/rfid-probe.log | head -20
 ```
 
-Expected on success: a broadcast line naming one of those actions.
-
-- [ ] **Step 6: Stop the capture and record the verdict**
-
-```bash
-kill %1
-```
+Expected on success: a broadcast line naming one of those actions. An empty result on a chatty device may mean the read rolled out of the buffer — clear it with `adb logcat -c` and rescan before concluding `SDK`.
 
 Write `docs/superpowers/plans/2026-09-18-rfid-probe-findings.md` containing: the verdict (`BROADCAST` or `SDK`), whether the demo app read the badge, the exact tag string observed, which broadcast action carried it (if any), and the InfoWedge options seen. State the tag's apparent format explicitly.
 
@@ -290,7 +288,9 @@ public sealed class BadgeTagTests
 
     [Theory]
     [InlineData("E280117000A1B2", "****A1B2")]
-    [InlineData("A1B2", "****A1B2")]
+    // A tag of four characters or fewer is masked entirely: revealing its last four would
+    // disclose the whole credential, which is the one thing Mask exists to prevent.
+    [InlineData("A1B2", "****")]
     [InlineData("B2", "****")]
     [InlineData(null, "****")]
     public void Mask_KeepsOnlyTheLastFourCharacters(string? value, string expected) =>
@@ -1365,7 +1365,8 @@ class AuthUseCaseTest {
         val channel = FakeAuthChannel(outcome)
         val holder = OperatorSessionHolder()
         return Triple(
-            AuthUseCase(channel, holder, ScramExchange(channel, DEVICE_ID), DEVICE_ID),
+            // ScramExchange takes only the channel — deviceId is an authenticate() argument.
+            AuthUseCase(channel, holder, ScramExchange(channel), DEVICE_ID),
             channel,
             holder,
         )
@@ -1472,7 +1473,7 @@ Then in `loginWithBadge`, replace the `MqttOutcome.Rejected` arm:
 Run: `./gradlew testDebugUnitTest --tests "*AuthUseCaseTest*"`
 Expected: PASS (6 tests).
 
-If `ScramExchange`'s constructor also demands the concrete `MqttRequestChannel`, change it to `RequestChannel` the same way — it is the same one-word substitution.
+`ScramExchange`'s constructor **does** demand the concrete `MqttRequestChannel` (verified: `ScramExchange(private val requestChannel: MqttRequestChannel)`), so change its parameter type to `RequestChannel` too — the same one-word substitution. Its only constructor argument is the channel; `deviceId` is passed per call to `authenticate()`.
 
 - [ ] **Step 9: Run the full unit suite**
 
