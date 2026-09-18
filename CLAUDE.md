@@ -3,7 +3,12 @@
 ## External directory: C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4
 
 This is the sibling WPF/Core/CLI repo for PPNAM Station 4 (not this Android app). It is **read-only**
-reference material — never edit or write to any file under it. It moved here from the old
+reference material by default — never edit or write to any file under it, **except** for the RFID
+badge login work described in
+`docs/superpowers/specs/2026-09-18-rfid-badge-login-design.md`, which the user explicitly scoped to
+span both repos. That feature may modify the station's authentication processor/service, repository,
+schema, contract document and tests. Nothing else in that repo is in scope; when the badge feature
+is merged and deployed, this exception should be reviewed. It moved here from the old
 `C:\Dev\PPNAM-Station-4` path; that path no longer exists. The normative MQTT wire contract this
 Android app implements lives at
 `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`, currently
