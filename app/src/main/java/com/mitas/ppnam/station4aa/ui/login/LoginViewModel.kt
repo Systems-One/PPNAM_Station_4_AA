@@ -61,7 +61,11 @@ class LoginViewModel(
     }
 
     fun submitCredentials(username: String, password: String) {
-        attemptLogin(LoginMethod.Credentials(username, password))
+        if (username.isBlank() || password.isBlank()) {
+            _uiState.value = LoginUiState.Error("Please fill in all fields")
+            return
+        }
+        attemptLogin(LoginMethod.Credentials(username.trim(), password))
     }
 
     private fun attemptLogin(method: LoginMethod) {
@@ -79,7 +83,7 @@ class LoginViewModel(
                     _navigationEvent.send("home")
                 }
                 .onFailure { e ->
-                    _uiState.value = LoginUiState.Error(e.message ?: "Login failed")
+                    _uiState.value = LoginUiState.Error(loginErrorMessage(e))
                 }
         }
     }

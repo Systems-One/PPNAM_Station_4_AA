@@ -17,12 +17,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -43,6 +48,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
@@ -66,11 +72,18 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val connectionStatus by viewModel.connectionStatus.collectAsState()
-    var username by remember { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
+    // Deliberately NOT rememberSaveable: a password in the saved-instance Bundle is sensitive-data
+    // exposure. The portrait lock (manifest) already prevents the rotation loss S4-08 described.
     var password by remember { mutableStateOf("") }
+    var showPassword by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val submit: () -> Unit = {
+        focusManager.clearFocus()
+        viewModel.submitCredentials(username, password)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.navigationEvent.collect { destination ->
@@ -133,6 +146,14 @@ fun LoginScreen(
                     modifier = Modifier.padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    if (uiState is LoginUiState.Error) {
+                        Text(
+                            text = (uiState as LoginUiState.Error).message,
+                            color = DangerRed,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
                     OutlinedTextField(
                         value = username,
                         onValueChange = { username = it },
@@ -154,14 +175,21 @@ fun LoginScreen(
                         label = { Text("Password") },
                         singleLine = true,
                         enabled = uiState !is LoginUiState.LoggingIn,
-                        visualTransformation = PasswordVisualTransformation(),
+                        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
                         ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { viewModel.submitCredentials(username, password) }
-                        ),
+                        keyboardActions = KeyboardActions(onDone = { submit() }),
+                        trailingIcon = {
+                            IconButton(onClick = { showPassword = !showPassword }) {
+                                Icon(
+                                    imageVector = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                    contentDescription = if (showPassword) "Hide password" else "Show password",
+                                    tint = TextMuted,
+                                )
+                            }
+                        },
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = AmberPrimary,
                             focusedLabelColor = AmberPrimary,
@@ -170,16 +198,8 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    if (uiState is LoginUiState.Error) {
-                        Text(
-                            text = (uiState as LoginUiState.Error).message,
-                            color = DangerRed,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-
                     Button(
-                        onClick = { viewModel.submitCredentials(username, password) },
+                        onClick = submit,
                         enabled = uiState !is LoginUiState.LoggingIn,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -199,10 +219,11 @@ fun LoginScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         HorizontalDivider(Modifier.weight(1f), color = GraphiteBorder)
                         Text(
-                            "  or scan your badge  ",
+                            "or scan your badge",
                             style = MaterialTheme.typography.labelMedium,
                             color = TextMuted,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 8.dp),
                         )
                         HorizontalDivider(Modifier.weight(1f), color = GraphiteBorder)
                     }

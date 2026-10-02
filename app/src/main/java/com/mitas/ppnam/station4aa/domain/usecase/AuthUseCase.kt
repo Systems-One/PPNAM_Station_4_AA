@@ -4,7 +4,6 @@ import com.mitas.ppnam.station4aa.data.auth.ScramExchange
 import com.mitas.ppnam.station4aa.data.mqtt.EmptyPayload
 import com.mitas.ppnam.station4aa.data.mqtt.MqttOutcome
 import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
-import com.mitas.ppnam.station4aa.data.mqtt.describe
 import com.mitas.ppnam.station4aa.data.mqtt.dto.BadgeLoginPayload
 import com.mitas.ppnam.station4aa.data.mqtt.dto.OperatorContextResponse
 import com.mitas.ppnam.station4aa.data.mqtt.dto.ScramPurpose
@@ -74,8 +73,8 @@ class AuthUseCase(
                     sessionExpiresAtUtc = response.sessionExpiresAtUtc,
                 )
             }
-            is MqttOutcome.Rejected -> Result.failure(Exception(outcome.reason ?: "Login failed"))
-            is MqttOutcome.NoResponse -> Result.failure(Exception(outcome.kind.describe()))
+            is MqttOutcome.Rejected -> Result.failure(LoginRejectedException(outcome.errorCode, outcome.reason))
+            is MqttOutcome.NoResponse -> Result.failure(LoginTransportException(outcome.kind))
         }
     }
 

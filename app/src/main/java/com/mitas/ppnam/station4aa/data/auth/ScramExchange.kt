@@ -1,8 +1,9 @@
 package com.mitas.ppnam.station4aa.data.auth
 
 import com.mitas.ppnam.station4aa.data.mqtt.MqttOutcome
+import com.mitas.ppnam.station4aa.domain.usecase.LoginRejectedException
+import com.mitas.ppnam.station4aa.domain.usecase.LoginTransportException
 import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
-import com.mitas.ppnam.station4aa.data.mqtt.describe
 import com.mitas.ppnam.station4aa.data.mqtt.dto.ScramChallengeResponse
 import com.mitas.ppnam.station4aa.data.mqtt.dto.ScramProofPayload
 import com.mitas.ppnam.station4aa.data.mqtt.dto.ScramProofResponse
@@ -33,8 +34,8 @@ class ScramExchange(
 
         val challenge = when (startOutcome) {
             is MqttOutcome.Accepted -> startOutcome.body
-            is MqttOutcome.Rejected -> return Result.failure(Exception(startOutcome.reason ?: "Authentication failed"))
-            is MqttOutcome.NoResponse -> return Result.failure(Exception(startOutcome.kind.describe()))
+            is MqttOutcome.Rejected -> return Result.failure(LoginRejectedException(startOutcome.errorCode, startOutcome.reason))
+            is MqttOutcome.NoResponse -> return Result.failure(LoginTransportException(startOutcome.kind))
         }
 
         if (challenge.challengeId.isBlank() || challenge.serverFirstMessage.isBlank()) {
@@ -82,8 +83,8 @@ class ScramExchange(
 
         val result = when (proofOutcome) {
             is MqttOutcome.Accepted -> proofOutcome.body
-            is MqttOutcome.Rejected -> return Result.failure(Exception(proofOutcome.reason ?: "Authentication failed"))
-            is MqttOutcome.NoResponse -> return Result.failure(Exception(proofOutcome.kind.describe()))
+            is MqttOutcome.Rejected -> return Result.failure(LoginRejectedException(proofOutcome.errorCode, proofOutcome.reason))
+            is MqttOutcome.NoResponse -> return Result.failure(LoginTransportException(proofOutcome.kind))
         }
 
         // Mutual authentication. Without this check, an attacker who can answer on the response
