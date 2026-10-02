@@ -41,4 +41,9 @@ interface WasteOutboxDao {
             "nextAction = :nextAction WHERE messageId = :messageId AND status = 'PENDING'"
     )
     suspend fun markRejected(messageId: String, errorCode: String?, reason: String?, nextAction: String?)
+
+    // Only a PENDING row may change session: terminal rows are history. Column set unchanged,
+    // so no Room schema version bump.
+    @Query("UPDATE waste_outbox SET operatorSessionId = :operatorSessionId WHERE messageId = :messageId AND status = 'PENDING'")
+    suspend fun restampSession(messageId: String, operatorSessionId: String)
 }

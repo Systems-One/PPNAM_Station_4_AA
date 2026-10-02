@@ -6,15 +6,17 @@ import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
 import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
-import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.domain.collection.CollectionRejections
+import com.mitas.ppnam.station4aa.domain.collection.isResultForSession
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 import com.mitas.ppnam.station4aa.domain.model.WasteType
+import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
@@ -121,13 +123,22 @@ class WasteGatheringViewModel(
 
     init {
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
-        // Flush anything durably queued while offline as soon as the broker link comes back —
-        // the contract requires retrying with the exact original payload, which retryPending()
-        // does by re-reading the immutable rows rather than re-deriving anything.
+        // Whenever we have both a session and a live broker link (first login and every
+        // reconnect): refresh the catalogue and flush the outbox under the current session.
+        // Sync failure is deliberately silent here — the cached catalogue stays usable and
+        // Settings → Diagnostics is where staleness shows.
         viewModelScope.launch {
-            connectionManager.connectionState
-                .filter { it == MqttConnectionState.CONNECTED }
-                .collect { publisher.retryPending() }
+            combine(
+                connectionManager.connectionState,
+                sessionHolder.session,
+            ) { state, activeSession -> state to activeSession }
+                .filter { (state, activeSession) ->
+                    state == MqttConnectionState.CONNECTED && activeSession != null
+                }
+                .collect { (_, activeSession) ->
+                    syncCatalogue.sync(activeSession!!.operatorSessionId)
+                    publisher.retryPending(activeSession.operatorSessionId)
+                }
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
@@ -139,32 +150,24 @@ class WasteGatheringViewModel(
         }
         viewModelScope.launch {
             publisher.results.collect { result ->
-                if (!result.accepted) {
-                    _lastQueuedMessage.value = "Bag ${result.bagCode} was rejected: " +
-                        (result.reason ?: result.errorCode ?: "unknown reason") +
-                        " (${result.nextAction})"
+                // The channel replays its last result; one from a previous session is history.
+                if (!isResultForSession(result, sessionHolder.currentSessionIdOrEmpty())) return@collect
+                if (result.accepted) {
+                    _lastQueuedMessage.value = "Collection ${result.collectionId} accepted by Station 4."
+                    _lastMessageIsError.value = false
+                } else {
+                    val rejection = CollectionRejections.describe(result.bagCode, result.errorCode)
+                    _lastQueuedMessage.value = rejection.message
                     _lastMessageIsError.value = true
+                    if (rejection.requiresLogin) sessionHolder.clear(SIGNED_OUT_SESSION_ENDED)
                 }
-                // An accepted result needs no new operator-visible message — "Queued ..." already
-                // shown at publish time already told them the transaction is in motion, and the
-                // wizard has already moved on to the next one.
             }
         }
-        // Refresh the catalogue whenever we have both a session and a live broker link — that
-        // covers first login and every reconnect. Failure is deliberately silent here: the cached
-        // or seeded catalogue stays usable and Settings → Diagnostics is where staleness shows.
-        viewModelScope.launch {
-            combine(
-                connectionManager.connectionState,
-                sessionHolder.session,
-            ) { state, activeSession -> state to activeSession }
-                .filter { (state, activeSession) ->
-                    state == MqttConnectionState.CONNECTED && activeSession != null
-                }
-                .collect { (_, activeSession) ->
-                    syncCatalogue.sync(activeSession!!.operatorSessionId)
-                }
-        }
+    }
+
+    /** The "Retry now" affordance on the queued line. */
+    fun retryNow() {
+        viewModelScope.launch { publisher.retryPending(sessionHolder.currentSessionIdOrEmpty()) }
     }
 
     fun onBagCodeSubmitted(raw: String) {

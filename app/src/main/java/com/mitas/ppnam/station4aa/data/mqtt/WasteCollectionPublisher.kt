@@ -43,12 +43,24 @@ class WasteCollectionPublisher(
         attemptPublish(event)
     }
 
-    /** Retries every durably-queued row still awaiting a result, with its original, unchanged
-     * payload — call after a reconnect so anything queued while offline gets flushed. The contract
-     * requires this "whether or not it saw PUBACK", so a row's fate is decided only by an incoming
-     * [WasteCollectionResultChannel] correlation, never by this method. */
-    suspend fun retryPending() {
-        outboxDao.getPending().forEach { attemptPublish(it.toEvent()) }
+    /**
+     * Retries every durably-queued row still awaiting a result — call after a reconnect or a login
+     * so anything queued while offline gets flushed. A row queued under a session Station 4 no
+     * longer recognises is re-stamped to [currentSessionId] first (audit S4-04: replaying the old
+     * session only ever produced "Session is malformed..."); the event payload shape is
+     * unchanged. With no session nothing is sent — Station 4 would refuse it anyway.
+     */
+    suspend fun retryPending(currentSessionId: String) {
+        if (currentSessionId.isBlank()) return
+        outboxDao.getPending().forEach { row ->
+            val toSend = if (row.operatorSessionId == currentSessionId) {
+                row
+            } else {
+                outboxDao.restampSession(row.messageId, currentSessionId)
+                row.copy(operatorSessionId = currentSessionId)
+            }
+            attemptPublish(toSend.toEvent())
+        }
     }
 
     private suspend fun attemptPublish(event: WasteCollectionEvent) {

@@ -161,6 +161,14 @@ private class FakeWasteOutboxDao : WasteOutboxDao {
             }
         }
     }
+
+    override suspend fun restampSession(messageId: String, operatorSessionId: String) {
+        rows[messageId]?.let {
+            if (it.status == WasteOutboxEntity.Status.PENDING) {
+                rows[messageId] = it.copy(operatorSessionId = operatorSessionId)
+            }
+        }
+    }
 }
 
 /** Exercises the actual correlation/DAO-write/emit path in [WasteCollectionResultChannel.handleIncoming]

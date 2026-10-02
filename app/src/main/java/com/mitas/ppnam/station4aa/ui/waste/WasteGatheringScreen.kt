@@ -165,11 +165,20 @@ fun WasteGatheringScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             if (pendingCount > 0) {
-                Text(
-                    "$pendingCount collection${if (pendingCount == 1) "" else "s"} queued, awaiting delivery",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = WarningOrange,
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        "$pendingCount collection${if (pendingCount == 1) "" else "s"} queued, awaiting delivery",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = WarningOrange,
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = { viewModel.retryNow() }) {
+                        Text("Retry now")
+                    }
+                }
             }
             lastQueuedMessage?.let {
                 Row(
