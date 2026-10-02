@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -193,6 +195,42 @@ fun SettingsScreen(
 
             SectionLabel("Configuration")
 
+            // Rendered in both PIN states so the Success row survives the re-lock (audit S4-17).
+                when (val state = applyState) {
+                    ApplyState.Testing -> {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                color = AmberPrimary,
+                                strokeWidth = 2.dp
+                            )
+                            Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+                        }
+                    }
+                    is ApplyState.Success -> {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
+                            Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
+                        }
+                    }
+                    is ApplyState.Failure -> {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
+                            Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
+                        }
+                    }
+                    ApplyState.Idle -> {}
+                }
+
             when (pinState) {
                 PinState.Locked -> {
                     val pinLockedOut = viewModel.pinLockedOut.value
@@ -263,19 +301,25 @@ fun SettingsScreen(
                     // the id is derived on-device (base standard §2) and the topic is fixed for
                     // Station 4. Both are read-only rows in the Diagnostics card above. What is
                     // left is genuinely deployment-configured — the broker.
+                    val focusManager = LocalFocusManager.current
+                    val fieldErrors = viewModel.fieldErrors.value
+                    // The toggle flag is not sensitive; the password text itself lives only in
+                    // the ViewModel draft, never in saved instance state.
+                    var showPassword by rememberSaveable { mutableStateOf(false) }
                     ConfigSection(title = "Connection") {
                         SettingsTextField(
                             value = draft.mqttHost,
                             label = "Host",
+                            keyboardType = KeyboardType.Uri,
+                            errorMessage = fieldErrors.host,
                             onValueChange = { viewModel.updateDraft(draft.copy(mqttHost = it)) }
                         )
                         SettingsTextField(
-                            value = draft.mqttPort.toString(),
+                            value = viewModel.portText.value,
                             label = "Port",
                             keyboardType = KeyboardType.Number,
-                            onValueChange = {
-                                viewModel.updateDraft(draft.copy(mqttPort = it.toIntOrNull() ?: draft.mqttPort))
-                            }
+                            errorMessage = fieldErrors.port,
+                            onValueChange = viewModel::updatePortText
                         )
                         SettingsToggleRow(
                             label = "WebSocket",
@@ -294,50 +338,38 @@ fun SettingsScreen(
                         )
                         SettingsTextField(
                             value = draft.mqttPassword,
-                            label = "Password",
+                            label = "Password (blank = keep current)",
                             keyboardType = KeyboardType.Password,
-                            visualTransformation = PasswordVisualTransformation(),
+                            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                            trailingIcon = {
+                                IconButton(onClick = { showPassword = !showPassword }) {
+                                    Icon(
+                                        imageVector = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                        contentDescription = if (showPassword) "Hide password" else "Show password",
+                                        tint = TextMuted
+                                    )
+                                }
+                            },
                             onValueChange = { viewModel.updateDraft(draft.copy(mqttPassword = it)) }
                         )
                     }
-
-                    when (val state = applyState) {
-                        ApplyState.Testing -> {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(18.dp),
-                                    color = AmberPrimary,
-                                    strokeWidth = 2.dp
-                                )
-                                Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
-                            }
-                        }
-                        is ApplyState.Success -> {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
-                                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
-                            }
-                        }
-                        is ApplyState.Failure -> {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
-                                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
-                            }
-                        }
-                        ApplyState.Idle -> {}
+                    ConfigSection(title = "Session") {
+                        SettingsTextField(
+                            value = viewModel.autoSignOutText.value,
+                            label = "Auto sign-out after (minutes, 0 = never)",
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done,
+                            errorMessage = fieldErrors.autoSignOut,
+                            onDone = {
+                                focusManager.clearFocus()
+                                viewModel.testAndApply()
+                            },
+                            onValueChange = viewModel::updateAutoSignOutText
+                        )
                     }
 
                     Button(
-                        onClick = viewModel::testAndApply,
+                        onClick = { focusManager.clearFocus(); viewModel.testAndApply() },
                         enabled = applyState !is ApplyState.Testing,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -384,7 +416,7 @@ fun SettingsScreen(
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = DangerRed),
                             border = BorderStroke(1.dp, DangerRed.copy(alpha = 0.5f)),
                             modifier = Modifier.fillMaxWidth().height(56.dp)
-                        ) { Text("Log Out") }
+                        ) { Text("Log out") }
                     }
                 }
             }
@@ -459,15 +491,25 @@ private fun SettingsTextField(
     label: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    imeAction: ImeAction = ImeAction.Next,
+    onDone: (() -> Unit)? = null,
+    errorMessage: String? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        isError = errorMessage != null,
+        // supportingText is part of the field's own layout, so bringing the field into view
+        // above the keyboard brings the message with it.
+        supportingText = errorMessage?.let { { Text(it, color = DangerRed) } },
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+        keyboardActions = KeyboardActions(onDone = { onDone?.invoke() }),
         visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AmberPrimary,
             focusedLabelColor = AmberPrimary,

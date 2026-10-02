@@ -10,6 +10,7 @@ import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
+import com.mitas.ppnam.station4aa.domain.model.AutoSignOut
 import com.mitas.ppnam.station4aa.domain.pin.PinGate
 import com.mitas.ppnam.station4aa.domain.pin.PinGateResult
 import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
@@ -98,8 +99,18 @@ class SettingsViewModel(
      * the other's outcome. */
     var catalogueRefreshState = mutableStateOf<ApplyState>(ApplyState.Idle)
         private set
+    /** Host / WebSocket / TLS / username live here; password is blank = "keep the stored one". */
     var draftSettings = mutableStateOf(AppSettings())
         private set
+    /** Port and minutes are kept as typed text so the operator can clear the field; they are
+     * parsed and validated only on Test & Apply (audit S2-03 pattern, S4-14). */
+    var portText = mutableStateOf("")
+        private set
+    var autoSignOutText = mutableStateOf("")
+        private set
+    var fieldErrors = mutableStateOf(SettingsFieldErrors())
+        private set
+    private var storedPassword = ""
 
     val connectionState: StateFlow<MqttConnectionState> = connectionManager.connectionState
 
@@ -131,11 +142,16 @@ class SettingsViewModel(
     init {
         if (pinGate.isLockedOut) startLockoutTicker()
         viewModelScope.launch {
-            draftSettings.value = settingsRepository.current()
+            val current = settingsRepository.current()
+            storedPassword = current.mqttPassword
+            draftSettings.value = current.copy(mqttPassword = "")
+            portText.value = current.mqttPort.toString()
+            autoSignOutText.value = current.autoSignOutMinutes.toString()
         }
     }
 
     fun onPinChange(value: String) {
+        applyState.value = ApplyState.Idle
         if (value.length <= 6) {
             pinInput.value = value
             pinError.value = false
@@ -193,21 +209,43 @@ class SettingsViewModel(
 
     fun updateDraft(settings: AppSettings) {
         draftSettings.value = settings
+        fieldErrors.value = fieldErrors.value.copy(host = null)
     }
 
+    fun updatePortText(value: String) { portText.value = value; fieldErrors.value = fieldErrors.value.copy(port = null) }
+    fun updateAutoSignOutText(value: String) { autoSignOutText.value = value; fieldErrors.value = fieldErrors.value.copy(autoSignOut = null) }
+
     fun testAndApply() {
+        val errors = validateSettingsDraft(draftSettings.value.mqttHost, portText.value, autoSignOutText.value)
+        fieldErrors.value = errors
+        if (errors.hasErrors) {
+            applyState.value = ApplyState.Failure("Fix the highlighted fields.")
+            return
+        }
+        val effective = draftSettings.value.copy(
+            mqttHost = draftSettings.value.mqttHost.trim(),
+            mqttPort = parsePort(portText.value)!!,
+            mqttUsername = draftSettings.value.mqttUsername.trim(),
+            // Blank keeps the already-provisioned password (Station 1's rule, audit static-20).
+            mqttPassword = draftSettings.value.mqttPassword.ifBlank { storedPassword },
+            autoSignOutMinutes = AutoSignOut.parseMinutes(autoSignOutText.value)!!,
+        )
         applyState.value = ApplyState.Testing
         viewModelScope.launch {
-            val result = connectionManager.reconnectWith(draftSettings.value)
+            val result = connectionManager.reconnectWith(effective)
             if (result.isSuccess) {
-                settingsRepository.save(draftSettings.value)
+                settingsRepository.save(effective)
+                storedPassword = effective.mqttPassword
+                draftSettings.value = effective.copy(mqttPassword = "")
+                // The Success row is rendered outside the PIN card (see SettingsScreen) so it
+                // stays visible after the re-lock below — the audit found the old one vanished
+                // with the card (S4-17).
                 applyState.value = ApplyState.Success("Connected — settings saved")
                 delay(2_000)
                 pinState.value = PinState.Locked
                 pinInput.value = ""
             } else {
-                val msg = result.exceptionOrNull()?.message ?: "Connection failed"
-                applyState.value = ApplyState.Failure(msg)
+                applyState.value = ApplyState.Failure(describeConnectFailure(result.exceptionOrNull()))
             }
         }
     }

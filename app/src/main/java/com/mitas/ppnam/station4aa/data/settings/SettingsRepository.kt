@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
+import com.mitas.ppnam.station4aa.domain.model.AutoSignOut
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -36,6 +37,7 @@ class SettingsRepository(
         val MQTT_USE_WEBSOCKET     = booleanPreferencesKey("mqtt_use_websocket")
         val MQTT_USE_TLS           = booleanPreferencesKey("mqtt_use_tls")
         val MQTT_USERNAME          = stringPreferencesKey("mqtt_username")
+        val AUTO_SIGN_OUT_MINUTES  = intPreferencesKey("auto_sign_out_minutes")
     }
 
     val settingsFlow: Flow<AppSettings> = context.dataStore.data.map { prefs ->
@@ -53,6 +55,7 @@ class SettingsRepository(
             // leaves a dev deployment.
             mqttUsername         = prefs[Keys.MQTT_USERNAME] ?: defaults.mqttUsername,
             mqttPassword         = credentialStore.retrieve() ?: defaults.mqttPassword,
+            autoSignOutMinutes   = prefs[Keys.AUTO_SIGN_OUT_MINUTES] ?: defaults.autoSignOutMinutes,
         )
     }
 
@@ -70,6 +73,7 @@ class SettingsRepository(
             prefs[Keys.MQTT_USE_WEBSOCKET]     = settings.mqttUseWebSocket
             prefs[Keys.MQTT_USE_TLS]           = settings.mqttUseTls
             prefs[Keys.MQTT_USERNAME]          = settings.mqttUsername
+            prefs[Keys.AUTO_SIGN_OUT_MINUTES]  = settings.autoSignOutMinutes.coerceIn(0, AutoSignOut.MAX_MINUTES)
         }
     }
 
