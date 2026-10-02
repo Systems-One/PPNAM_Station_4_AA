@@ -4,11 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -16,16 +22,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.SuccessGreen
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
-import com.mitas.ppnam.station4aa.ui.theme.WarningOrange
 import java.util.Locale
 
 /**
@@ -48,9 +58,17 @@ fun WeighBagScreen(
     val bagCode by viewModel.bagCode.collectAsState()
     val feedback by viewModel.feedback.collectAsState()
     val isWeighing by viewModel.isWeighing.collectAsState()
+    val focusManager = LocalFocusManager.current
+
+    val requestWeight: () -> Unit = {
+        if (bagCode.isNotBlank() && !isWeighing) {
+            focusManager.clearFocus()
+            viewModel.onRequestWeight()
+        }
+    }
 
     AppScaffold(
-        title = "Weigh bag",
+        title = "Weigh Bag",
         status = connectionStatus,
         onBack = onBack,
         onSettings = onSettings,
@@ -58,10 +76,13 @@ fun WeighBagScreen(
         operatorRole = session?.role,
         loading = isWeighing,
     ) { padding ->
+        // Scrollable so the field, the button and the result card are all reachable with the
+        // keyboard up (audit S4-02). `padding` already includes the IME inset.
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -82,6 +103,13 @@ fun WeighBagScreen(
                 label = { Text("Bag code") },
                 singleLine = true,
                 enabled = !isWeighing,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Characters,
+                    autoCorrectEnabled = false,
+                    keyboardType = KeyboardType.Ascii,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(onDone = { requestWeight() }),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = AmberPrimary,
                     focusedLabelColor = AmberPrimary,
@@ -91,16 +119,19 @@ fun WeighBagScreen(
             )
 
             Button(
-                onClick = viewModel::onRequestWeight,
+                onClick = requestWeight,
                 enabled = bagCode.isNotBlank() && !isWeighing,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
             ) {
                 Text(if (isWeighing) "Weighing…" else "Request weight")
             }
 
             when (val current = feedback) {
                 is WeighFeedback.Weighed -> WeighedCard(current)
-                is WeighFeedback.Problem -> ProblemCard(current)
+                is WeighFeedback.Problem -> ProblemCard(
+                    problem = current,
+                    onRetry = if (current.canRetrySameBag) requestWeight else null,
+                )
                 null -> Unit
             }
         }
@@ -143,24 +174,29 @@ private fun WeighedCard(result: WeighFeedback.Weighed) {
 }
 
 @Composable
-private fun ProblemCard(problem: WeighFeedback.Problem) {
+private fun ProblemCard(problem: WeighFeedback.Problem, onRetry: (() -> Unit)?) {
+    // Danger red, not orange: this is a failure (audit static-19).
     Card(
         colors = CardDefaults.cardColors(containerColor = GraphiteSurface),
-        border = androidx.compose.foundation.BorderStroke(1.dp, WarningOrange),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DangerRed),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(problem.message, style = MaterialTheme.typography.bodyMedium, color = WarningOrange)
-            if (problem.canRetrySameBag) {
+            Text(problem.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
+            if (onRetry != null) {
                 // The bag code is still in the field precisely so this is one tap away.
                 Text(
-                    "The bag code is still here — fix the problem and tap Request weight again.",
+                    "The bag code is still here — fix the problem and tap Retry.",
                     style = MaterialTheme.typography.labelSmall,
                     color = TextMuted,
                 )
+                OutlinedButton(
+                    onClick = onRetry,
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                ) { Text("Retry") }
             }
         }
     }
