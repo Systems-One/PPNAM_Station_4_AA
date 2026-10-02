@@ -15,6 +15,8 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.data.settings.SharedPrefsPinLockoutStore
+import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
@@ -43,6 +45,7 @@ class AppContainer(context: Context) {
 
     private val secureCredentialStore = SecureCredentialStore(appContext)
     val settingsRepository = SettingsRepository(appContext, secureCredentialStore)
+    val pinLockoutStore: PinLockoutStore = SharedPrefsPinLockoutStore(appContext)
     val connectionManager = MqttConnectionManager(deviceId)
 
     private val outboxDatabase = WasteOutboxDatabase.create(appContext)

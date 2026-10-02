@@ -10,11 +10,17 @@ import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.model.AppSettings
+import com.mitas.ppnam.station4aa.domain.pin.PinGate
+import com.mitas.ppnam.station4aa.domain.pin.PinGateResult
+import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
+import com.mitas.ppnam.station4aa.domain.pin.lockoutMessage
+import com.mitas.ppnam.station4aa.domain.pin.wrongPinMessage
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.CatalogueSyncResult
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
 import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -43,6 +49,7 @@ class SettingsViewModel(
     private val authUseCase: AuthUseCase,
     private val catalogueRepository: WasteCatalogueRepository,
     private val syncCatalogue: SyncWasteCatalogueUseCase,
+    private val pinLockoutStore: PinLockoutStore,
     /** The derived, immutable scanner identity (base standard §2) — surfaced read-only in the
      * Diagnostics card so it can be read off the device for enrolment. Not editable: it is not
      * part of [AppSettings] or the draft at all. */
@@ -58,13 +65,13 @@ class SettingsViewModel(
         viewModelScope.launch { authUseCase.logout() }
     }
 
-    private val correctPin = "079545"
+    private val pinGate = PinGate(correctPin = "079545", store = pinLockoutStore)
 
-    // No lockout meant the PIN gating broker host/credentials could be brute-forced with
-    // unlimited retries. Locks out entry entirely for a cooldown after too many wrong attempts,
-    // rather than just rate-limiting one attempt at a time.
-    private var failedPinAttempts = 0
-    private var lockedOutUntilMs = 0L
+    /** True while the persisted lockout deadline is in the future; the field and Unlock are
+     * disabled and [pinLockoutMessage] counts down once a second. */
+    var pinLockedOut = mutableStateOf(false)
+        private set
+    private var lockoutTicker: Job? = null
 
     var pinInput = mutableStateOf("")
         private set
@@ -122,6 +129,7 @@ class SettingsViewModel(
     }
 
     init {
+        if (pinGate.isLockedOut) startLockoutTicker()
         viewModelScope.launch {
             draftSettings.value = settingsRepository.current()
         }
@@ -136,42 +144,51 @@ class SettingsViewModel(
     }
 
     fun submitPin() {
-        val now = System.currentTimeMillis()
-        if (now < lockedOutUntilMs) {
-            val remainingSec = (lockedOutUntilMs - now + 999) / 1_000
-            pinLockoutMessage.value = "Too many attempts. Try again in ${remainingSec}s."
-            pinInput.value = ""
-            pinError.value = true
-            pinErrorMessage.value = null
-            return
-        }
-        if (pinInput.value == correctPin) {
-            failedPinAttempts = 0
-            pinLockoutMessage.value = null
-            pinState.value = PinState.Unlocked
-            pinError.value = false
-            pinErrorMessage.value = null
-        } else {
-            pinInput.value = ""
-            pinError.value = true
-            failedPinAttempts++
-            if (failedPinAttempts >= MAX_PIN_ATTEMPTS) {
-                lockedOutUntilMs = now + PIN_LOCKOUT_MS
-                failedPinAttempts = 0
+        when (val result = pinGate.submit(pinInput.value)) {
+            PinGateResult.Blank -> {
+                pinError.value = true
+                pinErrorMessage.value = "Enter the supervisor PIN."
+            }
+            PinGateResult.Unlocked -> {
+                pinInput.value = ""
+                pinError.value = false
                 pinErrorMessage.value = null
-                pinLockoutMessage.value = "Too many attempts. Try again in ${PIN_LOCKOUT_MS / 1_000}s."
-            } else {
-                val left = MAX_PIN_ATTEMPTS - failedPinAttempts
-                pinErrorMessage.value =
-                    "Incorrect PIN. $left attempt${if (left == 1) "" else "s"} left before lockout."
                 pinLockoutMessage.value = null
+                pinState.value = PinState.Unlocked
+            }
+            is PinGateResult.Wrong -> {
+                pinInput.value = ""
+                pinError.value = true
+                pinErrorMessage.value = wrongPinMessage(result.attemptsLeft)
+                pinLockoutMessage.value = null
+            }
+            is PinGateResult.LockedOut -> {
+                pinInput.value = ""
+                pinError.value = true
+                pinErrorMessage.value = null
+                startLockoutTicker()
             }
         }
     }
 
-    private companion object {
-        const val MAX_PIN_ATTEMPTS = 5
-        const val PIN_LOCKOUT_MS = 30_000L
+    /** Re-derives the countdown from the persisted deadline every second until it passes, so the
+     * message is never a static "30s" and a lockout started on a previous visit still shows. */
+    private fun startLockoutTicker() {
+        lockoutTicker?.cancel()
+        lockoutTicker = viewModelScope.launch {
+            while (true) {
+                val remaining = pinGate.remainingLockoutMs()
+                if (remaining <= 0L) {
+                    pinLockedOut.value = false
+                    pinLockoutMessage.value = null
+                    pinError.value = false
+                    break
+                }
+                pinLockedOut.value = true
+                pinLockoutMessage.value = lockoutMessage(remaining)
+                delay(1_000)
+            }
+        }
     }
 
     fun updateDraft(settings: AppSettings) {

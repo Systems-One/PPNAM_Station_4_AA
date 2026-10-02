@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -194,6 +195,8 @@ fun SettingsScreen(
 
             when (pinState) {
                 PinState.Locked -> {
+                    val pinLockedOut = viewModel.pinLockedOut.value
+                    val focusManager = LocalFocusManager.current
                     Card(
                         colors = CardDefaults.cardColors(containerColor = GraphiteSurface),
                         border = BorderStroke(1.dp, GraphiteBorder)
@@ -207,6 +210,14 @@ fun SettingsScreen(
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = TextMuted
                             )
+                            // Above the field: the numeric pad's top edge sits exactly on the
+                            // field's bottom, so anything below it was invisible (audit S4-06).
+                            pinErrorMessage?.let {
+                                Text(it, style = MaterialTheme.typography.labelMedium, color = DangerRed)
+                            }
+                            pinLockoutMessage?.let {
+                                Text(it, style = MaterialTheme.typography.labelMedium, color = DangerRed)
+                            }
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
@@ -216,12 +227,16 @@ fun SettingsScreen(
                                     onValueChange = viewModel::onPinChange,
                                     label = { Text("PIN") },
                                     singleLine = true,
+                                    enabled = !pinLockedOut,
                                     visualTransformation = PasswordVisualTransformation(),
                                     keyboardOptions = KeyboardOptions(
                                         keyboardType = KeyboardType.NumberPassword,
                                         imeAction = ImeAction.Done
                                     ),
-                                    keyboardActions = KeyboardActions(onDone = { viewModel.submitPin() }),
+                                    keyboardActions = KeyboardActions(onDone = {
+                                        focusManager.clearFocus()
+                                        viewModel.submitPin()
+                                    }),
                                     isError = pinError,
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = AmberPrimary,
@@ -231,17 +246,13 @@ fun SettingsScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                                 Button(
-                                    onClick = viewModel::submitPin,
+                                    onClick = {
+                                        focusManager.clearFocus()
+                                        viewModel.submitPin()
+                                    },
+                                    enabled = !pinLockedOut,
                                     modifier = Modifier.height(56.dp)
                                 ) { Text("Unlock") }
-                            }
-                            // Was a red border and nothing else — the operator had no idea
-                            // whether the PIN was wrong or the field had simply mis-registered.
-                            pinErrorMessage?.let {
-                                Text(it, style = MaterialTheme.typography.labelMedium, color = DangerRed)
-                            }
-                            pinLockoutMessage?.let {
-                                Text(it, style = MaterialTheme.typography.labelMedium, color = DangerRed)
                             }
                         }
                     }
