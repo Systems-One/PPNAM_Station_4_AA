@@ -266,4 +266,32 @@ class WasteWizardControllerTest {
         controller.cancel()
         assertFalse(controller.hasDraft)
     }
+    @Test
+    fun `a badge scan fills the operator id step`() {
+        val controller = WasteWizardController()
+        controller.submitBagCode("BAG-01")
+        controller.submitJobNumber("JOB-1")
+        assertEquals(ScanDispatchResult.Applied(null), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals("BADGE000000000000000001", controller.draft.operatorId)
+        assertEquals(WizardStep.SELECT_CATEGORY, controller.step)
+    }
+
+    @Test
+    fun `a badge scan on the bag or job step is refused with a hint and changes nothing`() {
+        val controller = WasteWizardController()
+        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(WizardStep.SCAN_BAG, controller.step)
+        assertNull(controller.draft.bagCode)
+        controller.submitBagCode("BAG-01")
+        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(WizardStep.SCAN_JOB, controller.step)
+        assertNull(controller.draft.jobNumber)
+    }
+
+    @Test
+    fun `a badge scan is ignored on selection and review steps`() {
+        val controller = completedController()
+        assertEquals(ScanDispatchResult.Ignored, controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(WizardStep.REVIEW, controller.step)
+    }
 }

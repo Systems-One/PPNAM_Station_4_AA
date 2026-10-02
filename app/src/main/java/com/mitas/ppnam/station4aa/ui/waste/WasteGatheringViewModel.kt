@@ -149,6 +149,14 @@ class WasteGatheringViewModel(
             }
         }
         viewModelScope.launch {
+            scanEventBus.events.filterIsInstance<ScanEvent.RfidTag>().collect { event ->
+                when (val result = wizardController.handleScannedBadge(event.tagId)) {
+                    is ScanDispatchResult.Applied -> syncFromController(result.error)
+                    ScanDispatchResult.Ignored -> Unit
+                }
+            }
+        }
+        viewModelScope.launch {
             publisher.results.collect { result ->
                 // The channel replays its last result; one from a previous session is history.
                 if (!isResultForSession(result, sessionHolder.currentSessionIdOrEmpty())) return@collect

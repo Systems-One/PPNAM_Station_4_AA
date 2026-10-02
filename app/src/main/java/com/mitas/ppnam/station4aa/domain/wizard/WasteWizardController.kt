@@ -38,6 +38,22 @@ class WasteWizardController {
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
     }
 
+    /** An RFID badge read. Operators try their badge at the operator-ID step (audit S4-10), so it
+     * is accepted there; on the two barcode steps it is refused with a hint rather than silently
+     * dropped; elsewhere it is ignored like any stray scan. */
+    fun handleScannedBadge(tagId: String): ScanDispatchResult = when (step) {
+        WizardStep.SCAN_OPERATOR -> ScanDispatchResult.Applied(submitOperatorId(tagId))
+        WizardStep.SCAN_BAG,
+        WizardStep.SCAN_JOB -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
+        WizardStep.SELECT_CATEGORY,
+        WizardStep.SELECT_WASTE_TYPE,
+        WizardStep.REVIEW -> ScanDispatchResult.Ignored
+    }
+
+    private companion object {
+        const val BADGE_NOT_BARCODE = "Scan a barcode, not a badge."
+    }
+
     /** Manual-entry fallback for the bag step; a scan calls this too via [handleScannedValue].
      * Returns an error message, or null on success. */
     fun submitBagCode(raw: String): String? {
