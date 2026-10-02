@@ -113,11 +113,12 @@ class SettingsViewModel(
     private var storedPassword = ""
 
     val connectionState: StateFlow<MqttConnectionState> = connectionManager.connectionState
+    val stationOnline: StateFlow<Boolean?> = connectionManager.stationOnline
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
     val catalogueStatus: StateFlow<String> = catalogueRepository.meta
-        .map(::describeCatalogue)
+        .map { describeCatalogue(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), "Catalogue: not loaded")
 
     /** Manual "Refresh catalogue". Requires an active session, because the request carries the

@@ -87,56 +87,34 @@ fun SettingsScreen(
                 border = BorderStroke(1.dp, GraphiteBorder)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    // Transport state only. Whether Station 4 itself is up is the scaffold's
-                    // connection pill ("Station offline" vs "Offline"), which reads the retained
-                    // station presence; this row answers the narrower question support asks first,
-                    // which is whether the handheld is talking to the broker at all.
+                    // Same three words as the top-bar pill (audit static-17/18).
                     val (brokerColor, brokerLabel) = when (connectionState) {
                         MqttConnectionState.CONNECTED    -> SuccessGreen to "Connected"
-                        MqttConnectionState.RECONNECTING -> AmberPrimary to "Reconnecting"
-                        MqttConnectionState.DISCONNECTED -> DangerRed to "Disconnected"
+                        MqttConnectionState.RECONNECTING -> WarningOrange to "Reconnecting"
+                        MqttConnectionState.DISCONNECTED -> DangerRed to "Offline"
                     }
                     DiagnosticRow("MQTT BROKER", brokerColor, brokerLabel)
 
                     HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
 
-                    // Read-only by design (base standard §2): the device id is derived on-device
-                    // and immutable — this row exists so it can be read off for enrolment.
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "DEVICE ID",
-                            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
-                            color = TextMuted
-                        )
-                        Text(
-                            viewModel.deviceId,
-                            style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                            color = TextPrimary
-                        )
+                    // Station 4's own retained presence — the row every other station shows.
+                    val stationOnline by viewModel.stationOnline.collectAsState()
+                    val (stationColor, stationLabel) = when (stationOnline) {
+                        true -> SuccessGreen to "Online"
+                        false -> DangerRed to "Offline"
+                        null -> TextMuted to "Unknown"
                     }
+                    DiagnosticRow("STATION 4", stationColor, stationLabel)
 
                     HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "VERSION",
-                            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
-                            color = TextMuted
-                        )
-                        Text(
-                            "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                            style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                            color = TextPrimary
-                        )
-                    }
+                    DiagnosticValueRow("VERSION", "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+
+                    HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
+
+                    // Read-only by design (base standard §2): the device id is derived on-device
+                    // and immutable — this row exists so it can be read off for enrolment.
+                    DiagnosticValueRow("DEVICE ID", viewModel.deviceId)
 
                     HorizontalDivider(color = GraphiteBorder, modifier = Modifier.padding(vertical = 10.dp))
 
@@ -196,40 +174,40 @@ fun SettingsScreen(
             SectionLabel("Configuration")
 
             // Rendered in both PIN states so the Success row survives the re-lock (audit S4-17).
-                when (val state = applyState) {
-                    ApplyState.Testing -> {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(18.dp),
-                                color = AmberPrimary,
-                                strokeWidth = 2.dp
-                            )
-                            Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
-                        }
+            when (val state = applyState) {
+                ApplyState.Testing -> {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            color = AmberPrimary,
+                            strokeWidth = 2.dp
+                        )
+                        Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
                     }
-                    is ApplyState.Success -> {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
-                            Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
-                        }
-                    }
-                    is ApplyState.Failure -> {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
-                            Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
-                        }
-                    }
-                    ApplyState.Idle -> {}
                 }
+                is ApplyState.Success -> {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
+                        Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
+                    }
+                }
+                is ApplyState.Failure -> {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
+                        Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
+                    }
+                }
+                ApplyState.Idle -> {}
+            }
 
             when (pinState) {
                 PinState.Locked -> {
@@ -423,6 +401,27 @@ fun SettingsScreen(
 
             Spacer(Modifier.height(16.dp))
         }
+    }
+}
+
+/** A labelled monospace value line of the Diagnostics card (Version, Device ID). */
+@Composable
+private fun DiagnosticValueRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            label,
+            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
+            color = TextMuted
+        )
+        Text(
+            value,
+            style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
+            color = TextPrimary
+        )
     }
 }
 
