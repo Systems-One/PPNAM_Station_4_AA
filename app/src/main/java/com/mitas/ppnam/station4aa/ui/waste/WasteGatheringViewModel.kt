@@ -195,6 +195,12 @@ class WasteGatheringViewModel(
         syncFromController(null)
     }
 
+    /** Back, scrim or "Back" on the review dialog — keeps the draft (audit S4-03). */
+    fun onReviewDismissed() {
+        wizardController.dismissReview()
+        syncFromController(null)
+    }
+
     /** Available on every step, including the review dialog. Always a full reset — there is no
      * partial-edit recovery path. */
     fun onCancelTransaction() {

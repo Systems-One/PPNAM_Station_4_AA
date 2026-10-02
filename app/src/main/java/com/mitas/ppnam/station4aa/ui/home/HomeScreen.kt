@@ -1,5 +1,6 @@
 package com.mitas.ppnam.station4aa.ui.home
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.R
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
 import com.mitas.ppnam.station4aa.ui.theme.InfoBlue
 import com.mitas.ppnam.station4aa.ui.theme.CyanAccent
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
@@ -47,10 +52,25 @@ fun HomeScreen(
     onWasteCollection: () -> Unit,
     onWeighBag: () -> Unit,
     onSettings: () -> Unit,
+    onExitApp: () -> Unit,
     viewModel: HomeViewModel,
 ) {
     val connectionStatus by viewModel.connectionStatus.collectAsState()
     val session by viewModel.session.collectAsState()
+
+    // System Back on the post-login root used to background the app with no prompt while Login
+    // asked "Close the app?" (audit S4-09 / static-04). Same dialog on both now.
+    var showExitDialog by rememberSaveable { mutableStateOf(false) }
+    BackHandler { showExitDialog = true }
+    if (showExitDialog) {
+        ExitAppDialog(
+            onStay = { showExitDialog = false },
+            onClose = {
+                showExitDialog = false
+                onExitApp()
+            },
+        )
+    }
 
     AppScaffold(
         title = "Station 4",

@@ -3,9 +3,11 @@ package com.mitas.ppnam.station4aa.domain.wizard
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteType
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class WasteWizardControllerTest {
@@ -237,5 +239,31 @@ class WasteWizardControllerTest {
         // A fresh transaction must walk the whole flow, not jump to review after one scan.
         controller.submitBagCode("BAG-09")
         assertEquals(WizardStep.SCAN_JOB, controller.step)
+    }
+    @Test
+    fun `dismissing the review returns to the waste-type step with the draft intact`() {
+        val controller = completedController()
+        controller.dismissReview()
+        assertEquals(WizardStep.SELECT_WASTE_TYPE, controller.step)
+        assertEquals("BAG-01", controller.draft.bagCode)
+        assertEquals(bubbleBreaks, controller.draft.wasteType)
+        // Re-confirming the type goes straight back to review.
+        controller.confirmWasteType(bubbleBreaks)
+        assertEquals(WizardStep.REVIEW, controller.step)
+    }
+
+    @Test
+    fun `dismissReview is only legal from review`() {
+        assertThrows(IllegalStateException::class.java) { WasteWizardController().dismissReview() }
+    }
+
+    @Test
+    fun `hasDraft is false until something is captured and false again after cancel`() {
+        val controller = WasteWizardController()
+        assertFalse(controller.hasDraft)
+        controller.submitBagCode("BAG-01")
+        assertTrue(controller.hasDraft)
+        controller.cancel()
+        assertFalse(controller.hasDraft)
     }
 }

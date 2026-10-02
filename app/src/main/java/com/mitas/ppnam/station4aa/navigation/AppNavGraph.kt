@@ -71,6 +71,7 @@ fun AppNavGraph() {
                 onWasteCollection = { navController.navigate(NavRoutes.WASTE_GATHERING) },
                 onWeighBag = { navController.navigate(NavRoutes.WEIGH_BAG) },
                 onSettings = { navController.navigate(NavRoutes.SETTINGS) },
+                onExitApp = { (context as? Activity)?.finish() },
                 viewModel = viewModel,
             )
         }

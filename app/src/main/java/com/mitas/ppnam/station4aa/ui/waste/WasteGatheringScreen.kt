@@ -1,5 +1,6 @@
 package com.mitas.ppnam.station4aa.ui.waste
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,8 +41,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.DiscardDraftDialog
 import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
@@ -68,9 +71,42 @@ fun WasteGatheringScreen(
     val categories by viewModel.categories.collectAsState()
     val wasteTypes by viewModel.typesForSelectedCategory.collectAsState()
 
+    val hasDraft = draft != WasteTransactionDraft()
+    var showDiscardDialog by rememberSaveable { mutableStateOf(false) }
+    var leaveAfterDiscard by rememberSaveable { mutableStateOf(false) }
+    val requestLeave: () -> Unit = {
+        if (hasDraft) {
+            leaveAfterDiscard = true
+            showDiscardDialog = true
+        } else {
+            onBack()
+        }
+    }
+
+    // Mid-wizard Back with values captured asks first; the review AlertDialog has its own Back
+    // handling (it is a separate window), so this only runs on steps 1-5.
+    BackHandler(enabled = hasDraft && step != WizardStep.REVIEW) { requestLeave() }
+
+    if (showDiscardDialog) {
+        DiscardDraftDialog(
+            onKeep = {
+                showDiscardDialog = false
+                leaveAfterDiscard = false
+            },
+            onDiscard = {
+                showDiscardDialog = false
+                viewModel.onCancelTransaction()
+                if (leaveAfterDiscard) {
+                    leaveAfterDiscard = false
+                    onBack()
+                }
+            },
+        )
+    }
+
     if (step == WizardStep.REVIEW) {
         AlertDialog(
-            onDismissRequest = { viewModel.onCancelTransaction() },
+            onDismissRequest = { viewModel.onReviewDismissed() },
             title = { Text("Confirm waste collection", color = TextPrimary) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -101,7 +137,7 @@ fun WasteGatheringScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onCancelTransaction() }) { Text("Cancel") }
+                TextButton(onClick = { viewModel.onReviewDismissed() }) { Text("Back") }
             },
             containerColor = GraphiteSurface
         )
@@ -110,7 +146,7 @@ fun WasteGatheringScreen(
     AppScaffold(
         title = "Waste Collection",
         status = connectionStatus,
-        onBack = onBack,
+        onBack = requestLeave,
         onSettings = onSettings,
         operatorName = session?.operatorName?.ifBlank { session?.operatorId },
         operatorRole = session?.role,
@@ -194,7 +230,7 @@ fun WasteGatheringScreen(
                 WizardStep.REVIEW -> Unit // rendered as the AlertDialog above
             }
 
-            TextButton(onClick = { viewModel.onCancelTransaction() }) {
+            TextButton(onClick = { if (hasDraft) showDiscardDialog = true }) {
                 Text("Cancel transaction", color = DangerRed)
             }
         }

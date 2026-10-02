@@ -108,6 +108,18 @@ class WasteWizardController {
         step = target
     }
 
+    /** Back / scrim / "Back" on the review dialog: hide the review and land on the last capture
+     * step with every value kept. Previously this was [cancel], which silently threw away the
+     * whole five-step transaction (audit S4-03). */
+    fun dismissReview() {
+        check(step == WizardStep.REVIEW) { "dismissReview called outside REVIEW (was $step)" }
+        returnToReview = false
+        step = WizardStep.SELECT_WASTE_TYPE
+    }
+
+    /** True once any value has been captured — the screen asks before discarding such a draft. */
+    val hasDraft: Boolean get() = draft != WasteTransactionDraft()
+
     /** Available on every step, including REVIEW. Discards the draft and returns to the first
      * step — there is no partial-edit recovery path for an abandoned transaction. */
     fun cancel() {
