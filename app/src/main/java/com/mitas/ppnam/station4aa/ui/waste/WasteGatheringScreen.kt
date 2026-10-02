@@ -1,42 +1,49 @@
 package com.mitas.ppnam.station4aa.ui.waste
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
-import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
+import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
@@ -84,7 +91,7 @@ fun WasteGatheringScreen(
                     }
                     ConfirmRow("Wastage operator", collectedBy)
                     if (stepError != null) {
-                        Text(stepError!!, style = MaterialTheme.typography.labelSmall, color = WarningOrange)
+                        Text(stepError!!, style = MaterialTheme.typography.labelSmall, color = DangerRed)
                     }
                 }
             },
@@ -109,10 +116,15 @@ fun WasteGatheringScreen(
         operatorRole = session?.role,
         onLogout = viewModel::logout,
     ) { padding ->
+        // `padding` already carries the IME inset (AppScaffold uses WindowInsets.safeDrawing), so
+        // the content area shrinks above the keyboard; what was missing was a scroll container —
+        // without one, Submit was half-clipped and Cancel transaction unreachable (audit S4-01).
+        // Deliberately no extra imePadding(): it would double the IME inset.
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -131,7 +143,7 @@ fun WasteGatheringScreen(
                     Text(
                         it,
                         style = MaterialTheme.typography.labelMedium,
-                        color = if (lastMessageIsError) WarningOrange else TextMuted,
+                        color = if (lastMessageIsError) DangerRed else TextMuted,
                         modifier = Modifier.weight(1f),
                     )
                     TextButton(onClick = { viewModel.dismissLastQueuedMessage() }) {
@@ -145,16 +157,19 @@ fun WasteGatheringScreen(
             when (step) {
                 WizardStep.SCAN_BAG -> ScanStep(
                     label = "Scan bag code",
+                    hint = "Scan the barcode, or enter it manually below.",
                     errorMessage = stepError,
                     onSubmit = viewModel::onBagCodeSubmitted,
                 )
                 WizardStep.SCAN_JOB -> ScanStep(
                     label = "Scan or enter the job number",
+                    hint = "Scan the barcode, or enter it manually below.",
                     errorMessage = stepError,
                     onSubmit = viewModel::onJobNumberSubmitted,
                 )
                 WizardStep.SCAN_OPERATOR -> ScanStep(
                     label = "Scan or enter the operator ID",
+                    hint = "Scan the operator's barcode or badge, or enter the ID manually below.",
                     errorMessage = stepError,
                     onSubmit = viewModel::onOperatorIdSubmitted,
                 )
@@ -180,7 +195,7 @@ fun WasteGatheringScreen(
             }
 
             TextButton(onClick = { viewModel.onCancelTransaction() }) {
-                Text("Cancel transaction", color = WarningOrange)
+                Text("Cancel transaction", color = DangerRed)
             }
         }
     }
@@ -215,24 +230,43 @@ private fun StepIndicator(step: WizardStep) {
 @Composable
 private fun ScanStep(
     label: String,
+    hint: String,
     errorMessage: String?,
     onSubmit: (String) -> Unit,
 ) {
-    var manualValue by remember(label) { mutableStateOf("") }
+    var manualValue by rememberSaveable(label) { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
+    val submit: () -> Unit = {
+        if (manualValue.isNotBlank()) {
+            // Clearing focus first stops a hardware Enter from landing on the toolbar icons
+            // (audit S4-15) and closes the keyboard so the next step is fully visible.
+            focusManager.clearFocus()
+            onSubmit(manualValue)
+            manualValue = ""
+        }
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(label, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
-        Text(
-            "Scan the barcode, or enter it manually below.",
-            style = MaterialTheme.typography.labelMedium,
-            color = TextMuted,
-        )
+        Text(hint, style = MaterialTheme.typography.labelMedium, color = TextMuted)
+        // Above the field, not below it: text under the field lands exactly under the keyboard
+        // (audit group (a) sub-cause 4).
+        if (errorMessage != null) {
+            Text(errorMessage, style = MaterialTheme.typography.labelMedium, color = DangerRed)
+        }
         OutlinedTextField(
             value = manualValue,
             onValueChange = { manualValue = it },
             label = { Text("Manual entry") },
             singleLine = true,
             isError = errorMessage != null,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,
+                autoCorrectEnabled = false,
+                keyboardType = KeyboardType.Ascii,
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(onDone = { submit() }),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AmberPrimary,
                 focusedLabelColor = AmberPrimary,
@@ -240,16 +274,10 @@ private fun ScanStep(
             ),
             modifier = Modifier.fillMaxWidth(),
         )
-        if (errorMessage != null) {
-            Text(errorMessage, style = MaterialTheme.typography.labelSmall, color = WarningOrange)
-        }
         Button(
-            onClick = {
-                onSubmit(manualValue)
-                manualValue = ""
-            },
+            onClick = submit,
             enabled = manualValue.isNotBlank(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(56.dp),
         ) {
             Text("Submit")
         }
@@ -307,7 +335,7 @@ private fun <T> CatalogueStep(
         )
         Button(
             onClick = { onConfirm(selected) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(56.dp),
         ) {
             Text("Confirm")
         }
@@ -338,38 +366,40 @@ private fun <T> DropdownSelector(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
+    // Outlined like every other field in the app (audit S4-16); no Card wrapper.
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = GraphiteSurface),
-        border = BorderStroke(1.dp, GraphiteBorder),
     ) {
-        Box(Modifier.padding(12.dp)) {
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = it },
-            ) {
-                TextField(
-                    value = display(selected),
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text(label, color = TextMuted) },
-                    trailingIcon = { Icon(Icons.Filled.ArrowDropDown, contentDescription = null) },
-                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+        OutlinedTextField(
+            value = display(selected),
+            onValueChange = {},
+            readOnly = true,
+            singleLine = true,
+            label = { Text(label) },
+            trailingIcon = { Icon(Icons.Filled.ArrowDropDown, contentDescription = null) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AmberPrimary,
+                focusedLabelColor = AmberPrimary,
+            ),
+            modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            // Five 48 dp rows exactly: the menu never ends in a clipped sliver of a sixth item
+            // (audit S4-16); longer lists scroll inside the menu.
+            modifier = Modifier.heightIn(max = 240.dp),
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(display(option)) },
+                    onClick = {
+                        onSelected(option)
+                        expanded = false
+                    },
                 )
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                ) {
-                    options.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(display(option)) },
-                            onClick = {
-                                onSelected(option)
-                                expanded = false
-                            },
-                        )
-                    }
-                }
             }
         }
     }
