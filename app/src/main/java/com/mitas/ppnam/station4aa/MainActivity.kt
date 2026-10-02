@@ -27,7 +27,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        container.foregroundTracker.isResumed = true
         container.sessionGuard.checkNow()
+    }
+
+    override fun onPause() {
+        container.foregroundTracker.isResumed = false
+        super.onPause()
     }
 
     override fun onUserInteraction() {

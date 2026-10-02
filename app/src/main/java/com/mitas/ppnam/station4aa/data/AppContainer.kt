@@ -11,6 +11,7 @@ import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionResultChannel
 import com.mitas.ppnam.station4aa.data.rfid.DataWedgeReceiver
+import com.mitas.ppnam.station4aa.data.rfid.ForegroundTracker
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
@@ -81,7 +82,8 @@ class AppContainer(context: Context) {
     )
 
     val scanEventBus = ScanEventBus()
-    val dataWedgeReceiver = DataWedgeReceiver(scanEventBus)
+    val foregroundTracker = ForegroundTracker()
+    val dataWedgeReceiver = DataWedgeReceiver(scanEventBus) { foregroundTracker.isResumed }
 
     /** Inactivity sign-out (Station 1 policy). Constructed last: it needs the session holder,
      * settings, auth and the scan bus. */
