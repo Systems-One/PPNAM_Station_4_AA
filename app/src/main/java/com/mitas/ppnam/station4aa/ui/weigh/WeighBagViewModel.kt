@@ -7,6 +7,7 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.WasteCaptureOutcome
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
@@ -115,7 +116,7 @@ class WeighBagViewModel(
                         // `nextAction: login` — the session is gone, so drop it and let
                         // SessionWatcher take the operator back to the login screen. Doing this
                         // last means the message is already on screen as the navigation happens.
-                        if (refusal.requiresLogin) sessionHolder.clear()
+                        if (refusal.requiresLogin) sessionHolder.clear(SIGNED_OUT_SESSION_ENDED)
                     }
 
                     is WasteCaptureOutcome.InvalidBagCode ->

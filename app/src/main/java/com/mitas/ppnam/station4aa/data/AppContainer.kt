@@ -14,6 +14,7 @@ import com.mitas.ppnam.station4aa.data.rfid.DataWedgeReceiver
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.data.session.SessionGuard
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.data.settings.SharedPrefsPinLockoutStore
 import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
@@ -81,6 +82,15 @@ class AppContainer(context: Context) {
 
     val scanEventBus = ScanEventBus()
     val dataWedgeReceiver = DataWedgeReceiver(scanEventBus)
+
+    /** Inactivity sign-out (Station 1 policy). Constructed last: it needs the session holder,
+     * settings, auth and the scan bus. */
+    val sessionGuard = SessionGuard(
+        sessionHolder = operatorSessionHolder,
+        settingsRepository = settingsRepository,
+        authUseCase = authUseCase,
+        scanEventBus = scanEventBus,
+    )
 
     // Seeding touches disk, so it cannot run on the constructor's thread. Fire-and-forget: a
     // handheld whose seed has not landed yet shows an empty selection step with its own explicit

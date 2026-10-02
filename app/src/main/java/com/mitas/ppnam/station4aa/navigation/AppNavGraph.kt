@@ -40,6 +40,7 @@ fun AppNavGraph() {
                             scanEventBus = container.scanEventBus,
                             connectionManager = container.connectionManager,
                             settingsRepository = container.settingsRepository,
+                            sessionHolder = container.operatorSessionHolder,
                         )
                     }
                 }

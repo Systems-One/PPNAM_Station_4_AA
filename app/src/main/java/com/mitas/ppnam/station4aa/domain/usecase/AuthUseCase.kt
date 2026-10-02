@@ -114,7 +114,7 @@ class AuthUseCase(
     /** Closes this handheld's session. The local session is cleared regardless of the network
      * outcome — stranding an operator logged-in because of a network blip would be worse than a
      * server-side session that expires on its own. */
-    suspend fun logout() {
+    suspend fun logout(reason: String? = null) {
         requestChannel.request(
             deviceId = deviceId,
             requestType = "reader_logout_requested",
@@ -122,6 +122,6 @@ class AuthUseCase(
             payload = EmptyPayload,
             operatorSessionId = sessionHolder.currentSessionIdOrEmpty(),
         )
-        sessionHolder.clear()
+        sessionHolder.clear(reason)
     }
 }

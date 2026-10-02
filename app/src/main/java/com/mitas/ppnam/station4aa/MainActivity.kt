@@ -10,6 +10,8 @@ import com.mitas.ppnam.station4aa.navigation.AppNavGraph
 import com.mitas.ppnam.station4aa.ui.theme.PPNAMStation4AATheme
 
 class MainActivity : ComponentActivity() {
+    private val container get() = (application as PpnamApplication).container
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
@@ -21,5 +23,15 @@ class MainActivity : ComponentActivity() {
                 AppNavGraph()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        container.sessionGuard.checkNow()
+    }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        container.sessionGuard.touch()
     }
 }

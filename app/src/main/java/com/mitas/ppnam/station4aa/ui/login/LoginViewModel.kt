@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
+import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.LoginMethod
@@ -34,6 +35,7 @@ class LoginViewModel(
     private val scanEventBus: ScanEventBus,
     private val connectionManager: MqttConnectionManager,
     private val settingsRepository: SettingsRepository,
+    private val sessionHolder: OperatorSessionHolder,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
@@ -47,6 +49,8 @@ class LoginViewModel(
     private var badgeScanJob: Job? = null
 
     init {
+        // A dropped session (inactivity, station refusal) explains itself on the login line.
+        sessionHolder.consumeSignedOutReason()?.let { _uiState.value = LoginUiState.Error(it) }
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
         startListeningForBadgeScans()
     }

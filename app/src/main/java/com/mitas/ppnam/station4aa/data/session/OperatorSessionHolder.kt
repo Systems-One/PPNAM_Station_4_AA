@@ -24,17 +24,31 @@ data class OperatorSession(
 )
 
 /** In-memory only, like Station 2's — rebuilt from a fresh login/badge scan on process restart.
- * No password or session token is ever persisted to disk. */
+ * No password or session token is ever persisted to disk. [signedOutReason] is the one-shot
+ * sentence Login shows when a session was dropped for the operator (audit static-05). */
 class OperatorSessionHolder {
     private val _session = MutableStateFlow<OperatorSession?>(null)
     val session: StateFlow<OperatorSession?> = _session.asStateFlow()
 
+    private val _signedOutReason = MutableStateFlow<String?>(null)
+    val signedOutReason: StateFlow<String?> = _signedOutReason.asStateFlow()
+
     fun set(session: OperatorSession) {
+        _signedOutReason.value = null
         _session.value = session
     }
 
-    fun clear() {
+    /** [reason] is null for a deliberate Log out (nothing to explain). */
+    fun clear(reason: String? = null) {
+        _signedOutReason.value = reason
         _session.value = null
+    }
+
+    /** Login reads the reason once and clears it so it does not reappear on the next visit. */
+    fun consumeSignedOutReason(): String? {
+        val reason = _signedOutReason.value
+        _signedOutReason.value = null
+        return reason
     }
 
     fun currentSessionIdOrEmpty(): String = _session.value?.operatorSessionId ?: ""
