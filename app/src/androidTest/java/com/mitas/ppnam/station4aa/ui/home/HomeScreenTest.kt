@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mitas.ppnam.station4aa.R
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.InfoBlue
 import com.mitas.ppnam.station4aa.ui.theme.CyanAccent
 import com.mitas.ppnam.station4aa.ui.theme.PPNAMStation4AATheme
 import org.junit.Assert.assertEquals
@@ -44,7 +44,7 @@ class HomeScreenTest {
                     DashboardTile(
                         label = "Waste\nCollection",
                         icon = R.drawable.ic_waste_collection,
-                        containerColor = AmberPrimary,
+                        containerColor = InfoBlue,
                         onClick = onWasteCollection,
                         modifier = Modifier.weight(1f),
                     )
@@ -85,9 +85,9 @@ class HomeScreenTest {
     @Test
     fun theTwoTilesUseStation1sDashboardColours() {
         // Station 1 AA's activity_main.xml paints its two tiles tile_blue (#2E77F5) and tile_teal
-        // (#25C7DA). This app's palette already carries both, and the dashboard is only "like
-        // Station 1's" for as long as they stay in step.
-        assertEquals(0xFF2E77F5.toInt(), AmberPrimary.toArgb())
+        // (#25C7DA). The app's *primary* is now the launcher-icon violet (static-02), so the
+        // dashboard keeps Station 1's blue through InfoBlue, not through the primary.
+        assertEquals(0xFF2E77F5.toInt(), InfoBlue.toArgb())
         assertEquals(0xFF25C7DA.toInt(), CyanAccent.toArgb())
     }
 }

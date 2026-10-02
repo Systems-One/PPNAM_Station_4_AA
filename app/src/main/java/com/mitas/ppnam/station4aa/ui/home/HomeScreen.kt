@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.R
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.InfoBlue
 import com.mitas.ppnam.station4aa.ui.theme.CyanAccent
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
 
@@ -39,8 +39,8 @@ import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
  * different times and places: a collection is registered wherever the bag is filled, and the weigh
  * happens later at Station 4's scale, keyed only by the bag code. Neither is a step of the other.
  *
- * The tile colours are Station 1's `tile_blue` and `tile_teal`, which this app's palette already
- * carries as [AmberPrimary] and [CyanAccent].
+ * The tile colours are Station 1's `tile_blue` and `tile_teal`, which this app's palette carries as
+ * [InfoBlue] and [CyanAccent] (the primary itself is the icon violet).
  */
 @Composable
 fun HomeScreen(
@@ -74,7 +74,7 @@ fun HomeScreen(
                 DashboardTile(
                     label = "Waste\nCollection",
                     icon = R.drawable.ic_waste_collection,
-                    containerColor = AmberPrimary,
+                    containerColor = InfoBlue,
                     onClick = onWasteCollection,
                     modifier = Modifier.weight(1f),
                 )
