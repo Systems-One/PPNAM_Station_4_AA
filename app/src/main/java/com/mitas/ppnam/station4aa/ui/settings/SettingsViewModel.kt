@@ -14,7 +14,7 @@ import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.CatalogueSyncResult
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
-import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
+import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -96,10 +96,7 @@ class SettingsViewModel(
 
     val connectionState: StateFlow<MqttConnectionState> = connectionManager.connectionState
 
-    val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
-        connectionManager.connectionState,
-        connectionManager.stationOnline,
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
+    val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
     val catalogueStatus: StateFlow<String> = catalogueRepository.meta
         .map(::describeCatalogue)

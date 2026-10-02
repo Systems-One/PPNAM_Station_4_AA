@@ -9,17 +9,15 @@ import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.LoginMethod
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
-import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
+import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /** Ported from Station 2 AA's LoginUiState/LoginViewModel — see
@@ -44,10 +42,7 @@ class LoginViewModel(
     private val _navigationEvent = Channel<String>(Channel.BUFFERED)
     val navigationEvent: Flow<String> = _navigationEvent.receiveAsFlow()
 
-    val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
-        connectionManager.connectionState,
-        connectionManager.stationOnline,
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
+    val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
     private var badgeScanJob: Job? = null
 

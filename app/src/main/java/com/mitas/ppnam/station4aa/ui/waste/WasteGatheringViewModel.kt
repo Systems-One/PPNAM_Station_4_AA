@@ -23,7 +23,7 @@ import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
-import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
+import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -63,10 +63,7 @@ class WasteGatheringViewModel(
 
     private val wizardController = WasteWizardController()
 
-    val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
-        connectionManager.connectionState,
-        connectionManager.stationOnline,
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
+    val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
     /** Durably queued events awaiting PUBACK — surfaced so the operator can see unsynced work
      * exists, per the contract's reconciliation-visibility requirement. */
