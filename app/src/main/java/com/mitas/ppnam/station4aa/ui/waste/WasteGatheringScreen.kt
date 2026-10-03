@@ -45,7 +45,7 @@ import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.DiscardDraftDialog
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
@@ -268,7 +268,7 @@ private fun StepIndicator(step: WizardStep) {
     Text(
         "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 5 — $label",
         style = MaterialTheme.typography.labelLarge,
-        color = AmberPrimary,
+        color = BrandTint,
     )
 }
 
@@ -313,9 +313,9 @@ private fun ScanStep(
             ),
             keyboardActions = KeyboardActions(onDone = { submit() }),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AmberPrimary,
-                focusedLabelColor = AmberPrimary,
-                cursorColor = AmberPrimary,
+                focusedBorderColor = BrandTint,
+                focusedLabelColor = BrandTint,
+                cursorColor = BrandTint,
             ),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -395,7 +395,7 @@ private fun ConfirmRow(label: String, value: String, onEdit: (() -> Unit)? = nul
             Text(value, style = MaterialTheme.typography.bodyLarge, color = TextPrimary)
         }
         if (onEdit != null) {
-            TextButton(onClick = onEdit) { Text("Edit", color = AmberPrimary) }
+            TextButton(onClick = onEdit) { Text("Edit", color = BrandTint) }
         }
     }
 }
@@ -425,8 +425,8 @@ private fun <T> DropdownSelector(
             label = { Text(label) },
             trailingIcon = { Icon(Icons.Filled.ArrowDropDown, contentDescription = null) },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AmberPrimary,
-                focusedLabelColor = AmberPrimary,
+                focusedBorderColor = BrandTint,
+                focusedLabelColor = BrandTint,
             ),
             modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable),
         )

@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
@@ -111,9 +111,9 @@ fun WeighBagScreen(
                 ),
                 keyboardActions = KeyboardActions(onDone = { requestWeight() }),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = AmberPrimary,
-                    focusedLabelColor = AmberPrimary,
-                    cursorColor = AmberPrimary,
+                    focusedBorderColor = BrandTint,
+                    focusedLabelColor = BrandTint,
+                    cursorColor = BrandTint,
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )

@@ -51,7 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBackground
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
@@ -153,9 +153,9 @@ fun LoginScreen(
                         enabled = uiState !is LoginUiState.LoggingIn,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = AmberPrimary,
-                            focusedLabelColor = AmberPrimary,
-                            cursorColor = AmberPrimary
+                            focusedBorderColor = BrandTint,
+                            focusedLabelColor = BrandTint,
+                            cursorColor = BrandTint
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -182,9 +182,9 @@ fun LoginScreen(
                             }
                         },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = AmberPrimary,
-                            focusedLabelColor = AmberPrimary,
-                            cursorColor = AmberPrimary
+                            focusedBorderColor = BrandTint,
+                            focusedLabelColor = BrandTint,
+                            cursorColor = BrandTint
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )

@@ -16,6 +16,9 @@ val TextMuted              = Color(0xFF9BAEC0)
 // app carries its icon identity on screen the way Stations 1/3/5 do (audit static-02).
 val AmberPrimary           = Color(0xFF55368C)
 val AmberDark              = Color(0xFFFFFFFF)   // on-primary (white text on violet buttons)
+// Lighter violet for foreground uses (text, icon tint, focused outline/label, cursor, spinners) on the
+// graphite surfaces, where the filled-surface violet is below 3:1.
+val BrandTint              = Color(0xFFB39DDB)
 
 // Status colours — matches WPF GreenColor / RedColor
 val SuccessGreen           = Color(0xFF2BC36D)

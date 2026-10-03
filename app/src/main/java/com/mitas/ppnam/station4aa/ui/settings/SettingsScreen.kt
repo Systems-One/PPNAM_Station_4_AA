@@ -125,7 +125,7 @@ fun SettingsScreen(
                         color = TextMuted,
                     )
                     TextButton(onClick = { viewModel.refreshCatalogue() }) {
-                        Text("Refresh catalogue", color = AmberPrimary)
+                        Text("Refresh catalogue", color = BrandTint)
                     }
 
                     // Kept separate from the Configuration card's applyState block below: that one
@@ -140,7 +140,7 @@ fun SettingsScreen(
                             ) {
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(18.dp),
-                                    color = AmberPrimary,
+                                    color = BrandTint,
                                     strokeWidth = 2.dp
                                 )
                                 Text("Refreshing catalogue…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
@@ -182,7 +182,7 @@ fun SettingsScreen(
                     ) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
-                            color = AmberPrimary,
+                            color = BrandTint,
                             strokeWidth = 2.dp
                         )
                         Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
@@ -255,9 +255,9 @@ fun SettingsScreen(
                                     }),
                                     isError = pinError,
                                     colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = AmberPrimary,
-                                        focusedLabelColor = AmberPrimary,
-                                        cursorColor = AmberPrimary
+                                        focusedBorderColor = BrandTint,
+                                        focusedLabelColor = BrandTint,
+                                        cursorColor = BrandTint
                                     ),
                                     modifier = Modifier.weight(1f)
                                 )
@@ -477,7 +477,7 @@ private fun ConfigSection(title: String, content: @Composable ColumnScope.() -> 
             Text(
                 text = title.uppercase(),
                 style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.8.sp),
-                color = AmberPrimary
+                color = BrandTint
             )
             content()
         }
@@ -510,9 +510,9 @@ private fun SettingsTextField(
         visualTransformation = visualTransformation,
         trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = AmberPrimary,
-            focusedLabelColor = AmberPrimary,
-            cursorColor = AmberPrimary
+            focusedBorderColor = BrandTint,
+            focusedLabelColor = BrandTint,
+            cursorColor = BrandTint
         ),
         modifier = Modifier.fillMaxWidth()
     )
@@ -534,8 +534,8 @@ private fun SettingsToggleRow(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = AmberPrimary,
-                checkedTrackColor = AmberPrimary.copy(alpha = 0.4f)
+                checkedThumbColor = BrandTint,
+                checkedTrackColor = AmberPrimary
             )
         )
     }
