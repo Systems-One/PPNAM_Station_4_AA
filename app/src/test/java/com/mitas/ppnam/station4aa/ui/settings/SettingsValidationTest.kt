@@ -73,4 +73,12 @@ class SettingsValidationTest {
             describeConnectFailure(null),
         )
     }
+
+    @Test
+    fun `a failed connection test says the settings were saved and names the broker`() {
+        assertEquals(
+            "Saved, but could not connect to 10.0.0.5:8884. Check the broker settings.",
+            savedButNotConnectedMessage("10.0.0.5", 8884),
+        )
+    }
 }

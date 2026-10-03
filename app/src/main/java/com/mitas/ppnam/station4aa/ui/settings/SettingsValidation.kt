@@ -28,3 +28,7 @@ fun describeConnectFailure(failure: Throwable?): String = when (failure) {
     is TimeoutCancellationException -> "Could not reach the broker (15 s)"
     else -> "Could not connect to the broker. Check the host, port and credentials."
 }
+
+/** Test & Apply failure line now that the draft is persisted before the connection test. */
+fun savedButNotConnectedMessage(host: String, port: Int): String =
+    "Saved, but could not connect to $host:$port. Check the broker settings."

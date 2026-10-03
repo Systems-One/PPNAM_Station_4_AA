@@ -233,20 +233,24 @@ class SettingsViewModel(
         )
         applyState.value = ApplyState.Testing
         viewModelScope.launch {
+            // Persist first (Stations 1 and 2): the operator's edits, including the auto sign-out
+            // minutes, must survive a broker that happens to be unreachable right now.
+            settingsRepository.save(effective)
+            storedPassword = effective.mqttPassword
+            draftSettings.value = effective.copy(mqttPassword = "")
             val result = connectionManager.reconnectWith(effective)
             if (result.isSuccess) {
-                settingsRepository.save(effective)
-                storedPassword = effective.mqttPassword
-                draftSettings.value = effective.copy(mqttPassword = "")
                 // The Success row is rendered outside the PIN card (see SettingsScreen) so it
-                // stays visible after the re-lock below — the audit found the old one vanished
+                // stays visible after the re-lock below - the audit found the old one vanished
                 // with the card (S4-17).
                 applyState.value = ApplyState.Success("Connected — settings saved")
                 delay(2_000)
                 pinState.value = PinState.Locked
                 pinInput.value = ""
             } else {
-                applyState.value = ApplyState.Failure(describeConnectFailure(result.exceptionOrNull()))
+                applyState.value = ApplyState.Failure(
+                    savedButNotConnectedMessage(effective.mqttHost, effective.mqttPort),
+                )
             }
         }
     }
