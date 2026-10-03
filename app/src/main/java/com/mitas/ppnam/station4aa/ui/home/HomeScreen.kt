@@ -1,5 +1,6 @@
 package com.mitas.ppnam.station4aa.ui.home
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,9 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.R
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
-import com.mitas.ppnam.station4aa.ui.theme.CyanAccent
-import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
+import com.mitas.ppnam.station4aa.ui.theme.BrandPrimary
 
 /**
  * The operator's dashboard: one tile per sub-app, mirroring Station 1 AA's `activity_main.xml`
@@ -39,18 +42,33 @@ import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
  * different times and places: a collection is registered wherever the bag is filled, and the weigh
  * happens later at Station 4's scale, keyed only by the bag code. Neither is a step of the other.
  *
- * The tile colours are Station 1's `tile_blue` and `tile_teal`, which this app's palette already
- * carries as [AmberPrimary] and [CyanAccent].
+ * Both tiles use the violet brand fill ([BrandPrimary]) with white icons and label (audit S4-R05),
+ * not Station 1's blue and teal.
  */
 @Composable
 fun HomeScreen(
     onWasteCollection: () -> Unit,
     onWeighBag: () -> Unit,
     onSettings: () -> Unit,
+    onExitApp: () -> Unit,
     viewModel: HomeViewModel,
 ) {
     val connectionStatus by viewModel.connectionStatus.collectAsState()
     val session by viewModel.session.collectAsState()
+
+    // System Back on the post-login root used to background the app with no prompt while Login
+    // asked "Close the app?" (audit S4-09 / static-04). Same dialog on both now.
+    var showExitDialog by rememberSaveable { mutableStateOf(false) }
+    BackHandler { showExitDialog = true }
+    if (showExitDialog) {
+        ExitAppDialog(
+            onStay = { showExitDialog = false },
+            onClose = {
+                showExitDialog = false
+                onExitApp()
+            },
+        )
+    }
 
     AppScaffold(
         title = "Station 4",
@@ -74,14 +92,14 @@ fun HomeScreen(
                 DashboardTile(
                     label = "Waste\nCollection",
                     icon = R.drawable.ic_waste_collection,
-                    containerColor = AmberPrimary,
+                    containerColor = BrandPrimary,
                     onClick = onWasteCollection,
                     modifier = Modifier.weight(1f),
                 )
                 DashboardTile(
                     label = "Weigh\nBag",
                     icon = R.drawable.ic_weigh_bag,
-                    containerColor = CyanAccent,
+                    containerColor = BrandPrimary,
                     onClick = onWeighBag,
                     modifier = Modifier.weight(1f),
                 )
@@ -127,7 +145,7 @@ internal fun DashboardTile(
             Text(
                 label,
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
-                color = TextPrimary,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 16.dp),
             )

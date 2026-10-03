@@ -38,6 +38,22 @@ class WasteWizardController {
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
     }
 
+    /** An RFID badge read. Nothing maps a tag to an employee id, so a badge is never submitted as
+     * the operator id: on the three scan steps it is refused with a hint rather than silently
+     * dropped (the draft is left unchanged); elsewhere it is ignored like any stray scan. */
+    fun handleScannedBadge(tagId: String): ScanDispatchResult = when (step) {
+        WizardStep.SCAN_BAG,
+        WizardStep.SCAN_JOB,
+        WizardStep.SCAN_OPERATOR -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
+        WizardStep.SELECT_CATEGORY,
+        WizardStep.SELECT_WASTE_TYPE,
+        WizardStep.REVIEW -> ScanDispatchResult.Ignored
+    }
+
+    private companion object {
+        const val BADGE_NOT_BARCODE = "Scan a barcode, not a badge."
+    }
+
     /** Manual-entry fallback for the bag step; a scan calls this too via [handleScannedValue].
      * Returns an error message, or null on success. */
     fun submitBagCode(raw: String): String? {
@@ -107,6 +123,18 @@ class WasteWizardController {
         returnToReview = true
         step = target
     }
+
+    /** Back / scrim / "Back" on the review dialog: hide the review and land on the last capture
+     * step with every value kept. Previously this was [cancel], which silently threw away the
+     * whole five-step transaction (audit S4-03). */
+    fun dismissReview() {
+        check(step == WizardStep.REVIEW) { "dismissReview called outside REVIEW (was $step)" }
+        returnToReview = false
+        step = WizardStep.SELECT_WASTE_TYPE
+    }
+
+    /** True once any value has been captured — the screen asks before discarding such a draft. */
+    val hasDraft: Boolean get() = draft != WasteTransactionDraft()
 
     /** Available on every step, including REVIEW. Discards the draft and returns to the first
      * step — there is no partial-edit recovery path for an abandoned transaction. */

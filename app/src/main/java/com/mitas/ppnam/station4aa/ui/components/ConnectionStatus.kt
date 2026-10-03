@@ -1,11 +1,16 @@
 package com.mitas.ppnam.station4aa.ui.components
 
+import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 enum class ConnectionStatus { Offline, Reconnecting, StationOffline, Connected }
 
@@ -51,3 +56,16 @@ fun connectionStatusFlow(
 ): Flow<ConnectionStatus> =
     combine(connectionState, stationOnline, ::resolveConnectionStatus)
         .debounce(CONNECTION_STATUS_DEBOUNCE_MS)
+
+/**
+ * The per-screen StateFlow every ViewModel exposes to [AppScaffold]. The initial value is resolved
+ * from the manager's *current* state, not a hard-coded [ConnectionStatus.Offline]: with the
+ * 1.5 s debounce above, a hard-coded initial painted a red "Offline" pill on every screen entry
+ * while the broker was in fact connected (audit S4-05).
+ */
+fun MqttConnectionManager.connectionStatusStateFlow(scope: CoroutineScope): StateFlow<ConnectionStatus> =
+    connectionStatusFlow(connectionState, stationOnline).stateIn(
+        scope,
+        SharingStarted.WhileSubscribed(5_000),
+        resolveConnectionStatus(connectionState.value, stationOnline.value),
+    )

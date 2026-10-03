@@ -3,9 +3,11 @@ package com.mitas.ppnam.station4aa.domain.wizard
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteType
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class WasteWizardControllerTest {
@@ -237,5 +239,61 @@ class WasteWizardControllerTest {
         // A fresh transaction must walk the whole flow, not jump to review after one scan.
         controller.submitBagCode("BAG-09")
         assertEquals(WizardStep.SCAN_JOB, controller.step)
+    }
+    @Test
+    fun `dismissing the review returns to the waste-type step with the draft intact`() {
+        val controller = completedController()
+        controller.dismissReview()
+        assertEquals(WizardStep.SELECT_WASTE_TYPE, controller.step)
+        assertEquals("BAG-01", controller.draft.bagCode)
+        assertEquals(bubbleBreaks, controller.draft.wasteType)
+        // Re-confirming the type goes straight back to review.
+        controller.confirmWasteType(bubbleBreaks)
+        assertEquals(WizardStep.REVIEW, controller.step)
+    }
+
+    @Test
+    fun `dismissReview is only legal from review`() {
+        assertThrows(IllegalStateException::class.java) { WasteWizardController().dismissReview() }
+    }
+
+    @Test
+    fun `hasDraft is false until something is captured and false again after cancel`() {
+        val controller = WasteWizardController()
+        assertFalse(controller.hasDraft)
+        controller.submitBagCode("BAG-01")
+        assertTrue(controller.hasDraft)
+        controller.cancel()
+        assertFalse(controller.hasDraft)
+    }
+    @Test
+    fun `a badge scan on the operator step is refused and leaves the draft unchanged`() {
+        val controller = WasteWizardController()
+        controller.submitBagCode("BAG-01")
+        controller.submitJobNumber("JOB-1")
+        val before = controller.draft
+        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertNull(controller.draft.operatorId)
+        assertEquals(before, controller.draft)
+        assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
+    }
+
+    @Test
+    fun `a badge scan on the bag or job step is refused with a hint and changes nothing`() {
+        val controller = WasteWizardController()
+        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(WizardStep.SCAN_BAG, controller.step)
+        assertNull(controller.draft.bagCode)
+        controller.submitBagCode("BAG-01")
+        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(WizardStep.SCAN_JOB, controller.step)
+        assertNull(controller.draft.jobNumber)
+    }
+
+    @Test
+    fun `a badge scan is ignored on selection and review steps`() {
+        val controller = completedController()
+        assertEquals(ScanDispatchResult.Ignored, controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(WizardStep.REVIEW, controller.step)
     }
 }

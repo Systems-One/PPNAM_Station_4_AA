@@ -46,6 +46,9 @@ data class WasteOutboxEntity(
         /** Terminal: a correlated result with `accepted: false` arrived. Never retried — the
          * contract requires a brand-new transaction (new messageId/collectionId) instead. */
         const val REJECTED = "REJECTED"
+        /** Terminal: queued under a sign-in that has since ended, so Station 4 can no longer accept
+         * it. Never retried and never re-stamped; the operator re-captures it and dismisses it. */
+        const val STALE = "STALE"
     }
 }
 

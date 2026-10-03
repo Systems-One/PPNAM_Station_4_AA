@@ -126,6 +126,9 @@ class WasteCollectionResultChannelTest {
 private class FakeWasteOutboxDao : WasteOutboxDao {
     val rows = mutableMapOf<String, WasteOutboxEntity>()
 
+    override fun observeByCollectionId(collectionId: String): kotlinx.coroutines.flow.Flow<WasteOutboxEntity?> =
+        kotlinx.coroutines.flow.flowOf(rows.values.firstOrNull { it.collectionId == collectionId })
+
     override suspend fun insert(entity: WasteOutboxEntity) {
         if (!rows.containsKey(entity.messageId)) rows[entity.messageId] = entity
     }
@@ -134,6 +137,8 @@ private class FakeWasteOutboxDao : WasteOutboxDao {
         rows.values.filter { it.status == WasteOutboxEntity.Status.PENDING }
 
     override fun pendingCount(): Flow<Int> = flowOf(0)
+
+    override fun staleCount(): Flow<Int> = flowOf(0)
 
     override suspend fun findByMessageId(messageId: String): WasteOutboxEntity? = rows[messageId]
 
@@ -160,6 +165,16 @@ private class FakeWasteOutboxDao : WasteOutboxDao {
                 )
             }
         }
+    }
+
+    override suspend fun markStale(messageId: String) {
+        rows[messageId]?.let {
+            if (it.status == WasteOutboxEntity.Status.PENDING) rows[messageId] = it.copy(status = WasteOutboxEntity.Status.STALE)
+        }
+    }
+
+    override suspend fun deleteStale() {
+        rows.entries.removeAll { it.value.status == WasteOutboxEntity.Status.STALE }
     }
 }
 
@@ -238,6 +253,23 @@ class WasteCollectionResultChannelHandleIncomingTest {
         val job = launch { channel.results.toList(emitted) }
 
         channel.handleIncoming(resultJson(accepted = true))
+
+        assertEquals(WasteOutboxEntity.Status.ACCEPTED, dao.findByMessageId("msg-1")?.status)
+        assertEquals(1, emitted.size)
+        job.cancel()
+    }
+
+    @Test
+    fun `a result for a row queued under an earlier sign-in is still applied and emitted`() = runTest(UnconfinedTestDispatcher()) {
+        // The operator signed out and back in after publishing: the row (and the echoed result)
+        // carry the old session id. The channel must not drop it for that reason.
+        val dao = FakeWasteOutboxDao()
+        dao.rows["msg-1"] = storedRow(operatorSessionId = "sess-before-signout")
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
+        val emitted = mutableListOf<WasteCollectionResultMessage>()
+        val job = launch { channel.results.toList(emitted) }
+
+        channel.handleIncoming(resultJson(operatorSessionId = "sess-before-signout", accepted = true))
 
         assertEquals(WasteOutboxEntity.Status.ACCEPTED, dao.findByMessageId("msg-1")?.status)
         assertEquals(1, emitted.size)

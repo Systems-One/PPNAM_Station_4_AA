@@ -39,6 +39,8 @@ data class AppSettings(
     val mqttUseTls: Boolean = true,
     val mqttUsername: String = "admin",
     val mqttPassword: String = "admin",
+    /** Inactivity auto sign-out in minutes, 0 = never (Station 1's policy, audit static-05). */
+    val autoSignOutMinutes: Int = AutoSignOut.DEFAULT_MINUTES,
 ) {
     /** True once this handheld has been provisioned with its own broker credential. */
     val hasBrokerCredential: Boolean

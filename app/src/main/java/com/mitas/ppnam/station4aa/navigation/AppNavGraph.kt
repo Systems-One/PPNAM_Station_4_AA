@@ -40,6 +40,7 @@ fun AppNavGraph() {
                             scanEventBus = container.scanEventBus,
                             connectionManager = container.connectionManager,
                             settingsRepository = container.settingsRepository,
+                            sessionHolder = container.operatorSessionHolder,
                         )
                     }
                 }
@@ -71,6 +72,7 @@ fun AppNavGraph() {
                 onWasteCollection = { navController.navigate(NavRoutes.WASTE_GATHERING) },
                 onWeighBag = { navController.navigate(NavRoutes.WEIGH_BAG) },
                 onSettings = { navController.navigate(NavRoutes.SETTINGS) },
+                onExitApp = { (context as? Activity)?.finish() },
                 viewModel = viewModel,
             )
         }
@@ -88,6 +90,7 @@ fun AppNavGraph() {
                             catalogueRepository = container.wasteCatalogueRepository,
                             syncCatalogue = container.syncWasteCatalogueUseCase,
                             deviceId = container.deviceId,
+                            bannerTracker = container.collectionBannerTracker,
                         )
                     }
                 }
@@ -128,6 +131,7 @@ fun AppNavGraph() {
                             authUseCase = container.authUseCase,
                             catalogueRepository = container.wasteCatalogueRepository,
                             syncCatalogue = container.syncWasteCatalogueUseCase,
+                            pinLockoutStore = container.pinLockoutStore,
                             deviceId = container.deviceId,
                         )
                     }

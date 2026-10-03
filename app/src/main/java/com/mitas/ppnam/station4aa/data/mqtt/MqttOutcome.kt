@@ -25,7 +25,7 @@ enum class FailureKind {
 }
 
 internal fun FailureKind.describe(): String = when (this) {
-    FailureKind.NotConnected -> "Not connected to the broker"
-    FailureKind.Timeout -> "No response received"
-    FailureKind.MalformedResponse -> "Received an unreadable response"
+    FailureKind.NotConnected -> "Not connected to the broker. Check Settings and retry."
+    FailureKind.Timeout -> "Station 4 did not respond. Check the station and retry."
+    FailureKind.MalformedResponse -> "Station 4 sent an unreadable reply. Retry."
 }

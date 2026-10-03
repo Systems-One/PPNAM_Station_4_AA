@@ -6,15 +6,21 @@ import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
 import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
-import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
 import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.domain.collection.CollectionBanner
+import com.mitas.ppnam.station4aa.domain.collection.CollectionBannerTracker
+import com.mitas.ppnam.station4aa.domain.collection.CollectionRejections
+import com.mitas.ppnam.station4aa.domain.collection.collectionBannerFlow
+import com.mitas.ppnam.station4aa.domain.collection.ShownResultTracker
+import com.mitas.ppnam.station4aa.domain.collection.isResultForSession
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 import com.mitas.ppnam.station4aa.domain.model.WasteType
+import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
@@ -23,7 +29,7 @@ import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
-import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
+import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -59,18 +65,21 @@ class WasteGatheringViewModel(
     /** The derived, immutable scanner identity (base standard §2) — stamped into every published
      * waste-collection event, never read from Settings. */
     private val deviceId: String,
+    /** App-scoped: remembers the last submission and its Dismiss across ViewModel instances. */
+    private val bannerTracker: CollectionBannerTracker,
 ) : ViewModel() {
 
     private val wizardController = WasteWizardController()
 
-    val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
-        connectionManager.connectionState,
-        connectionManager.stationOnline,
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
+    val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
-    /** Durably queued events awaiting PUBACK — surfaced so the operator can see unsynced work
+    /** Durably queued events still awaiting a correlated Station 4 result — surfaced so the operator can see unsynced work
      * exists, per the contract's reconciliation-visibility requirement. */
     val pendingCount: StateFlow<Int> = publisher.pendingCount
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+
+    /** Collections queued under an earlier sign-in that were never delivered. */
+    val staleCount: StateFlow<Int> = publisher.staleCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
 
     val session: StateFlow<OperatorSession?> = sessionHolder.session
@@ -106,13 +115,25 @@ class WasteGatheringViewModel(
     private val _stepError = MutableStateFlow<String?>(null)
     val stepError: StateFlow<String?> = _stepError.asStateFlow()
 
-    private val _lastQueuedMessage = MutableStateFlow<String?>(null)
-    val lastQueuedMessage: StateFlow<String?> = _lastQueuedMessage.asStateFlow()
+    /** The banner for the last submitted collection, driven by that collection's outbox row in Room
+     * (PENDING "Queued", ACCEPTED accepted, REJECTED the stored rejection) rather than by racing the
+     * result flow against the submit (audit S4-R02), and gated by the app-scoped Dismiss and the
+     * submitting sign-in (audit S4-R03). */
+    private val banner: StateFlow<CollectionBanner?> = collectionBannerFlow(
+        tracker = bannerTracker,
+        observeRow = publisher::observeCollection,
+        sessionId = session.map { it?.operatorSessionId.orEmpty() },
+    ).stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val lastQueuedMessage: StateFlow<String?> = banner
+        .map { it?.message }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     /** Whether [lastQueuedMessage] is currently showing a rejection (vs. the routine "Queued ..."
      * confirmation) — lets the UI style the two differently so a rejection doesn't blend in. */
-    private val _lastMessageIsError = MutableStateFlow(false)
-    val lastMessageIsError: StateFlow<Boolean> = _lastMessageIsError.asStateFlow()
+    val lastMessageIsError: StateFlow<Boolean> = banner
+        .map { it?.isError == true }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     /** True from the moment [onReviewConfirmed] commits to a publish until that publish's
      * coroutine finishes (success or failure). Guards against a double-tap on the REVIEW dialog's
@@ -124,38 +145,10 @@ class WasteGatheringViewModel(
 
     init {
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
-        // Flush anything durably queued while offline as soon as the broker link comes back —
-        // the contract requires retrying with the exact original payload, which retryPending()
-        // does by re-reading the immutable rows rather than re-deriving anything.
-        viewModelScope.launch {
-            connectionManager.connectionState
-                .filter { it == MqttConnectionState.CONNECTED }
-                .collect { publisher.retryPending() }
-        }
-        viewModelScope.launch {
-            scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
-                when (val result = wizardController.handleScannedValue(event.value)) {
-                    is ScanDispatchResult.Applied -> syncFromController(result.error)
-                    ScanDispatchResult.Ignored -> Unit
-                }
-            }
-        }
-        viewModelScope.launch {
-            publisher.results.collect { result ->
-                if (!result.accepted) {
-                    _lastQueuedMessage.value = "Bag ${result.bagCode} was rejected: " +
-                        (result.reason ?: result.errorCode ?: "unknown reason") +
-                        " (${result.nextAction})"
-                    _lastMessageIsError.value = true
-                }
-                // An accepted result needs no new operator-visible message — "Queued ..." already
-                // shown at publish time already told them the transaction is in motion, and the
-                // wizard has already moved on to the next one.
-            }
-        }
-        // Refresh the catalogue whenever we have both a session and a live broker link — that
-        // covers first login and every reconnect. Failure is deliberately silent here: the cached
-        // or seeded catalogue stays usable and Settings → Diagnostics is where staleness shows.
+        // Whenever we have both a session and a live broker link (first login and every
+        // reconnect): refresh the catalogue (the outbox replay runs app-wide from AppContainer).
+        // Sync failure is deliberately silent here — the cached catalogue stays usable and
+        // Settings → Diagnostics is where staleness shows.
         viewModelScope.launch {
             combine(
                 connectionManager.connectionState,
@@ -168,6 +161,51 @@ class WasteGatheringViewModel(
                     syncCatalogue.sync(activeSession!!.operatorSessionId)
                 }
         }
+        viewModelScope.launch {
+            scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
+                when (val result = wizardController.handleScannedValue(event.value)) {
+                    is ScanDispatchResult.Applied -> syncFromController(result.error)
+                    ScanDispatchResult.Ignored -> Unit
+                }
+            }
+        }
+        viewModelScope.launch {
+            scanEventBus.events.filterIsInstance<ScanEvent.RfidTag>().collect { event ->
+                when (val result = wizardController.handleScannedBadge(event.tagId)) {
+                    is ScanDispatchResult.Applied -> syncFromController(result.error)
+                    ScanDispatchResult.Ignored -> Unit
+                }
+            }
+        }
+        viewModelScope.launch {
+            val shownResults = ShownResultTracker()
+            publisher.results.collect { result ->
+                // Never dropped because the session changed: the channel only emits results for
+                // bags this device published. Only a replay of an already-shown result is skipped.
+                if (!shownResults.shouldShow(result)) return@collect
+                // The banner itself comes from the outbox row; this collector only keeps the one
+                // side effect that cannot be derived from a row.
+                if (!result.accepted) {
+                    val rejection = CollectionRejections.describe(result.bagCode, result.errorCode)
+                    // A stale session rejection must not sign out whoever is logged in now.
+                    if (rejection.requiresLogin &&
+                        isResultForSession(result, sessionHolder.currentSessionIdOrEmpty())
+                    ) {
+                        sessionHolder.clear(SIGNED_OUT_SESSION_ENDED)
+                    }
+                }
+            }
+        }
+    }
+
+    /** Dismiss on the stale line: the operator has seen it and will re-capture the bags. */
+    fun dismissStale() {
+        viewModelScope.launch { publisher.dismissStale() }
+    }
+
+    /** The "Retry now" affordance on the queued line. */
+    fun retryNow() {
+        viewModelScope.launch { publisher.retryPending(sessionHolder.currentSessionIdOrEmpty()) }
     }
 
     fun onBagCodeSubmitted(raw: String) {
@@ -195,6 +233,12 @@ class WasteGatheringViewModel(
     /** Review-screen correction: jump to one capture step and come back once it is satisfied. */
     fun onEditField(target: WizardStep) {
         wizardController.editField(target)
+        syncFromController(null)
+    }
+
+    /** Back, scrim or "Back" on the review dialog — keeps the draft (audit S4-03). */
+    fun onReviewDismissed() {
+        wizardController.dismissReview()
         syncFromController(null)
     }
 
@@ -255,13 +299,13 @@ class WasteGatheringViewModel(
                     deviceId = deviceId,
                     operatorSessionId = operatorSessionId,
                 )
+                // Track first: the banner follows this collection's outbox row, so it shows
+                // "Queued" (a PUBACK or durable write is never "accepted", acceptance criterion 20)
+                // until the correlated result flips the row, whenever that happens.
+                bannerTracker.track(event.collectionId, operatorSessionId)
                 publisher.submit(event)
                 wizardController.cancel()
                 syncFromController(null)
-                // Acceptance criterion 20: a PUBACK (or even just a durable local write) is never
-                // presented as Station 4 business acceptance — "Queued", not "Submitted"/"Accepted".
-                _lastQueuedMessage.value = "Queued ${event.collectionId} for delivery"
-                _lastMessageIsError.value = false
             } finally {
                 _isSubmitting.value = false
             }
@@ -275,8 +319,7 @@ class WasteGatheringViewModel(
     }
 
     fun dismissLastQueuedMessage() {
-        _lastQueuedMessage.value = null
-        _lastMessageIsError.value = false
+        bannerTracker.dismiss()
     }
 
     /** SessionWatcher (mounted at the nav-graph root) handles the actual navigation back to

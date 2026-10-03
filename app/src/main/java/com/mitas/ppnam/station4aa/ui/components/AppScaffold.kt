@@ -17,15 +17,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.theme.*
+import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 /**
- * Shared top-bar chrome, mirroring Station 2's AppScaffold. operatorName/onLogout exist for
- * parity even though Station 4 has no login/session concept yet — passing null (the default)
- * collapses the top bar to a plain TopAppBar with the title, optional Settings icon, and the
- * connection-status pill.
+ * Shared top-bar chrome, mirroring Station 2's AppScaffold. With operatorName null the bar
+ * collapses to a plain TopAppBar with the title, optional Settings icon and the connection pill.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +45,7 @@ fun AppScaffold(
         ConnectionStatus.Reconnecting   -> WarningOrange to "Reconnecting"
         // Broker reachable, Station 4 itself is not: publishes still leave the device and queue
         // in the outbox, so this is a warning rather than the red "nothing works" state.
-        ConnectionStatus.StationOffline -> WarningOrange to "Station offline"
+        ConnectionStatus.StationOffline -> WarningOrange to "Station 4 offline"
         ConnectionStatus.Offline        -> DangerRed to "Offline"
     }
 
@@ -63,7 +63,7 @@ fun AppScaffold(
                 }) { Text("Log out", color = DangerRed) }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showLogoutDialog = false }, colors = brandTextButtonColors()) { Text("Cancel") }
             },
             containerColor = GraphiteSurface
         )
@@ -114,25 +114,33 @@ fun AppScaffold(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (onBack != null) {
-                            IconButton(onClick = onBack) {
+                            IconButton(
+                                onClick = onBack,
+                                modifier = Modifier.focusProperties { canFocus = false },
+                            ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Back",
-                                    tint = AmberPrimary
+                                    tint = BrandTint
                                 )
                             }
                         }
                         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                            TextButton(onClick = { showLogoutDialog = true }) {
+                            TextButton(
+                                onClick = { showLogoutDialog = true },
+                                modifier = Modifier.focusProperties { canFocus = false },
+                            ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.Logout,
                                     contentDescription = "Log out",
-                                    tint = AmberPrimary,
+                                    tint = BrandTint,
                                     modifier = Modifier.size(16.dp)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 Text(
-                                    text = if (!operatorRole.isNullOrBlank()) "$operatorName · $operatorRole" else operatorName,
+                                    // With a back arrow in the row there is no room for the role
+                                    // ("Operator One · Op…" on every sub-screen, audit S4-11).
+                                    text = if (onBack == null && !operatorRole.isNullOrBlank()) "$operatorName · $operatorRole" else operatorName,
                                     color = TextPrimary,
                                     style = MaterialTheme.typography.labelMedium,
                                     maxLines = 1,
@@ -141,7 +149,10 @@ fun AppScaffold(
                             }
                         }
                         if (onSettings != null) {
-                            IconButton(onClick = onSettings) {
+                            IconButton(
+                                onClick = onSettings,
+                                modifier = Modifier.focusProperties { canFocus = false },
+                            ) {
                                 Icon(
                                     imageVector = Icons.Filled.Settings,
                                     contentDescription = "Settings",
@@ -176,18 +187,24 @@ fun AppScaffold(
                         },
                         navigationIcon = {
                             if (onBack != null) {
-                                IconButton(onClick = onBack) {
+                                IconButton(
+                                onClick = onBack,
+                                modifier = Modifier.focusProperties { canFocus = false },
+                            ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         contentDescription = "Back",
-                                        tint = AmberPrimary
+                                        tint = BrandTint
                                     )
                                 }
                             }
                         },
                         actions = {
                             if (onSettings != null) {
-                                IconButton(onClick = onSettings) {
+                                IconButton(
+                                onClick = onSettings,
+                                modifier = Modifier.focusProperties { canFocus = false },
+                            ) {
                                     Icon(
                                         imageVector = Icons.Filled.Settings,
                                         contentDescription = "Settings",
@@ -207,12 +224,15 @@ fun AppScaffold(
                 // sits on, so whatever the operator was reading disappears for the duration and
                 // reappears somewhere else; a bar under the title leaves the content in place and
                 // still reads at a glance from arm's length on the handheld.
-                if (loading) {
-                    LinearProgressIndicator(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = AmberPrimary,
-                        trackColor = GraphiteBorder
-                    )
+                // Always reserve the bar's 4 dp so content does not jump when a request starts.
+                Box(Modifier.fillMaxWidth().height(4.dp)) {
+                    if (loading) {
+                        LinearProgressIndicator(
+                            modifier = Modifier.fillMaxSize(),
+                            color = BrandTint,
+                            trackColor = GraphiteBorder
+                        )
+                    }
                 }
             }
         },

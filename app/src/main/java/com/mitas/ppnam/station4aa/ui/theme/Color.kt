@@ -12,9 +12,14 @@ val GraphiteBorder         = Color(0xFF25384C)
 val TextPrimary            = Color(0xFFEDF4FB)
 val TextMuted              = Color(0xFF9BAEC0)
 
-// Primary accent — matches WPF BlueColor / BlueDarkColor
-val AmberPrimary           = Color(0xFF2E77F5)
-val AmberDark              = Color(0xFFFFFFFF)   // on-primary (white text on blue buttons)
+// Primary accent — the launcher icon's violet (res/values/ic_launcher_background.xml), so the
+// app carries its icon identity on screen the way Stations 1/3/5 do (audit static-02).
+val BrandPrimary           = Color(0xFF55368C)
+val AmberPrimary           = BrandPrimary
+val AmberDark              = Color(0xFFFFFFFF)   // on-primary (white text on violet buttons)
+// Lighter violet for foreground uses (text, icon tint, focused outline/label, cursor, spinners) on the
+// graphite surfaces, where the filled-surface violet is below 3:1.
+val BrandTint              = Color(0xFFB39DDB)
 
 // Status colours — matches WPF GreenColor / RedColor
 val SuccessGreen           = Color(0xFF2BC36D)

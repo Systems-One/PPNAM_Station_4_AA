@@ -7,14 +7,20 @@ import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.identity.DeviceIdentity
 import com.mitas.ppnam.station4aa.data.local.WasteOutboxDatabase
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
+import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionResultChannel
 import com.mitas.ppnam.station4aa.data.rfid.DataWedgeReceiver
+import com.mitas.ppnam.station4aa.data.rfid.ForegroundTracker
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.data.session.SessionGuard
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.data.settings.SharedPrefsPinLockoutStore
+import com.mitas.ppnam.station4aa.domain.collection.CollectionBannerTracker
+import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
@@ -22,6 +28,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 private const val TAG = "AppContainer"
@@ -43,6 +52,7 @@ class AppContainer(context: Context) {
 
     private val secureCredentialStore = SecureCredentialStore(appContext)
     val settingsRepository = SettingsRepository(appContext, secureCredentialStore)
+    val pinLockoutStore: PinLockoutStore = SharedPrefsPinLockoutStore(appContext)
     val connectionManager = MqttConnectionManager(deviceId)
 
     private val outboxDatabase = WasteOutboxDatabase.create(appContext)
@@ -55,6 +65,8 @@ class AppContainer(context: Context) {
         connectionManager = connectionManager,
         resultChannel = wasteCollectionResultChannel,
     )
+    /** App-scoped so a banner Dismiss and the submitting sign-in outlive any ViewModel. */
+    val collectionBannerTracker = CollectionBannerTracker()
     val wasteCatalogueRepository = WasteCatalogueRepository(outboxDatabase.wasteCatalogueDao())
 
     // Login exchange, mirrored from Station 2 AA â see MqttTopics' class doc for why this talks
@@ -77,7 +89,17 @@ class AppContainer(context: Context) {
     )
 
     val scanEventBus = ScanEventBus()
-    val dataWedgeReceiver = DataWedgeReceiver(scanEventBus)
+    val foregroundTracker = ForegroundTracker()
+    val dataWedgeReceiver = DataWedgeReceiver(scanEventBus) { foregroundTracker.isResumed }
+
+    /** Inactivity sign-out (Station 1 policy). Constructed last: it needs the session holder,
+     * settings, auth and the scan bus. */
+    val sessionGuard = SessionGuard(
+        sessionHolder = operatorSessionHolder,
+        settingsRepository = settingsRepository,
+        authUseCase = authUseCase,
+        scanEventBus = scanEventBus,
+    )
 
     // Seeding touches disk, so it cannot run on the constructor's thread. Fire-and-forget: a
     // handheld whose seed has not landed yet shows an empty selection step with its own explicit
@@ -93,6 +115,22 @@ class AppContainer(context: Context) {
 
     init {
         containerScope.launch { seedCatalogueSafely(wasteCatalogueRepository) }
+        // Replay the outbox on every login and reconnect, whether or not the Waste screen (and its
+        // ViewModel) is alive. Failures are logged, never fatal.
+        containerScope.launch {
+            combine(connectionManager.connectionState, operatorSessionHolder.session) { state, session -> state to session }
+                .filter { (state, session) -> state == MqttConnectionState.CONNECTED && session != null }
+                .map { (_, session) -> session!!.operatorSessionId }
+                .collect { sessionId ->
+                    try {
+                        wasteCollectionPublisher.retryPending(sessionId)
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Outbox replay failed", e)
+                    }
+                }
+        }
     }
 }
 

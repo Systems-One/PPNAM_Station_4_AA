@@ -7,9 +7,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.mitas.ppnam.station4aa.navigation.AppNavGraph
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.theme.PPNAMStation4AATheme
 
 class MainActivity : ComponentActivity() {
+    private val container get() = (application as PpnamApplication).container
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
@@ -21,5 +24,26 @@ class MainActivity : ComponentActivity() {
                 AppNavGraph()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        container.foregroundTracker.isResumed = true
+        container.sessionGuard.checkNow()
+    }
+
+    override fun onPause() {
+        container.foregroundTracker.isResumed = false
+        super.onPause()
+    }
+
+    override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean {
+        if (EnterKeyGuard.shouldSwallow(event)) return true
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        container.sessionGuard.touch()
     }
 }

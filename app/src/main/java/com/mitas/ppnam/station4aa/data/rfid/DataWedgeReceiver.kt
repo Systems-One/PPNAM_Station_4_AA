@@ -22,9 +22,14 @@ import java.time.Instant
  */
 class DataWedgeReceiver(
     private val scanEventBus: ScanEventBus,
+    private val isForeground: () -> Boolean = { true },
 ) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+        if (!isForeground()) {
+            Log.i(TAG, "Ignoring ${intent.action} while not in the foreground")
+            return
+        }
         when (intent.action) {
             ACTION_SCAN -> {
                 val source = intent.getStringExtra(EXTRA_SOURCE) ?: ""

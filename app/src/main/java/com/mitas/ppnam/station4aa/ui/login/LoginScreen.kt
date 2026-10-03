@@ -2,32 +2,39 @@ package com.mitas.ppnam.station4aa.ui.login
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,17 +43,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
-import com.mitas.ppnam.station4aa.ui.theme.AmberPrimary
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
+import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
+import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBackground
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
@@ -56,7 +71,7 @@ import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
 
 /** Ported from Station 2 AA's LoginScreen — see
  * `com.mitas.ppnam.station4aa.data.mqtt.MqttTopics`' class doc. */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, FlowPreview::class, ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
     onLoggedIn: () -> Unit,
@@ -66,11 +81,32 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val connectionStatus by viewModel.connectionStatus.collectAsState()
-    var username by remember { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
+    // Deliberately NOT rememberSaveable: a password in the saved-instance Bundle is sensitive-data
+    // exposure. The portrait lock (manifest) already prevents the rotation loss S4-08 described.
     var password by remember { mutableStateOf("") }
+    var showPassword by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val buttonIntoView = remember { BringIntoViewRequester() }
+    val submit: () -> Unit = {
+        EnterKeyGuard.arm()
+        focusManager.clearFocus()
+        viewModel.submitCredentials(username, password)
+    }
+
+    // Keep the whole Log In button above the keyboard (audit: 26 px sliver with the error line
+    // showing, same as Station 2's S2-01). One bringIntoView fired as the IME flips visible runs
+    // against the OLD viewport (the inset animates in over ~300 ms), so re-run it whenever the IME
+    // inset settles (debounced past the animation) and whenever the ui state changes the form height.
+    val density = LocalDensity.current
+    val imeInsets = WindowInsets.ime
+    LaunchedEffect(uiState) {
+        snapshotFlow { imeInsets.getBottom(density) }
+            .debounce(150)
+            .collectLatest { bottom -> if (bottom > 0) buttonIntoView.bringIntoView() }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.navigationEvent.collect { destination ->
@@ -93,20 +129,12 @@ fun LoginScreen(
     }
 
     if (showExitDialog) {
-        AlertDialog(
-            onDismissRequest = { showExitDialog = false },
-            title = { Text("Close the app?", color = TextPrimary) },
-            text = { Text("You'll leave PPNAM Station 4 and return to the home screen.", color = TextMuted) },
-            confirmButton = {
-                TextButton(onClick = {
-                    showExitDialog = false
-                    onExitApp()
-                }) { Text("Close", color = DangerRed) }
+        ExitAppDialog(
+            onStay = { showExitDialog = false },
+            onClose = {
+                showExitDialog = false
+                onExitApp()
             },
-            dismissButton = {
-                TextButton(onClick = { showExitDialog = false }) { Text("Stay") }
-            },
-            containerColor = GraphiteSurface
         )
     }
 
@@ -133,6 +161,14 @@ fun LoginScreen(
                     modifier = Modifier.padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    if (uiState is LoginUiState.Error) {
+                        Text(
+                            text = (uiState as LoginUiState.Error).message,
+                            color = DangerRed,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
                     OutlinedTextField(
                         value = username,
                         onValueChange = { username = it },
@@ -141,9 +177,9 @@ fun LoginScreen(
                         enabled = uiState !is LoginUiState.LoggingIn,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = AmberPrimary,
-                            focusedLabelColor = AmberPrimary,
-                            cursorColor = AmberPrimary
+                            focusedBorderColor = BrandTint,
+                            focusedLabelColor = BrandTint,
+                            cursorColor = BrandTint
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -154,36 +190,36 @@ fun LoginScreen(
                         label = { Text("Password") },
                         singleLine = true,
                         enabled = uiState !is LoginUiState.LoggingIn,
-                        visualTransformation = PasswordVisualTransformation(),
+                        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
                         ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { viewModel.submitCredentials(username, password) }
-                        ),
+                        keyboardActions = KeyboardActions(onDone = { submit() }),
+                        trailingIcon = {
+                            IconButton(onClick = { showPassword = !showPassword }) {
+                                Icon(
+                                    imageVector = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                    contentDescription = if (showPassword) "Hide password" else "Show password",
+                                    tint = TextMuted,
+                                )
+                            }
+                        },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = AmberPrimary,
-                            focusedLabelColor = AmberPrimary,
-                            cursorColor = AmberPrimary
+                            focusedBorderColor = BrandTint,
+                            focusedLabelColor = BrandTint,
+                            cursorColor = BrandTint
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    if (uiState is LoginUiState.Error) {
-                        Text(
-                            text = (uiState as LoginUiState.Error).message,
-                            color = DangerRed,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-
                     Button(
-                        onClick = { viewModel.submitCredentials(username, password) },
+                        onClick = submit,
                         enabled = uiState !is LoginUiState.LoggingIn,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
+                            .bringIntoViewRequester(buttonIntoView)
                     ) {
                         if (uiState is LoginUiState.LoggingIn) {
                             CircularProgressIndicator(
@@ -199,10 +235,11 @@ fun LoginScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         HorizontalDivider(Modifier.weight(1f), color = GraphiteBorder)
                         Text(
-                            "  or scan your badge  ",
+                            "or scan your badge",
                             style = MaterialTheme.typography.labelMedium,
                             color = TextMuted,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 8.dp),
                         )
                         HorizontalDivider(Modifier.weight(1f), color = GraphiteBorder)
                     }

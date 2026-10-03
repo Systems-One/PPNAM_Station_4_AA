@@ -4,7 +4,6 @@ import com.mitas.ppnam.station4aa.data.auth.ScramExchange
 import com.mitas.ppnam.station4aa.data.mqtt.EmptyPayload
 import com.mitas.ppnam.station4aa.data.mqtt.MqttOutcome
 import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
-import com.mitas.ppnam.station4aa.data.mqtt.describe
 import com.mitas.ppnam.station4aa.data.mqtt.dto.BadgeLoginPayload
 import com.mitas.ppnam.station4aa.data.mqtt.dto.OperatorContextResponse
 import com.mitas.ppnam.station4aa.data.mqtt.dto.ScramPurpose
@@ -74,8 +73,8 @@ class AuthUseCase(
                     sessionExpiresAtUtc = response.sessionExpiresAtUtc,
                 )
             }
-            is MqttOutcome.Rejected -> Result.failure(Exception(outcome.reason ?: "Login failed"))
-            is MqttOutcome.NoResponse -> Result.failure(Exception(outcome.kind.describe()))
+            is MqttOutcome.Rejected -> Result.failure(LoginRejectedException(outcome.errorCode, outcome.reason))
+            is MqttOutcome.NoResponse -> Result.failure(LoginTransportException(outcome.kind))
         }
     }
 
@@ -112,17 +111,19 @@ class AuthUseCase(
         }
     }
 
-    /** Closes this handheld's session. The local session is cleared regardless of the network
-     * outcome — stranding an operator logged-in because of a network blip would be worse than a
-     * server-side session that expires on its own. */
-    suspend fun logout() {
+    /** Closes this handheld's session. The local session is cleared FIRST (so the app navigates to
+     * Login at once, even on a stalled broker link) and the network logout is then sent for the
+     * session id captured beforehand. Stranding an operator logged-in because of a network blip
+     * would be worse than a server-side session that expires on its own. */
+    suspend fun logout(reason: String? = null) {
+        val sessionId = sessionHolder.currentSessionIdOrEmpty()
+        sessionHolder.clear(reason)
         requestChannel.request(
             deviceId = deviceId,
             requestType = "reader_logout_requested",
             responseClass = OperatorContextResponse::class.java,
             payload = EmptyPayload,
-            operatorSessionId = sessionHolder.currentSessionIdOrEmpty(),
+            operatorSessionId = sessionId,
         )
-        sessionHolder.clear()
     }
 }

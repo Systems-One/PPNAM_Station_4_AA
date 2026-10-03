@@ -5,21 +5,20 @@ import androidx.lifecycle.viewModelScope
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
 import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
+import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.LoginMethod
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
-import com.mitas.ppnam.station4aa.ui.components.connectionStatusFlow
+import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /** Ported from Station 2 AA's LoginUiState/LoginViewModel — see
@@ -36,6 +35,7 @@ class LoginViewModel(
     private val scanEventBus: ScanEventBus,
     private val connectionManager: MqttConnectionManager,
     private val settingsRepository: SettingsRepository,
+    private val sessionHolder: OperatorSessionHolder,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
@@ -44,14 +44,13 @@ class LoginViewModel(
     private val _navigationEvent = Channel<String>(Channel.BUFFERED)
     val navigationEvent: Flow<String> = _navigationEvent.receiveAsFlow()
 
-    val connectionStatus: StateFlow<ConnectionStatus> = connectionStatusFlow(
-        connectionManager.connectionState,
-        connectionManager.stationOnline,
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ConnectionStatus.Offline)
+    val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
     private var badgeScanJob: Job? = null
 
     init {
+        // A dropped session (inactivity, station refusal) explains itself on the login line.
+        sessionHolder.consumeSignedOutReason()?.let { _uiState.value = LoginUiState.Error(it) }
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
         startListeningForBadgeScans()
     }
@@ -66,7 +65,11 @@ class LoginViewModel(
     }
 
     fun submitCredentials(username: String, password: String) {
-        attemptLogin(LoginMethod.Credentials(username, password))
+        if (username.isBlank() || password.isBlank()) {
+            _uiState.value = LoginUiState.Error("Please fill in all fields")
+            return
+        }
+        attemptLogin(LoginMethod.Credentials(username.trim(), password))
     }
 
     private fun attemptLogin(method: LoginMethod) {
@@ -84,7 +87,7 @@ class LoginViewModel(
                     _navigationEvent.send("home")
                 }
                 .onFailure { e ->
-                    _uiState.value = LoginUiState.Error(e.message ?: "Login failed")
+                    _uiState.value = LoginUiState.Error(loginErrorMessage(e))
                 }
         }
     }

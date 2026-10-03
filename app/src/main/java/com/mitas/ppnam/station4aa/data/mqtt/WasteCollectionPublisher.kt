@@ -2,6 +2,7 @@ package com.mitas.ppnam.station4aa.data.mqtt
 
 import com.google.gson.Gson
 import com.mitas.ppnam.station4aa.data.local.WasteOutboxDao
+import com.mitas.ppnam.station4aa.data.local.WasteOutboxEntity
 import com.mitas.ppnam.station4aa.data.local.toEvent
 import com.mitas.ppnam.station4aa.data.local.toOutboxEntity
 import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
@@ -28,6 +29,9 @@ class WasteCollectionPublisher(
      * exists, per the contract's reconciliation-visibility requirement. */
     val pendingCount: Flow<Int> = outboxDao.pendingCount()
 
+    /** The outbox row for one collection, re-emitted on every status change (PENDING to ACCEPTED/REJECTED). */
+    fun observeCollection(collectionId: String): Flow<WasteOutboxEntity?> = outboxDao.observeByCollectionId(collectionId)
+
     /** Terminal (accepted or rejected) results, as they're correlated. */
     val results: SharedFlow<WasteCollectionResultMessage> = resultChannel.results
 
@@ -43,12 +47,30 @@ class WasteCollectionPublisher(
         attemptPublish(event)
     }
 
-    /** Retries every durably-queued row still awaiting a result, with its original, unchanged
-     * payload — call after a reconnect so anything queued while offline gets flushed. The contract
-     * requires this "whether or not it saw PUBACK", so a row's fate is decided only by an incoming
-     * [WasteCollectionResultChannel] correlation, never by this method. */
-    suspend fun retryPending() {
-        outboxDao.getPending().forEach { attemptPublish(it.toEvent()) }
+    /** Rows queued under an earlier sign-in that were never delivered, awaiting the operator's
+     * re-capture and dismissal. */
+    val staleCount: Flow<Int> = outboxDao.staleCount()
+
+    /** Deletes the STALE rows once the operator has acknowledged them. */
+    suspend fun dismissStale() = outboxDao.deleteStale()
+
+    /**
+     * Replays every durably-queued row still awaiting a result - call after a reconnect or a login
+     * so anything queued while offline gets flushed. Only rows whose stored session equals
+     * [currentSessionId] are sent, byte-identical to the queued event (same messageId and payload).
+     * A PENDING row from an older session is never re-stamped with someone else's session: it
+     * becomes [WasteOutboxEntity.Status.STALE] for the operator to re-capture. With no session
+     * nothing is sent or changed - Station 4 would refuse it anyway.
+     */
+    suspend fun retryPending(currentSessionId: String) {
+        if (currentSessionId.isBlank()) return
+        outboxDao.getPending().forEach { row ->
+            if (row.operatorSessionId == currentSessionId) {
+                attemptPublish(row.toEvent())
+            } else {
+                outboxDao.markStale(row.messageId)
+            }
+        }
     }
 
     private suspend fun attemptPublish(event: WasteCollectionEvent) {
