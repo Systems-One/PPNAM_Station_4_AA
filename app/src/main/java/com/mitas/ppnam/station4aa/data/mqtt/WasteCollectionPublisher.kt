@@ -2,6 +2,7 @@ package com.mitas.ppnam.station4aa.data.mqtt
 
 import com.google.gson.Gson
 import com.mitas.ppnam.station4aa.data.local.WasteOutboxDao
+import com.mitas.ppnam.station4aa.data.local.WasteOutboxEntity
 import com.mitas.ppnam.station4aa.data.local.toEvent
 import com.mitas.ppnam.station4aa.data.local.toOutboxEntity
 import com.mitas.ppnam.station4aa.data.mqtt.dto.WasteCollectionResultMessage
@@ -27,6 +28,9 @@ class WasteCollectionPublisher(
     /** Rows still awaiting a correlated result — surfaced so the operator can see unconfirmed work
      * exists, per the contract's reconciliation-visibility requirement. */
     val pendingCount: Flow<Int> = outboxDao.pendingCount()
+
+    /** The outbox row for one collection, re-emitted on every status change (PENDING to ACCEPTED/REJECTED). */
+    fun observeCollection(collectionId: String): Flow<WasteOutboxEntity?> = outboxDao.observeByCollectionId(collectionId)
 
     /** Terminal (accepted or rejected) results, as they're correlated. */
     val results: SharedFlow<WasteCollectionResultMessage> = resultChannel.results

@@ -90,6 +90,7 @@ fun AppNavGraph() {
                             catalogueRepository = container.wasteCatalogueRepository,
                             syncCatalogue = container.syncWasteCatalogueUseCase,
                             deviceId = container.deviceId,
+                            bannerTracker = container.collectionBannerTracker,
                         )
                     }
                 }

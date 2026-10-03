@@ -19,6 +19,7 @@ import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.session.SessionGuard
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.data.settings.SharedPrefsPinLockoutStore
+import com.mitas.ppnam.station4aa.domain.collection.CollectionBannerTracker
 import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
@@ -64,6 +65,8 @@ class AppContainer(context: Context) {
         connectionManager = connectionManager,
         resultChannel = wasteCollectionResultChannel,
     )
+    /** App-scoped so a banner Dismiss and the submitting sign-in outlive any ViewModel. */
+    val collectionBannerTracker = CollectionBannerTracker()
     val wasteCatalogueRepository = WasteCatalogueRepository(outboxDatabase.wasteCatalogueDao())
 
     // Login exchange, mirrored from Station 2 AA â see MqttTopics' class doc for why this talks

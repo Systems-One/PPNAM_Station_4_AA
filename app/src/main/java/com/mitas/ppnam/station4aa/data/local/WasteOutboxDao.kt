@@ -24,6 +24,9 @@ interface WasteOutboxDao {
     @Query("SELECT * FROM waste_outbox WHERE messageId = :messageId LIMIT 1")
     suspend fun findByMessageId(messageId: String): WasteOutboxEntity?
 
+    @Query("SELECT * FROM waste_outbox WHERE collectionId = :collectionId LIMIT 1")
+    fun observeByCollectionId(collectionId: String): Flow<WasteOutboxEntity?>
+
     @Query(
         "UPDATE waste_outbox SET attemptCount = attemptCount + 1, lastAttemptEpochMs = :nowEpochMs " +
             "WHERE messageId = :messageId"

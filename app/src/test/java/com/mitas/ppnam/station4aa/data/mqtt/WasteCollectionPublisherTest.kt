@@ -15,6 +15,7 @@ private class FakeOutboxDao : WasteOutboxDao {
         rows.values.filter { it.status == WasteOutboxEntity.Status.PENDING }.sortedBy { it.createdAtEpochMs }
     override fun pendingCount(): Flow<Int> = flowOf(0)
     override fun staleCount(): Flow<Int> = flowOf(rows.values.count { it.status == WasteOutboxEntity.Status.STALE })
+    override fun observeByCollectionId(collectionId: String): Flow<WasteOutboxEntity?> = flowOf(rows.values.firstOrNull { it.collectionId == collectionId })
     override suspend fun findByMessageId(messageId: String): WasteOutboxEntity? = rows[messageId]
     override suspend fun recordAttempt(messageId: String, nowEpochMs: Long) {
         rows[messageId]?.let { rows[messageId] = it.copy(attemptCount = it.attemptCount + 1, lastAttemptEpochMs = nowEpochMs) }

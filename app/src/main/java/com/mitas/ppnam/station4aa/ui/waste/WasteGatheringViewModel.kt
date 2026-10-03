@@ -11,7 +11,10 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.domain.collection.CollectionBanner
+import com.mitas.ppnam.station4aa.domain.collection.CollectionBannerTracker
 import com.mitas.ppnam.station4aa.domain.collection.CollectionRejections
+import com.mitas.ppnam.station4aa.domain.collection.collectionBannerFlow
 import com.mitas.ppnam.station4aa.domain.collection.ShownResultTracker
 import com.mitas.ppnam.station4aa.domain.collection.isResultForSession
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
@@ -62,6 +65,8 @@ class WasteGatheringViewModel(
     /** The derived, immutable scanner identity (base standard §2) — stamped into every published
      * waste-collection event, never read from Settings. */
     private val deviceId: String,
+    /** App-scoped: remembers the last submission and its Dismiss across ViewModel instances. */
+    private val bannerTracker: CollectionBannerTracker,
 ) : ViewModel() {
 
     private val wizardController = WasteWizardController()
@@ -110,13 +115,25 @@ class WasteGatheringViewModel(
     private val _stepError = MutableStateFlow<String?>(null)
     val stepError: StateFlow<String?> = _stepError.asStateFlow()
 
-    private val _lastQueuedMessage = MutableStateFlow<String?>(null)
-    val lastQueuedMessage: StateFlow<String?> = _lastQueuedMessage.asStateFlow()
+    /** The banner for the last submitted collection, driven by that collection's outbox row in Room
+     * (PENDING "Queued", ACCEPTED accepted, REJECTED the stored rejection) rather than by racing the
+     * result flow against the submit (audit S4-R02), and gated by the app-scoped Dismiss and the
+     * submitting sign-in (audit S4-R03). */
+    private val banner: StateFlow<CollectionBanner?> = collectionBannerFlow(
+        tracker = bannerTracker,
+        observeRow = publisher::observeCollection,
+        sessionId = session.map { it?.operatorSessionId.orEmpty() },
+    ).stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val lastQueuedMessage: StateFlow<String?> = banner
+        .map { it?.message }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     /** Whether [lastQueuedMessage] is currently showing a rejection (vs. the routine "Queued ..."
      * confirmation) — lets the UI style the two differently so a rejection doesn't blend in. */
-    private val _lastMessageIsError = MutableStateFlow(false)
-    val lastMessageIsError: StateFlow<Boolean> = _lastMessageIsError.asStateFlow()
+    val lastMessageIsError: StateFlow<Boolean> = banner
+        .map { it?.isError == true }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     /** True from the moment [onReviewConfirmed] commits to a publish until that publish's
      * coroutine finishes (success or failure). Guards against a double-tap on the REVIEW dialog's
@@ -166,13 +183,10 @@ class WasteGatheringViewModel(
                 // Never dropped because the session changed: the channel only emits results for
                 // bags this device published. Only a replay of an already-shown result is skipped.
                 if (!shownResults.shouldShow(result)) return@collect
-                if (result.accepted) {
-                    _lastQueuedMessage.value = "Collection ${result.collectionId} accepted by Station 4."
-                    _lastMessageIsError.value = false
-                } else {
+                // The banner itself comes from the outbox row; this collector only keeps the one
+                // side effect that cannot be derived from a row.
+                if (!result.accepted) {
                     val rejection = CollectionRejections.describe(result.bagCode, result.errorCode)
-                    _lastQueuedMessage.value = rejection.message
-                    _lastMessageIsError.value = true
                     // A stale session rejection must not sign out whoever is logged in now.
                     if (rejection.requiresLogin &&
                         isResultForSession(result, sessionHolder.currentSessionIdOrEmpty())
@@ -285,13 +299,13 @@ class WasteGatheringViewModel(
                     deviceId = deviceId,
                     operatorSessionId = operatorSessionId,
                 )
+                // Track first: the banner follows this collection's outbox row, so it shows
+                // "Queued" (a PUBACK or durable write is never "accepted", acceptance criterion 20)
+                // until the correlated result flips the row, whenever that happens.
+                bannerTracker.track(event.collectionId, operatorSessionId)
                 publisher.submit(event)
                 wizardController.cancel()
                 syncFromController(null)
-                // Acceptance criterion 20: a PUBACK (or even just a durable local write) is never
-                // presented as Station 4 business acceptance — "Queued", not "Submitted"/"Accepted".
-                _lastQueuedMessage.value = "Queued ${event.collectionId} for delivery"
-                _lastMessageIsError.value = false
             } finally {
                 _isSubmitting.value = false
             }
@@ -305,8 +319,7 @@ class WasteGatheringViewModel(
     }
 
     fun dismissLastQueuedMessage() {
-        _lastQueuedMessage.value = null
-        _lastMessageIsError.value = false
+        bannerTracker.dismiss()
     }
 
     /** SessionWatcher (mounted at the nav-graph root) handles the actual navigation back to

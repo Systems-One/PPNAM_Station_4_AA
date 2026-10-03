@@ -126,6 +126,9 @@ class WasteCollectionResultChannelTest {
 private class FakeWasteOutboxDao : WasteOutboxDao {
     val rows = mutableMapOf<String, WasteOutboxEntity>()
 
+    override fun observeByCollectionId(collectionId: String): kotlinx.coroutines.flow.Flow<WasteOutboxEntity?> =
+        kotlinx.coroutines.flow.flowOf(rows.values.firstOrNull { it.collectionId == collectionId })
+
     override suspend fun insert(entity: WasteOutboxEntity) {
         if (!rows.containsKey(entity.messageId)) rows[entity.messageId] = entity
     }
