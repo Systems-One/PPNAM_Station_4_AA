@@ -40,7 +40,10 @@ class WasteWizardController {
 
     /** An RFID badge read. Nothing maps a tag to an employee id, so a badge is never submitted as
      * the operator id: on the three scan steps it is refused with a hint rather than silently
-     * dropped (the draft is left unchanged); elsewhere it is ignored like any stray scan. */
+     * dropped (the draft is left unchanged); elsewhere it is ignored like any stray scan.
+     *
+     * RFID reads are refused on barcode steps regardless of [com.mitas.ppnam.station4aa.UserTagPolicy];
+     * that policy exists for screens that must tell badges from item tags. */
     fun handleScannedBadge(tagId: String): ScanDispatchResult = when (step) {
         WizardStep.SCAN_BAG,
         WizardStep.SCAN_JOB,
