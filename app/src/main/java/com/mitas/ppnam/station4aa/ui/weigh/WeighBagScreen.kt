@@ -36,6 +36,7 @@ import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.SuccessGreen
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.brandOutlinedButtonColors
 import java.util.Locale
 
 /**
@@ -195,6 +196,7 @@ private fun ProblemCard(problem: WeighFeedback.Problem, onRetry: (() -> Unit)?) 
                 )
                 OutlinedButton(
                     onClick = onRetry,
+                    colors = brandOutlinedButtonColors(),
                     modifier = Modifier.fillMaxWidth().height(56.dp),
                 ) { Text("Retry") }
             }

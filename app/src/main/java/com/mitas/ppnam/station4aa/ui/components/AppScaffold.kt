@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.theme.*
+import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 /**
  * Shared top-bar chrome, mirroring Station 2's AppScaffold. With operatorName null the bar
@@ -62,7 +63,7 @@ fun AppScaffold(
                 }) { Text("Log out", color = DangerRed) }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showLogoutDialog = false }, colors = brandTextButtonColors()) { Text("Cancel") }
             },
             containerColor = GraphiteSurface
         )

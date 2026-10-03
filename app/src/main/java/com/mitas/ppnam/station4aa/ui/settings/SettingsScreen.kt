@@ -30,6 +30,7 @@ import com.mitas.ppnam.station4aa.BuildConfig
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.theme.*
+import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 @Composable
 fun SettingsScreen(
@@ -61,7 +62,7 @@ fun SettingsScreen(
                 }) { Text("Log out", color = DangerRed) }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showLogoutDialog = false }, colors = brandTextButtonColors()) { Text("Cancel") }
             },
             containerColor = GraphiteSurface
         )

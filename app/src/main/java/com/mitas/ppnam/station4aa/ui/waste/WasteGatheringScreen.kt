@@ -51,6 +51,7 @@ import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
 import com.mitas.ppnam.station4aa.ui.theme.WarningOrange
+import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 @Composable
 fun WasteGatheringScreen(
@@ -133,12 +134,16 @@ fun WasteGatheringScreen(
                 }
             },
             confirmButton = {
-                TextButton(onClick = { viewModel.onReviewConfirmed() }, enabled = !isSubmitting) {
+                TextButton(
+                    onClick = { viewModel.onReviewConfirmed() },
+                    enabled = !isSubmitting,
+                    colors = brandTextButtonColors(),
+                ) {
                     Text("Confirm")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onReviewDismissed() }) { Text("Back") }
+                TextButton(onClick = { viewModel.onReviewDismissed() }, colors = brandTextButtonColors()) { Text("Back") }
             },
             containerColor = GraphiteSurface
         )
@@ -177,7 +182,7 @@ fun WasteGatheringScreen(
                         color = DangerRed,
                         modifier = Modifier.weight(1f),
                     )
-                    TextButton(onClick = { viewModel.dismissStale() }) {
+                    TextButton(onClick = { viewModel.dismissStale() }, colors = brandTextButtonColors()) {
                         Text("Dismiss")
                     }
                 }
@@ -193,7 +198,7 @@ fun WasteGatheringScreen(
                         color = WarningOrange,
                         modifier = Modifier.weight(1f),
                     )
-                    TextButton(onClick = { viewModel.retryNow() }) {
+                    TextButton(onClick = { viewModel.retryNow() }, colors = brandTextButtonColors()) {
                         Text("Retry now")
                     }
                 }
@@ -209,7 +214,7 @@ fun WasteGatheringScreen(
                         color = if (lastMessageIsError) DangerRed else TextMuted,
                         modifier = Modifier.weight(1f),
                     )
-                    TextButton(onClick = { viewModel.dismissLastQueuedMessage() }) {
+                    TextButton(onClick = { viewModel.dismissLastQueuedMessage() }, colors = brandTextButtonColors()) {
                         Text("Dismiss")
                     }
                 }

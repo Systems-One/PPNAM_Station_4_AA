@@ -8,6 +8,7 @@ import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 /** The fleet's "Close the app?" [Stay | Close] confirmation (Station 2's wording), used on both
  * Login and Home so Back behaves the same on every root screen (audit static-04). M3 default
@@ -19,7 +20,7 @@ fun ExitAppDialog(onStay: () -> Unit, onClose: () -> Unit) {
         title = { Text("Close the app?", color = TextPrimary) },
         text = { Text("You'll leave PPNAM Station 4 and return to the home screen.", color = TextMuted) },
         confirmButton = { TextButton(onClick = onClose) { Text("Close", color = DangerRed) } },
-        dismissButton = { TextButton(onClick = onStay) { Text("Stay") } },
+        dismissButton = { TextButton(onClick = onStay, colors = brandTextButtonColors()) { Text("Stay") } },
         containerColor = GraphiteSurface,
     )
 }
@@ -32,7 +33,7 @@ fun DiscardDraftDialog(onKeep: () -> Unit, onDiscard: () -> Unit) {
         title = { Text("Discard this collection?", color = TextPrimary) },
         text = { Text("The values captured so far will be lost.", color = TextMuted) },
         confirmButton = { TextButton(onClick = onDiscard) { Text("Discard", color = DangerRed) } },
-        dismissButton = { TextButton(onClick = onKeep) { Text("Keep editing") } },
+        dismissButton = { TextButton(onClick = onKeep, colors = brandTextButtonColors()) { Text("Keep editing") } },
         containerColor = GraphiteSurface,
     )
 }
