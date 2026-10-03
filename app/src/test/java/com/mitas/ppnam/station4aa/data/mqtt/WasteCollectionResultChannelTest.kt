@@ -253,6 +253,23 @@ class WasteCollectionResultChannelHandleIncomingTest {
     }
 
     @Test
+    fun `a result for a row queued under an earlier sign-in is still applied and emitted`() = runTest(UnconfinedTestDispatcher()) {
+        // The operator signed out and back in after publishing: the row (and the echoed result)
+        // carry the old session id. The channel must not drop it for that reason.
+        val dao = FakeWasteOutboxDao()
+        dao.rows["msg-1"] = storedRow(operatorSessionId = "sess-before-signout")
+        val channel = WasteCollectionResultChannel(dao, MqttConnectionManager(deviceId = "HH-01"))
+        val emitted = mutableListOf<WasteCollectionResultMessage>()
+        val job = launch { channel.results.toList(emitted) }
+
+        channel.handleIncoming(resultJson(operatorSessionId = "sess-before-signout", accepted = true))
+
+        assertEquals(WasteOutboxEntity.Status.ACCEPTED, dao.findByMessageId("msg-1")?.status)
+        assertEquals(1, emitted.size)
+        job.cancel()
+    }
+
+    @Test
     fun `a well-formed rejected result marks the stored PENDING row REJECTED with error details and emits`() = runTest(UnconfinedTestDispatcher()) {
         val dao = FakeWasteOutboxDao()
         dao.rows["msg-1"] = storedRow()

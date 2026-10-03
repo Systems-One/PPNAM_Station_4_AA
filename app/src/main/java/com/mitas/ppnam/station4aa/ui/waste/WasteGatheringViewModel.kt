@@ -12,6 +12,7 @@ import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
 import com.mitas.ppnam.station4aa.domain.collection.CollectionRejections
+import com.mitas.ppnam.station4aa.domain.collection.ShownResultTracker
 import com.mitas.ppnam.station4aa.domain.collection.isResultForSession
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
 import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
@@ -157,9 +158,11 @@ class WasteGatheringViewModel(
             }
         }
         viewModelScope.launch {
+            val shownResults = ShownResultTracker()
             publisher.results.collect { result ->
-                // The channel replays its last result; one from a previous session is history.
-                if (!isResultForSession(result, sessionHolder.currentSessionIdOrEmpty())) return@collect
+                // Never dropped because the session changed: the channel only emits results for
+                // bags this device published. Only a replay of an already-shown result is skipped.
+                if (!shownResults.shouldShow(result)) return@collect
                 if (result.accepted) {
                     _lastQueuedMessage.value = "Collection ${result.collectionId} accepted by Station 4."
                     _lastMessageIsError.value = false
@@ -167,7 +170,12 @@ class WasteGatheringViewModel(
                     val rejection = CollectionRejections.describe(result.bagCode, result.errorCode)
                     _lastQueuedMessage.value = rejection.message
                     _lastMessageIsError.value = true
-                    if (rejection.requiresLogin) sessionHolder.clear(SIGNED_OUT_SESSION_ENDED)
+                    // A stale session rejection must not sign out whoever is logged in now.
+                    if (rejection.requiresLogin &&
+                        isResultForSession(result, sessionHolder.currentSessionIdOrEmpty())
+                    ) {
+                        sessionHolder.clear(SIGNED_OUT_SESSION_ENDED)
+                    }
                 }
             }
         }
