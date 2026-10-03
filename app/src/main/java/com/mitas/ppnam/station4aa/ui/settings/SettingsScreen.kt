@@ -285,6 +285,11 @@ fun SettingsScreen(
                             value = draft.mqttPassword,
                             label = "Password (blank = keep current)",
                             keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done,
+                            onDone = {
+                                focusManager.clearFocus()
+                                viewModel.testAndApply()
+                            },
                             visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                             trailingIcon = {
                                 IconButton(onClick = { showPassword = !showPassword }) {
