@@ -31,9 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.R
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
-import com.mitas.ppnam.station4aa.ui.theme.InfoBlue
-import com.mitas.ppnam.station4aa.ui.theme.CyanAccent
-import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.BrandPrimary
 
 /**
  * The operator's dashboard: one tile per sub-app, mirroring Station 1 AA's `activity_main.xml`
@@ -44,8 +42,8 @@ import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
  * different times and places: a collection is registered wherever the bag is filled, and the weigh
  * happens later at Station 4's scale, keyed only by the bag code. Neither is a step of the other.
  *
- * The tile colours are Station 1's `tile_blue` and `tile_teal`, which this app's palette carries as
- * [InfoBlue] and [CyanAccent] (the primary itself is the icon violet).
+ * Both tiles use the violet brand fill ([BrandPrimary]) with white icons and label (audit S4-R05),
+ * not Station 1's blue and teal.
  */
 @Composable
 fun HomeScreen(
@@ -94,14 +92,14 @@ fun HomeScreen(
                 DashboardTile(
                     label = "Waste\nCollection",
                     icon = R.drawable.ic_waste_collection,
-                    containerColor = InfoBlue,
+                    containerColor = BrandPrimary,
                     onClick = onWasteCollection,
                     modifier = Modifier.weight(1f),
                 )
                 DashboardTile(
                     label = "Weigh\nBag",
                     icon = R.drawable.ic_weigh_bag,
-                    containerColor = CyanAccent,
+                    containerColor = BrandPrimary,
                     onClick = onWeighBag,
                     modifier = Modifier.weight(1f),
                 )
@@ -147,7 +145,7 @@ internal fun DashboardTile(
             Text(
                 label,
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
-                color = TextPrimary,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 16.dp),
             )

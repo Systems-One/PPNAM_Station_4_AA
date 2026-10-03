@@ -10,8 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mitas.ppnam.station4aa.R
-import com.mitas.ppnam.station4aa.ui.theme.InfoBlue
-import com.mitas.ppnam.station4aa.ui.theme.CyanAccent
+import com.mitas.ppnam.station4aa.ui.theme.BrandPrimary
 import com.mitas.ppnam.station4aa.ui.theme.PPNAMStation4AATheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -44,14 +43,14 @@ class HomeScreenTest {
                     DashboardTile(
                         label = "Waste\nCollection",
                         icon = R.drawable.ic_waste_collection,
-                        containerColor = InfoBlue,
+                        containerColor = BrandPrimary,
                         onClick = onWasteCollection,
                         modifier = Modifier.weight(1f),
                     )
                     DashboardTile(
                         label = "Weigh\nBag",
                         icon = R.drawable.ic_weigh_bag,
-                        containerColor = CyanAccent,
+                        containerColor = BrandPrimary,
                         onClick = onWeighBag,
                         modifier = Modifier.weight(1f),
                     )
@@ -83,11 +82,8 @@ class HomeScreenTest {
     }
 
     @Test
-    fun theTwoTilesUseStation1sDashboardColours() {
-        // Station 1 AA's activity_main.xml paints its two tiles tile_blue (#2E77F5) and tile_teal
-        // (#25C7DA). The app's *primary* is now the launcher-icon violet (static-02), so the
-        // dashboard keeps Station 1's blue through InfoBlue, not through the primary.
-        assertEquals(0xFF2E77F5.toInt(), InfoBlue.toArgb())
-        assertEquals(0xFF25C7DA.toInt(), CyanAccent.toArgb())
+    fun theTwoTilesUseTheVioletBrandFill() {
+        // Station 4's dashboard uses the brand violet (#55368C), not Station 1's blue/teal (audit S4-R05).
+        assertEquals(0xFF55368C.toInt(), BrandPrimary.toArgb())
     }
 }

@@ -14,7 +14,8 @@ val TextMuted              = Color(0xFF9BAEC0)
 
 // Primary accent — the launcher icon's violet (res/values/ic_launcher_background.xml), so the
 // app carries its icon identity on screen the way Stations 1/3/5 do (audit static-02).
-val AmberPrimary           = Color(0xFF55368C)
+val BrandPrimary           = Color(0xFF55368C)
+val AmberPrimary           = BrandPrimary
 val AmberDark              = Color(0xFFFFFFFF)   // on-primary (white text on violet buttons)
 // Lighter violet for foreground uses (text, icon tint, focused outline/label, cursor, spinners) on the
 // graphite surfaces, where the filled-surface violet is below 3:1.
