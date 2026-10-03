@@ -174,44 +174,10 @@ fun SettingsScreen(
 
             SectionLabel("Configuration")
 
-            // Rendered in both PIN states so the Success row survives the re-lock (audit S4-17).
-            when (val state = applyState) {
-                ApplyState.Testing -> {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(18.dp),
-                            color = BrandTint,
-                            strokeWidth = 2.dp
-                        )
-                        Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
-                    }
-                }
-                is ApplyState.Success -> {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
-                        Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
-                    }
-                }
-                is ApplyState.Failure -> {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
-                        Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
-                    }
-                }
-                ApplyState.Idle -> {}
-            }
-
             when (pinState) {
                 PinState.Locked -> {
+                    // Success survives the re-lock (audit S4-17), so the status shows in both states.
+                    ApplyStatusRow(applyState)
                     val pinLockedOut = viewModel.pinLockedOut.value
                     val focusManager = LocalFocusManager.current
                     Card(
@@ -347,6 +313,9 @@ fun SettingsScreen(
                         )
                     }
 
+                    // Directly above the button that produced it, so validation, failure and success
+                    // are on screen when Test & Apply is tapped (audit S4-R06).
+                    ApplyStatusRow(applyState)
                     Button(
                         onClick = { focusManager.clearFocus(); viewModel.testAndApply() },
                         enabled = applyState !is ApplyState.Testing,
@@ -402,6 +371,45 @@ fun SettingsScreen(
 
             Spacer(Modifier.height(16.dp))
         }
+    }
+}
+
+/** The Test & Apply outcome: spinner while testing, then success or failure text. */
+@Composable
+private fun ApplyStatusRow(state: ApplyState) {
+    when (state) {
+        ApplyState.Testing -> {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(18.dp),
+                    color = BrandTint,
+                    strokeWidth = 2.dp
+                )
+                Text("Testing connection…", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+            }
+        }
+        is ApplyState.Success -> {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Filled.CheckCircle, null, tint = SuccessGreen, modifier = Modifier.size(18.dp))
+                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = SuccessGreen)
+            }
+        }
+        is ApplyState.Failure -> {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Filled.Error, null, tint = DangerRed, modifier = Modifier.size(18.dp))
+                Text(state.message, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
+            }
+        }
+        ApplyState.Idle -> {}
     }
 }
 
