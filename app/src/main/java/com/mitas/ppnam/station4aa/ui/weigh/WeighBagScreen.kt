@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
@@ -64,6 +65,7 @@ fun WeighBagScreen(
 
     val requestWeight: () -> Unit = {
         if (bagCode.isNotBlank() && !isWeighing) {
+            EnterKeyGuard.arm()
             focusManager.clearFocus()
             viewModel.onRequestWeight()
         }

@@ -59,6 +59,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
 import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
@@ -90,6 +91,7 @@ fun LoginScreen(
     val focusManager = LocalFocusManager.current
     val buttonIntoView = remember { BringIntoViewRequester() }
     val submit: () -> Unit = {
+        EnterKeyGuard.arm()
         focusManager.clearFocus()
         viewModel.submitCredentials(username, password)
     }

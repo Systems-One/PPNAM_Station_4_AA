@@ -7,6 +7,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.mitas.ppnam.station4aa.navigation.AppNavGraph
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.theme.PPNAMStation4AATheme
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +35,11 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         container.foregroundTracker.isResumed = false
         super.onPause()
+    }
+
+    override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean {
+        if (EnterKeyGuard.shouldSwallow(event)) return true
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onUserInteraction() {

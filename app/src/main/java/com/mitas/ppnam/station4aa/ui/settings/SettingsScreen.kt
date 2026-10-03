@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.BuildConfig
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.theme.*
 import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
@@ -217,6 +218,7 @@ fun SettingsScreen(
                                         imeAction = ImeAction.Done
                                     ),
                                     keyboardActions = KeyboardActions(onDone = {
+                                        EnterKeyGuard.arm()
                                         focusManager.clearFocus()
                                         viewModel.submitPin()
                                     }),
@@ -520,7 +522,10 @@ private fun SettingsTextField(
         // above the keyboard brings the message with it.
         supportingText = errorMessage?.let { { Text(it, color = DangerRed) } },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
-        keyboardActions = KeyboardActions(onDone = { onDone?.invoke() }),
+        keyboardActions = KeyboardActions(onDone = {
+            EnterKeyGuard.arm()
+            onDone?.invoke()
+        }),
         visualTransformation = visualTransformation,
         trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(

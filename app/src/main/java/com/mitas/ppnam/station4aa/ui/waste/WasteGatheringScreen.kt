@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.components.DiscardDraftDialog
 import com.mitas.ppnam.station4aa.ui.components.consumeEnterKeyUp
 import com.mitas.ppnam.station4aa.ui.theme.BrandTint
@@ -309,6 +310,7 @@ private fun ScanStep(
         if (manualValue.isNotBlank()) {
             // Clearing focus first stops a hardware Enter from landing on the toolbar icons
             // (audit S4-15) and closes the keyboard so the next step is fully visible.
+            EnterKeyGuard.arm()
             focusManager.clearFocus()
             onSubmit(manualValue)
             manualValue = ""
