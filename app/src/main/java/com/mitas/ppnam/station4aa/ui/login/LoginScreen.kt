@@ -28,10 +28,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -46,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -71,7 +77,12 @@ import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
 
 /** Ported from Station 2 AA's LoginScreen — see
  * `com.mitas.ppnam.station4aa.data.mqtt.MqttTopics`' class doc. */
-@OptIn(ExperimentalLayoutApi::class, FlowPreview::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalLayoutApi::class,
+    FlowPreview::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
+)
 @Composable
 fun LoginScreen(
     onLoggedIn: () -> Unit,
@@ -81,7 +92,12 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val connectionStatus by viewModel.connectionStatus.collectAsState()
+    val operators by viewModel.operators.collectAsState()
     var username by rememberSaveable { mutableStateOf("") }
+    // Operator dropdown (contract 5.3.0). Only ever open while there is a list to show: an
+    // empty popup under the field would just hide the password box.
+    var operatorsExpanded by remember { mutableStateOf(false) }
+    LaunchedEffect(operators) { if (operators.isEmpty()) operatorsExpanded = false }
     // Deliberately NOT rememberSaveable: a password in the saved-instance Bundle is sensitive-data
     // exposure. The portrait lock (manifest) already prevents the rotation loss S4-08 described.
     var password by remember { mutableStateOf("") }
@@ -169,20 +185,54 @@ fun LoginScreen(
                         )
                     }
 
-                    OutlinedTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        label = { Text("Username") },
-                        singleLine = true,
-                        enabled = uiState !is LoginUiState.LoggingIn,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = BrandTint,
-                            focusedLabelColor = BrandTint,
-                            cursorColor = BrandTint
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    // Editable dropdown, mirroring Station 1's MaterialAutoCompleteTextView: rows
+                    // read "username — Display Name", picking one leaves only the username (what
+                    // SCRAM authenticates) and moves on to the password. The arrow only shows once
+                    // there is a list to open, and a typed name that is not listed still logs in.
+                    val usernameEnabled = uiState !is LoginUiState.LoggingIn
+                    ExposedDropdownMenuBox(
+                        expanded = operatorsExpanded,
+                        onExpandedChange = { wantOpen ->
+                            operatorsExpanded = wantOpen && operators.isNotEmpty() && usernameEnabled
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        OutlinedTextField(
+                            value = username,
+                            onValueChange = { username = it },
+                            label = { Text("Username") },
+                            singleLine = true,
+                            enabled = usernameEnabled,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            trailingIcon = if (operators.isEmpty()) null else {
+                                { ExposedDropdownMenuDefaults.TrailingIcon(expanded = operatorsExpanded) }
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = BrandTint,
+                                focusedLabelColor = BrandTint,
+                                cursorColor = BrandTint
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(MenuAnchorType.PrimaryEditable, enabled = usernameEnabled)
+                        )
+                        ExposedDropdownMenu(
+                            expanded = operatorsExpanded,
+                            onDismissRequest = { operatorsExpanded = false },
+                        ) {
+                            operators.forEach { entry ->
+                                DropdownMenuItem(
+                                    text = { Text(entry.label) },
+                                    onClick = {
+                                        username = entry.username
+                                        operatorsExpanded = false
+                                        focusManager.moveFocus(FocusDirection.Down)
+                                    },
+                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                                )
+                            }
+                        }
+                    }
 
                     OutlinedTextField(
                         value = password,

@@ -28,10 +28,11 @@ package com.mitas.ppnam.station4aa.data.mqtt
  * and [validateSegment] must not refuse it.
  *
  * [request]/[responseWildcard] carry the schema 4.1 request/response exchange: the operator SCRAM
- * login mirrored from Station 2 AA, the waste catalogue sync ([SyncWasteCatalogueUseCase]), and
- * since contract 5.1.0 the handheld-triggered weigh ([WASTE_CAPTURE_REQUESTED], §9.2). Station 4's
- * backend answers all three — see `MqttScramAuthenticationService.cs`, `MqttCatalogueProcessor.cs`
- * and its capture processor in the sibling WPF repo.
+ * login mirrored from Station 2 AA, the waste catalogue sync ([SyncWasteCatalogueUseCase]),
+ * since contract 5.1.0 the handheld-triggered weigh ([WASTE_CAPTURE_REQUESTED], §9.2), and since
+ * 5.3.0 the pre-login operator directory ([OPERATOR_LIST_REQUESTED]). Station 4's backend answers
+ * all of them — see `MqttScramAuthenticationService.cs`, `MqttAuthenticationProcessor.cs`,
+ * `MqttCatalogueProcessor.cs` and its capture processor in the sibling WPF repo.
  *
  * [STATION_PRESENCE] and [devicePresence] are the presence convention: retained `online`/`offline`
  * (and the Last Will) on the base node itself, never a `/status` sub-topic.
@@ -55,6 +56,11 @@ object MqttTopics {
 
     /** `{type}` for the contract 5.1.0 §9.2 handheld weigh, published via [request]. */
     const val WASTE_CAPTURE_REQUESTED = "waste_capture_requested"
+
+    /** `{type}` for the contract 5.3.0 pre-login operator directory (fleet parity with Station 1
+     * 3.2.0 §4.5), published via [request] with the bare envelope and answered on
+     * `res/operator_list`. Feeds the login screen's username dropdown; display-only. */
+    const val OPERATOR_LIST_REQUESTED = "operator_list_requested"
 
     /** `{type}` for the contract 5.0.0 collection event, published via [wasteCollectionRequest]. */
     const val WASTE_COLLECTION_REQUESTED = "waste_collection_requested"

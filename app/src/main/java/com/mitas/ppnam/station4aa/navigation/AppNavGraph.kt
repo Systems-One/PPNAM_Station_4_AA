@@ -41,6 +41,7 @@ fun AppNavGraph() {
                             connectionManager = container.connectionManager,
                             settingsRepository = container.settingsRepository,
                             sessionHolder = container.operatorSessionHolder,
+                            operatorDirectory = container.operatorDirectoryUseCase,
                         )
                     }
                 }

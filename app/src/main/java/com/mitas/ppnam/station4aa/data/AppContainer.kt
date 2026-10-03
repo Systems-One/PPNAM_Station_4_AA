@@ -18,10 +18,13 @@ import com.mitas.ppnam.station4aa.data.security.SecureCredentialStore
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.data.session.SessionGuard
 import com.mitas.ppnam.station4aa.data.settings.SettingsRepository
+import com.mitas.ppnam.station4aa.data.settings.SharedPrefsOperatorDirectoryStore
 import com.mitas.ppnam.station4aa.data.settings.SharedPrefsPinLockoutStore
 import com.mitas.ppnam.station4aa.domain.collection.CollectionBannerTracker
+import com.mitas.ppnam.station4aa.domain.login.OperatorDirectoryStore
 import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.OperatorDirectoryUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import kotlinx.coroutines.CancellationException
@@ -75,6 +78,16 @@ class AppContainer(context: Context) {
     private val requestChannel = MqttRequestChannel(connectionManager)
     private val scramExchange = ScramExchange(requestChannel)
     val authUseCase = AuthUseCase(requestChannel, operatorSessionHolder, scramExchange, deviceId)
+
+    /** Contract 5.3.0 pre-login operator directory: feeds the login screen's username dropdown
+     * and caches the last accepted list on the device. Display-only; never gates login. */
+    private val operatorDirectoryStore: OperatorDirectoryStore = SharedPrefsOperatorDirectoryStore(appContext)
+    val operatorDirectoryUseCase = OperatorDirectoryUseCase(
+        requestChannel = requestChannel,
+        store = operatorDirectoryStore,
+        deviceId = deviceId,
+    )
+
     val syncWasteCatalogueUseCase = SyncWasteCatalogueUseCase(
         requestChannel = requestChannel,
         repository = wasteCatalogueRepository,

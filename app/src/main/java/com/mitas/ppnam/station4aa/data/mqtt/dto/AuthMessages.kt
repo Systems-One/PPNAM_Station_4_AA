@@ -83,3 +83,18 @@ data class OperatorContextResponse(
     val sessionState: String? = null,
     val sessionExpiresAtUtc: String? = null,
 )
+
+/** One row of the pre-login operator directory (contract 5.3.0; Station 1 3.2.0 §4.5). Exactly
+ * these two properties — the list confers nothing and must not hint at permissions. Also the
+ * on-device cache's row shape (see `OperatorDirectoryCodec`). */
+data class OperatorEntryDto(
+    val username: String = "",
+    val displayName: String = "",
+)
+
+/** Response to `operator_list_requested` on `res/operator_list`. The envelope's `accepted` decides
+ * Accepted/Rejected as usual; `nextAction` is always `"login"` and is not parsed. An empty
+ * [operators] with `accepted: true` is valid ("no password operators provisioned"). */
+data class OperatorListResponse(
+    val operators: List<OperatorEntryDto> = emptyList(),
+)
