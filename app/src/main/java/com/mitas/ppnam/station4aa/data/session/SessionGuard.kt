@@ -67,6 +67,7 @@ class SessionGuard(
     private fun expire() {
         if (sessionHolder.session.value == null) return
         val reason = signedOutAfterMinutes(currentMinutes)
+        // logout() clears the session (and so navigates to Login) before the network logout goes out.
         scope.launch { authUseCase.logout(reason) }
     }
 }

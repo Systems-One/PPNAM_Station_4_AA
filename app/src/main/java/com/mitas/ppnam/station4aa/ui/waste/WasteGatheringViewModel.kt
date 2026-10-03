@@ -68,7 +68,7 @@ class WasteGatheringViewModel(
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
-    /** Durably queued events awaiting PUBACK — surfaced so the operator can see unsynced work
+    /** Durably queued events still awaiting a correlated Station 4 result — surfaced so the operator can see unsynced work
      * exists, per the contract's reconciliation-visibility requirement. */
     val pendingCount: StateFlow<Int> = publisher.pendingCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
