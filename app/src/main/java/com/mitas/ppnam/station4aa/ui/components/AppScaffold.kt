@@ -126,7 +126,10 @@ fun AppScaffold(
                             }
                         }
                         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                            TextButton(onClick = { showLogoutDialog = true }) {
+                            TextButton(
+                                onClick = { showLogoutDialog = true },
+                                modifier = Modifier.focusProperties { canFocus = false },
+                            ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.Logout,
                                     contentDescription = "Log out",

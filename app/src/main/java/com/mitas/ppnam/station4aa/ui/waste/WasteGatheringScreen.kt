@@ -45,6 +45,7 @@ import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.DiscardDraftDialog
+import com.mitas.ppnam.station4aa.ui.components.consumeEnterKeyUp
 import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
@@ -340,7 +341,7 @@ private fun ScanStep(
                 focusedLabelColor = BrandTint,
                 cursorColor = BrandTint,
             ),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().consumeEnterKeyUp(),
         )
         Button(
             onClick = submit,

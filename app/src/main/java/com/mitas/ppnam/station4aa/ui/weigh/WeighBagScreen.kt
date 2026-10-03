@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import com.mitas.ppnam.station4aa.ui.components.consumeEnterKeyUp
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -116,7 +117,7 @@ fun WeighBagScreen(
                     focusedLabelColor = BrandTint,
                     cursorColor = BrandTint,
                 ),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().consumeEnterKeyUp(),
             )
 
             Button(
