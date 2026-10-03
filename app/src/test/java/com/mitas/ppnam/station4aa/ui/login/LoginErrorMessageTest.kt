@@ -18,6 +18,25 @@ class LoginErrorMessageTest {
     }
 
     @Test
+    fun `each credential code maps to the incorrect username or password line`() {
+        for (code in listOf("scram_proof_invalid", "scram_client_final_invalid", "authentication_failed")) {
+            assertEquals("Incorrect username or password", loginErrorMessage(LoginRejectedException(code, "x")))
+        }
+    }
+
+    @Test
+    fun `a non-credential rejection names the code and sends the operator to a supervisor`() {
+        assertEquals(
+            "Login was refused by the station (operator_disabled). Ask a supervisor.",
+            loginErrorMessage(LoginRejectedException("operator_disabled", "Operator disabled")),
+        )
+        assertEquals(
+            "Login was refused by the station (no code). Ask a supervisor.",
+            loginErrorMessage(LoginRejectedException(null, null)),
+        )
+    }
+
+    @Test
     fun `a rejected badge is named as a badge problem`() {
         assertEquals(
             "Badge not recognised. Ask a manager.",
