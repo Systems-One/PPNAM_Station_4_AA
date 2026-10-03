@@ -238,7 +238,7 @@ fun WasteGatheringScreen(
                 )
                 WizardStep.SCAN_OPERATOR -> ScanStep(
                     label = "Scan or enter the operator ID",
-                    hint = "Scan the operator's barcode or badge, or enter the ID manually below.",
+                    hint = "Scan the operator's barcode, or enter the ID manually below.",
                     errorMessage = stepError,
                     onSubmit = viewModel::onOperatorIdSubmitted,
                 )
