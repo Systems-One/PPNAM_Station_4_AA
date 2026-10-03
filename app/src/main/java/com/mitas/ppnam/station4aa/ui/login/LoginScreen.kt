@@ -2,17 +2,21 @@ package com.mitas.ppnam.station4aa.ui.login
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,8 +43,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -49,6 +55,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
 import com.mitas.ppnam.station4aa.ui.theme.BrandTint
@@ -61,7 +70,7 @@ import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
 
 /** Ported from Station 2 AA's LoginScreen — see
  * `com.mitas.ppnam.station4aa.data.mqtt.MqttTopics`' class doc. */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, FlowPreview::class, ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
     onLoggedIn: () -> Unit,
@@ -79,9 +88,22 @@ fun LoginScreen(
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val buttonIntoView = remember { BringIntoViewRequester() }
     val submit: () -> Unit = {
         focusManager.clearFocus()
         viewModel.submitCredentials(username, password)
+    }
+
+    // Keep the whole Log In button above the keyboard (audit: 26 px sliver with the error line
+    // showing, same as Station 2's S2-01). One bringIntoView fired as the IME flips visible runs
+    // against the OLD viewport (the inset animates in over ~300 ms), so re-run it whenever the IME
+    // inset settles (debounced past the animation) and whenever the ui state changes the form height.
+    val density = LocalDensity.current
+    val imeInsets = WindowInsets.ime
+    LaunchedEffect(uiState) {
+        snapshotFlow { imeInsets.getBottom(density) }
+            .debounce(150)
+            .collectLatest { bottom -> if (bottom > 0) buttonIntoView.bringIntoView() }
     }
 
     LaunchedEffect(Unit) {
@@ -195,6 +217,7 @@ fun LoginScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
+                            .bringIntoViewRequester(buttonIntoView)
                     ) {
                         if (uiState is LoginUiState.LoggingIn) {
                             CircularProgressIndicator(
