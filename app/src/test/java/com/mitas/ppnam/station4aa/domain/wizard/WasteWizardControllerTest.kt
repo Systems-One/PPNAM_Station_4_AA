@@ -267,13 +267,15 @@ class WasteWizardControllerTest {
         assertFalse(controller.hasDraft)
     }
     @Test
-    fun `a badge scan fills the operator id step`() {
+    fun `a badge scan on the operator step is refused and leaves the draft unchanged`() {
         val controller = WasteWizardController()
         controller.submitBagCode("BAG-01")
         controller.submitJobNumber("JOB-1")
-        assertEquals(ScanDispatchResult.Applied(null), controller.handleScannedBadge("BADGE000000000000000001"))
-        assertEquals("BADGE000000000000000001", controller.draft.operatorId)
-        assertEquals(WizardStep.SELECT_CATEGORY, controller.step)
+        val before = controller.draft
+        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertNull(controller.draft.operatorId)
+        assertEquals(before, controller.draft)
+        assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
     }
 
     @Test

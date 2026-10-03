@@ -38,13 +38,13 @@ class WasteWizardController {
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
     }
 
-    /** An RFID badge read. Operators try their badge at the operator-ID step (audit S4-10), so it
-     * is accepted there; on the two barcode steps it is refused with a hint rather than silently
-     * dropped; elsewhere it is ignored like any stray scan. */
+    /** An RFID badge read. Nothing maps a tag to an employee id, so a badge is never submitted as
+     * the operator id: on the three scan steps it is refused with a hint rather than silently
+     * dropped (the draft is left unchanged); elsewhere it is ignored like any stray scan. */
     fun handleScannedBadge(tagId: String): ScanDispatchResult = when (step) {
-        WizardStep.SCAN_OPERATOR -> ScanDispatchResult.Applied(submitOperatorId(tagId))
         WizardStep.SCAN_BAG,
-        WizardStep.SCAN_JOB -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
+        WizardStep.SCAN_JOB,
+        WizardStep.SCAN_OPERATOR -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
         WizardStep.SELECT_CATEGORY,
         WizardStep.SELECT_WASTE_TYPE,
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
