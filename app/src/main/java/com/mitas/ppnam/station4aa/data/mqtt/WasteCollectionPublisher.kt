@@ -43,23 +43,29 @@ class WasteCollectionPublisher(
         attemptPublish(event)
     }
 
+    /** Rows queued under an earlier sign-in that were never delivered, awaiting the operator's
+     * re-capture and dismissal. */
+    val staleCount: Flow<Int> = outboxDao.staleCount()
+
+    /** Deletes the STALE rows once the operator has acknowledged them. */
+    suspend fun dismissStale() = outboxDao.deleteStale()
+
     /**
-     * Retries every durably-queued row still awaiting a result — call after a reconnect or a login
-     * so anything queued while offline gets flushed. A row queued under a session Station 4 no
-     * longer recognises is re-stamped to [currentSessionId] first (audit S4-04: replaying the old
-     * session only ever produced "Session is malformed..."); the event payload shape is
-     * unchanged. With no session nothing is sent — Station 4 would refuse it anyway.
+     * Replays every durably-queued row still awaiting a result - call after a reconnect or a login
+     * so anything queued while offline gets flushed. Only rows whose stored session equals
+     * [currentSessionId] are sent, byte-identical to the queued event (same messageId and payload).
+     * A PENDING row from an older session is never re-stamped with someone else's session: it
+     * becomes [WasteOutboxEntity.Status.STALE] for the operator to re-capture. With no session
+     * nothing is sent or changed - Station 4 would refuse it anyway.
      */
     suspend fun retryPending(currentSessionId: String) {
         if (currentSessionId.isBlank()) return
         outboxDao.getPending().forEach { row ->
-            val toSend = if (row.operatorSessionId == currentSessionId) {
-                row
+            if (row.operatorSessionId == currentSessionId) {
+                attemptPublish(row.toEvent())
             } else {
-                outboxDao.restampSession(row.messageId, currentSessionId)
-                row.copy(operatorSessionId = currentSessionId)
+                outboxDao.markStale(row.messageId)
             }
-            attemptPublish(toSend.toEvent())
         }
     }
 

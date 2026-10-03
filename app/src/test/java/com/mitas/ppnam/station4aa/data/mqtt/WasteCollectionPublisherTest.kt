@@ -14,6 +14,7 @@ private class FakeOutboxDao : WasteOutboxDao {
     override suspend fun getPending(): List<WasteOutboxEntity> =
         rows.values.filter { it.status == WasteOutboxEntity.Status.PENDING }.sortedBy { it.createdAtEpochMs }
     override fun pendingCount(): Flow<Int> = flowOf(0)
+    override fun staleCount(): Flow<Int> = flowOf(rows.values.count { it.status == WasteOutboxEntity.Status.STALE })
     override suspend fun findByMessageId(messageId: String): WasteOutboxEntity? = rows[messageId]
     override suspend fun recordAttempt(messageId: String, nowEpochMs: Long) {
         rows[messageId]?.let { rows[messageId] = it.copy(attemptCount = it.attemptCount + 1, lastAttemptEpochMs = nowEpochMs) }
@@ -24,13 +25,14 @@ private class FakeOutboxDao : WasteOutboxDao {
     override suspend fun markRejected(messageId: String, errorCode: String?, reason: String?, nextAction: String?) {
         rows[messageId]?.let { if (it.status == WasteOutboxEntity.Status.PENDING) rows[messageId] = it.copy(status = WasteOutboxEntity.Status.REJECTED, errorCode = errorCode, reason = reason, nextAction = nextAction) }
     }
-    override suspend fun restampSession(messageId: String, operatorSessionId: String) {
-        rows[messageId]?.let { if (it.status == WasteOutboxEntity.Status.PENDING) rows[messageId] = it.copy(operatorSessionId = operatorSessionId) }
+    override suspend fun markStale(messageId: String) {
+        rows[messageId]?.let { if (it.status == WasteOutboxEntity.Status.PENDING) rows[messageId] = it.copy(status = WasteOutboxEntity.Status.STALE) }
     }
+    override suspend fun deleteStale() { rows.entries.removeAll { it.value.status == WasteOutboxEntity.Status.STALE } }
 }
 
-/** Audit S4-04: a PENDING row queued under a session that no longer exists is re-stamped to the
- * current session before replay, so Station 4 can accept it; terminal rows are untouched. */
+/** A PENDING row is replayed only under the session it was queued with; a row from an older
+ * session becomes STALE (never re-stamped); terminal rows are untouched. */
 class WasteCollectionPublisherTest {
 
     private fun row(messageId: String, session: String, status: String = WasteOutboxEntity.Status.PENDING) = WasteOutboxEntity(
@@ -46,21 +48,35 @@ class WasteCollectionPublisherTest {
     }
 
     @Test
-    fun `pending rows from an old session are re-stamped and attempted`() = runTest {
+    fun `only rows of the current session are attempted and older ones become stale without re-stamping`() = runTest {
         val dao = FakeOutboxDao()
         dao.rows["m1"] = row("m1", "sess-old")
         dao.rows["m2"] = row("m2", "sess-new")
 
         publisher(dao).retryPending(currentSessionId = "sess-new")
 
-        assertEquals("sess-new", dao.rows["m1"]!!.operatorSessionId)
+        assertEquals("sess-old", dao.rows["m1"]!!.operatorSessionId)
+        assertEquals(WasteOutboxEntity.Status.STALE, dao.rows["m1"]!!.status)
+        assertEquals(0, dao.rows["m1"]!!.attemptCount)
         assertEquals("sess-new", dao.rows["m2"]!!.operatorSessionId)
-        assertEquals(1, dao.rows["m1"]!!.attemptCount)
+        assertEquals(WasteOutboxEntity.Status.PENDING, dao.rows["m2"]!!.status)
         assertEquals(1, dao.rows["m2"]!!.attemptCount)
     }
 
     @Test
-    fun `terminal rows are never re-stamped or attempted`() = runTest {
+    fun `dismissing stale rows deletes only them`() = runTest {
+        val dao = FakeOutboxDao()
+        dao.rows["m1"] = row("m1", "sess-old", status = WasteOutboxEntity.Status.STALE)
+        dao.rows["m2"] = row("m2", "sess-new")
+        dao.rows["m3"] = row("m3", "sess-old", status = WasteOutboxEntity.Status.REJECTED)
+
+        publisher(dao).dismissStale()
+
+        assertEquals(setOf("m2", "m3"), dao.rows.keys)
+    }
+
+    @Test
+    fun `terminal rows are never changed or attempted`() = runTest {
         val dao = FakeOutboxDao()
         dao.rows["m1"] = row("m1", "sess-old", status = WasteOutboxEntity.Status.REJECTED)
 
@@ -77,7 +93,7 @@ class WasteCollectionPublisherTest {
 
         publisher(dao).retryPending(currentSessionId = "")
 
-        assertEquals("sess-old", dao.rows["m1"]!!.operatorSessionId)
+        assertEquals(WasteOutboxEntity.Status.PENDING, dao.rows["m1"]!!.status)
         assertEquals(0, dao.rows["m1"]!!.attemptCount)
     }
 }

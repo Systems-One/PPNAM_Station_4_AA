@@ -60,6 +60,7 @@ fun WasteGatheringScreen(
 ) {
     val connectionStatus by viewModel.connectionStatus.collectAsState()
     val pendingCount by viewModel.pendingCount.collectAsState()
+    val staleCount by viewModel.staleCount.collectAsState()
     val session by viewModel.session.collectAsState()
     val collectedBy by viewModel.collectedBy.collectAsState()
     val step by viewModel.step.collectAsState()
@@ -164,6 +165,23 @@ fun WasteGatheringScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            if (staleCount > 0) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        "$staleCount collection${if (staleCount == 1) "" else "s"} from a previous sign-in " +
+                            "${if (staleCount == 1) "was" else "were"} not delivered. Re-capture ${if (staleCount == 1) "it" else "them"}.",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = DangerRed,
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = { viewModel.dismissStale() }) {
+                        Text("Dismiss")
+                    }
+                }
+            }
             if (pendingCount > 0) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

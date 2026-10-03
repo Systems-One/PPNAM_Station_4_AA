@@ -135,6 +135,8 @@ private class FakeWasteOutboxDao : WasteOutboxDao {
 
     override fun pendingCount(): Flow<Int> = flowOf(0)
 
+    override fun staleCount(): Flow<Int> = flowOf(0)
+
     override suspend fun findByMessageId(messageId: String): WasteOutboxEntity? = rows[messageId]
 
     override suspend fun recordAttempt(messageId: String, nowEpochMs: Long) {
@@ -162,12 +164,14 @@ private class FakeWasteOutboxDao : WasteOutboxDao {
         }
     }
 
-    override suspend fun restampSession(messageId: String, operatorSessionId: String) {
+    override suspend fun markStale(messageId: String) {
         rows[messageId]?.let {
-            if (it.status == WasteOutboxEntity.Status.PENDING) {
-                rows[messageId] = it.copy(operatorSessionId = operatorSessionId)
-            }
+            if (it.status == WasteOutboxEntity.Status.PENDING) rows[messageId] = it.copy(status = WasteOutboxEntity.Status.STALE)
         }
+    }
+
+    override suspend fun deleteStale() {
+        rows.entries.removeAll { it.value.status == WasteOutboxEntity.Status.STALE }
     }
 }
 

@@ -42,8 +42,15 @@ interface WasteOutboxDao {
     )
     suspend fun markRejected(messageId: String, errorCode: String?, reason: String?, nextAction: String?)
 
-    // Only a PENDING row may change session: terminal rows are history. Column set unchanged,
-    // so no Room schema version bump.
-    @Query("UPDATE waste_outbox SET operatorSessionId = :operatorSessionId WHERE messageId = :messageId AND status = 'PENDING'")
-    suspend fun restampSession(messageId: String, operatorSessionId: String)
+    // A PENDING row queued under a sign-in that is no longer current can never be accepted by
+    // Station 4 (its session is gone) and must not be re-stamped with another operator's session,
+    // so it becomes STALE: kept for the operator to see and re-capture, never replayed.
+    @Query("UPDATE waste_outbox SET status = 'STALE' WHERE messageId = :messageId AND status = 'PENDING'")
+    suspend fun markStale(messageId: String)
+
+    @Query("SELECT COUNT(*) FROM waste_outbox WHERE status = 'STALE'")
+    fun staleCount(): Flow<Int>
+
+    @Query("DELETE FROM waste_outbox WHERE status = 'STALE'")
+    suspend fun deleteStale()
 }

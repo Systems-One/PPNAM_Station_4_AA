@@ -7,6 +7,7 @@ import com.mitas.ppnam.station4aa.data.catalogue.WasteCatalogueRepository
 import com.mitas.ppnam.station4aa.data.identity.DeviceIdentity
 import com.mitas.ppnam.station4aa.data.local.WasteOutboxDatabase
 import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionManager
+import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.data.mqtt.MqttRequestChannel
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionPublisher
 import com.mitas.ppnam.station4aa.data.mqtt.WasteCollectionResultChannel
@@ -26,6 +27,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 private const val TAG = "AppContainer"
@@ -108,6 +112,22 @@ class AppContainer(context: Context) {
 
     init {
         containerScope.launch { seedCatalogueSafely(wasteCatalogueRepository) }
+        // Replay the outbox on every login and reconnect, whether or not the Waste screen (and its
+        // ViewModel) is alive. Failures are logged, never fatal.
+        containerScope.launch {
+            combine(connectionManager.connectionState, operatorSessionHolder.session) { state, session -> state to session }
+                .filter { (state, session) -> state == MqttConnectionState.CONNECTED && session != null }
+                .map { (_, session) -> session!!.operatorSessionId }
+                .collect { sessionId ->
+                    try {
+                        wasteCollectionPublisher.retryPending(sessionId)
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Outbox replay failed", e)
+                    }
+                }
+        }
     }
 }
 

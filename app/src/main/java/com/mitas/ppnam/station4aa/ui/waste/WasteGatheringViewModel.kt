@@ -73,6 +73,10 @@ class WasteGatheringViewModel(
     val pendingCount: StateFlow<Int> = publisher.pendingCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
 
+    /** Collections queued under an earlier sign-in that were never delivered. */
+    val staleCount: StateFlow<Int> = publisher.staleCount
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+
     val session: StateFlow<OperatorSession?> = sessionHolder.session
 
     /** The logged-in operator's own identity — "collectedBy" per the contract. SessionWatcher
@@ -125,7 +129,7 @@ class WasteGatheringViewModel(
     init {
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
         // Whenever we have both a session and a live broker link (first login and every
-        // reconnect): refresh the catalogue and flush the outbox under the current session.
+        // reconnect): refresh the catalogue (the outbox replay runs app-wide from AppContainer).
         // Sync failure is deliberately silent here — the cached catalogue stays usable and
         // Settings → Diagnostics is where staleness shows.
         viewModelScope.launch {
@@ -138,7 +142,6 @@ class WasteGatheringViewModel(
                 }
                 .collect { (_, activeSession) ->
                     syncCatalogue.sync(activeSession!!.operatorSessionId)
-                    publisher.retryPending(activeSession.operatorSessionId)
                 }
         }
         viewModelScope.launch {
@@ -179,6 +182,11 @@ class WasteGatheringViewModel(
                 }
             }
         }
+    }
+
+    /** Dismiss on the stale line: the operator has seen it and will re-capture the bags. */
+    fun dismissStale() {
+        viewModelScope.launch { publisher.dismissStale() }
     }
 
     /** The "Retry now" affordance on the queued line. */
