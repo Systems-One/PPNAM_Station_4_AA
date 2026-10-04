@@ -98,6 +98,9 @@ fun LoginScreen(
     // empty popup under the field would just hide the password box.
     var operatorsExpanded by remember { mutableStateOf(false) }
     LaunchedEffect(operators) { if (operators.isEmpty()) operatorsExpanded = false }
+    // Coming back from Settings after a broker change: the reconnect never leaves CONNECTED, so
+    // the per-connect refresh in the view model does not fire — ask once per entry instead.
+    LaunchedEffect(Unit) { viewModel.refreshOperatorsNow() }
     // Deliberately NOT rememberSaveable: a password in the saved-instance Bundle is sensitive-data
     // exposure. The portrait lock (manifest) already prevents the rotation loss S4-08 described.
     var password by remember { mutableStateOf("") }

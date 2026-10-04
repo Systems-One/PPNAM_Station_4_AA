@@ -80,11 +80,25 @@ class LoginViewModel(
         viewModelScope.launch {
             connectionManager.connectionState
                 .filter { it == MqttConnectionState.CONNECTED }
-                .collect {
-                    if (sessionHolder.session.value != null) return@collect
-                    operatorDirectory.refresh()?.let { fresh -> _operators.value = fresh }
-                }
+                .collect { refreshOperators() }
         }
+    }
+
+    /**
+     * Called by the screen each time it comes (back) into view. Settings' Test & Apply swaps the
+     * broker client in place and leaves the state CONNECTED throughout, so no CONNECTED emission
+     * follows it; without this, a handheld configured on the login screen would show an empty
+     * dropdown until the next reconnect or app start. A no-op while disconnected: the connect that
+     * follows triggers [refreshOperatorsOnEachConnect] instead.
+     */
+    fun refreshOperatorsNow() {
+        if (connectionManager.connectionState.value != MqttConnectionState.CONNECTED) return
+        viewModelScope.launch { refreshOperators() }
+    }
+
+    private suspend fun refreshOperators() {
+        if (sessionHolder.session.value != null) return
+        operatorDirectory.refresh()?.let { fresh -> _operators.value = fresh }
     }
 
     private fun startListeningForBadgeScans() {
