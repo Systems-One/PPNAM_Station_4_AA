@@ -151,13 +151,5 @@
   "149": "T",
   "150": "Throwable",
   "151": "build.gradle.kts",
-  "152": "settings.gradle.kts",
-  "153": "WasteOutboxDao",
-  "154": "WasteOutboxEntity",
-  "155": "WasteType",
-  "156": "WasteCategory",
-  "157": "AppScaffold",
-  "158": ".observeByCollectionId",
-  "159": "CatalogueEntities.kt",
-  "160": "CatalogueMeta.kt"
+  "152": "settings.gradle.kts"
 }
