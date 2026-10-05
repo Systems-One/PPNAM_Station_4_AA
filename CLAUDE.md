@@ -1,6 +1,6 @@
 # Repo Rules
 
-## External directory: C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4
+## External directory: C:\Dev\Clients\PPNAM\Station 4\PPNAM-Station-4
 
 This is the sibling WPF/Core/CLI repo for PPNAM Station 4 (not this Android app). It is **read-only**
 reference material by default — never edit or write to any file under it, **except** for the RFID
@@ -9,10 +9,13 @@ badge login work described in
 span both repos. That feature may modify the station's authentication processor/service, repository,
 schema, contract document and tests. Nothing else in that repo is in scope; when the badge feature
 is merged and deployed, this exception should be reviewed. It moved here from the old
-`C:\Dev\PPNAM-Station-4` path; that path no longer exists. The normative MQTT wire contract this
-Android app implements lives at
-`C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`, currently
-**5.1.1**. Two documents sit above it: the fleet-wide topic authority
+`C:\Dev\PPNAM-Station-4` and then `C:\Dev\Clients\PPNAM\Windows\PPNAM-Station-4` paths; neither
+exists any more. The normative MQTT wire contract this Android app implements lives at
+`C:\Dev\Clients\PPNAM\Station 4\PPNAM-Station-4\DOCS\Station4_Wastage_MQTT_Contract.md`, currently
+**5.2.1** on `main`, with **5.3.0** (the pre-login "Operator directory" section:
+`operator_list_requested` / `res/operator_list`, which feeds this app's login-screen username
+dropdown — see `domain/usecase/OperatorDirectoryUseCase.kt`) landing on the station's
+`feature/operator-directory` branch. Two documents sit above it: the fleet-wide topic authority
 `C:\Dev\Clients\PPNAM\MQTT_TOPIC_STRUCTURE.md`, and the Android base standard
 `C:\Dev\Clients\PPNAM\Andriod\MQTT_BASE_README.md`, which every `PPNAM_Station_{1..5}_AA` app
 follows and which contract 5.0.0 aligned Station 4 with. On a topic-hierarchy conflict the fleet
