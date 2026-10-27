@@ -22,6 +22,8 @@ import com.mitas.ppnam.station4aa.domain.model.WasteCollectionEvent
 import com.mitas.ppnam.station4aa.domain.model.WasteType
 import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.LookupWasteOperatorUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.WasteOperatorOutcome
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
 import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
@@ -30,12 +32,16 @@ import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
 import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
@@ -50,8 +56,10 @@ import kotlinx.coroutines.launch
  * "Required handheld workflow", per
  * `docs/superpowers/specs/2026-09-02-phase-1-wastage-bag-flow-design.md`. All step transitions
  * (scan bag → scan job → scan operator → select category → select waste type → review) only mutate
- * local [wizardController] state; [onReviewConfirmed] is the wizard's one and only MQTT publish
- * point.
+ * local [wizardController] state, except the operator step: a scanned production-operator card
+ * (barcode, RFID badge or typed card number) is resolved to its owner's name by Station 4 —
+ * contract 5.4.0 §9.3 — before the wizard moves on. That lookup is read-only; [onReviewConfirmed]
+ * is still the wizard's one and only collection publish point.
  */
 class WasteGatheringViewModel(
     private val settingsRepository: SettingsRepository,
@@ -62,6 +70,7 @@ class WasteGatheringViewModel(
     private val scanEventBus: ScanEventBus,
     private val catalogueRepository: WasteCatalogueRepository,
     private val syncCatalogue: SyncWasteCatalogueUseCase,
+    private val lookupWasteOperator: LookupWasteOperatorUseCase,
     /** The derived, immutable scanner identity (base standard §2) — stamped into every published
      * waste-collection event, never read from Settings. */
     private val deviceId: String,
@@ -143,6 +152,14 @@ class WasteGatheringViewModel(
     private val _isSubmitting = MutableStateFlow(false)
     val isSubmitting: StateFlow<Boolean> = _isSubmitting.asStateFlow()
 
+    /** True while Station 4 is resolving a production-operator card (§9.3). */
+    private val _isLookingUpOperator = MutableStateFlow(false)
+    val isLookingUpOperator: StateFlow<Boolean> = _isLookingUpOperator.asStateFlow()
+
+    /** The one in-flight card lookup. A newer scan, a cancel or a session change replaces or
+     * cancels it, so a delayed answer for an old card can never land on the current bag. */
+    private var operatorLookupJob: Job? = null
+
     init {
         viewModelScope.launch { connectionManager.connect(settingsRepository.current()) }
         // Whenever we have both a session and a live broker link (first login and every
@@ -163,19 +180,26 @@ class WasteGatheringViewModel(
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
-                when (val result = wizardController.handleScannedValue(event.value)) {
-                    is ScanDispatchResult.Applied -> syncFromController(result.error)
-                    ScanDispatchResult.Ignored -> Unit
-                }
+                dispatch(wizardController.handleScannedValue(event.value))
             }
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.RfidTag>().collect { event ->
-                when (val result = wizardController.handleScannedBadge(event.tagId)) {
-                    is ScanDispatchResult.Applied -> syncFromController(result.error)
-                    ScanDispatchResult.Ignored -> Unit
-                }
+                dispatch(wizardController.handleScannedBadge(event.tagId))
             }
+        }
+        // §9.3: a production operator's name was looked up under one collector's session; a
+        // different session must look it up again.
+        viewModelScope.launch {
+            sessionHolder.session
+                .map { it?.operatorSessionId }
+                .distinctUntilChanged()
+                .drop(1)
+                .collect {
+                    operatorLookupJob?.cancel()
+                    wizardController.invalidateOperator()
+                    syncFromController(null)
+                }
         }
         viewModelScope.launch {
             val shownResults = ShownResultTracker()
@@ -217,7 +241,57 @@ class WasteGatheringViewModel(
     }
 
     fun onOperatorIdSubmitted(raw: String) {
-        syncFromController(wizardController.submitOperatorId(raw))
+        dispatch(wizardController.beginOperatorLookup(raw))
+    }
+
+    private fun dispatch(result: ScanDispatchResult) {
+        when (result) {
+            is ScanDispatchResult.Applied -> syncFromController(result.error)
+            is ScanDispatchResult.LookupOperator -> startOperatorLookup(result.card)
+            ScanDispatchResult.Ignored -> Unit
+        }
+    }
+
+    /**
+     * Asks Station 4 for the name behind [card] (§9.3) and only advances on a matching
+     * `accepted: true`. Every scan is a fresh request with a fresh messageId; the previous one is
+     * cancelled, and an answer that arrives after the bag, session or step moved on is discarded.
+     * A refusal keeps the operator on this step with the reason — the card code is never used as
+     * a stand-in name.
+     */
+    private fun startOperatorLookup(card: String) {
+        operatorLookupJob?.cancel()
+        syncFromController(null)
+        val bagCode = wizardController.draft.bagCode ?: return
+        val sessionId = sessionHolder.currentSessionIdOrEmpty()
+        _isLookingUpOperator.value = true
+        // LAZY so the job is recorded before its body can run — on Main.immediate a lookup that
+        // fails local validation would otherwise finish before this assignment.
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
+            try {
+                val outcome = lookupWasteOperator.lookup(sessionId, bagCode, card)
+                val stillCurrent = wizardController.step == WizardStep.SCAN_OPERATOR &&
+                    wizardController.draft.bagCode == bagCode &&
+                    sessionHolder.currentSessionIdOrEmpty() == sessionId
+                if (!stillCurrent) return@launch
+                when (outcome) {
+                    is WasteOperatorOutcome.Resolved -> {
+                        wizardController.applyResolvedOperator(outcome.operatorId, outcome.operatorName)
+                        syncFromController(null)
+                    }
+                    is WasteOperatorOutcome.Refused -> {
+                        syncFromController(outcome.refusal.message)
+                        if (outcome.refusal.requiresLogin) sessionHolder.clear(SIGNED_OUT_SESSION_ENDED)
+                    }
+                    is WasteOperatorOutcome.Invalid -> syncFromController(outcome.message)
+                    is WasteOperatorOutcome.Failed -> syncFromController(outcome.message)
+                }
+            } finally {
+                if (operatorLookupJob === coroutineContext[Job]) _isLookingUpOperator.value = false
+            }
+        }
+        operatorLookupJob = job
+        job.start()
     }
 
     fun onCategoryConfirmed(category: WasteCategory) {
@@ -245,6 +319,7 @@ class WasteGatheringViewModel(
     /** Available on every step, including the review dialog. Always a full reset — there is no
      * partial-edit recovery path. */
     fun onCancelTransaction() {
+        operatorLookupJob?.cancel()
         wizardController.cancel()
         syncFromController(null)
     }

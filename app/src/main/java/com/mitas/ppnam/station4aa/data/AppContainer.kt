@@ -26,6 +26,7 @@ import com.mitas.ppnam.station4aa.domain.pin.PinLockoutStore
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.OperatorDirectoryUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
+import com.mitas.ppnam.station4aa.domain.usecase.LookupWasteOperatorUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -97,6 +98,13 @@ class AppContainer(context: Context) {
     /** Contract 5.1.0 §9.2 — asks Station 4 to weigh a bag on its scale. Interactive, so unlike
      * [wasteCollectionPublisher] it has no durable outbox behind it. */
     val requestWasteCaptureUseCase = RequestWasteCaptureUseCase(
+        requestChannel = requestChannel,
+        deviceId = deviceId,
+    )
+
+    /** Contract 5.4.0 §9.3 — resolves a production-operator card to its owner's name. A lookup,
+     * never a login: the collector's session is untouched. */
+    val lookupWasteOperatorUseCase = LookupWasteOperatorUseCase(
         requestChannel = requestChannel,
         deviceId = deviceId,
     )

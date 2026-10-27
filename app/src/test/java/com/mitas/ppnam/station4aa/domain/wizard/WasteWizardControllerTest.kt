@@ -24,10 +24,16 @@ class WasteWizardControllerTest {
         val controller = WasteWizardController()
         controller.submitBagCode("BAG-01")
         controller.submitJobNumber("JOB-2026-0041")
-        controller.submitOperatorId("MO-00427")
+        controller.resolveOperator("0000427", "Production Operator One")
         controller.confirmCategory(process)
         controller.confirmWasteType(bubbleBreaks)
         return controller
+    }
+
+    /** What the ViewModel does on the operator step: validate the card, then apply Station 4's name. */
+    private fun WasteWizardController.resolveOperator(card: String, name: String) {
+        assertEquals(ScanDispatchResult.LookupOperator(card), beginOperatorLookup(card))
+        assertTrue(applyResolvedOperator(card, name))
     }
 
     @Test
@@ -42,7 +48,7 @@ class WasteWizardControllerTest {
         assertEquals(WizardStep.SCAN_JOB, controller.step)
         assertNull(controller.submitJobNumber("JOB-2026-0041"))
         assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
-        assertNull(controller.submitOperatorId("MO-00427"))
+        controller.resolveOperator("0000427", "Production Operator One")
         assertEquals(WizardStep.SELECT_CATEGORY, controller.step)
         controller.confirmCategory(process)
         assertEquals(WizardStep.SELECT_WASTE_TYPE, controller.step)
@@ -55,7 +61,8 @@ class WasteWizardControllerTest {
         val draft = completedController().draft
         assertEquals("BAG-01", draft.bagCode)
         assertEquals("JOB-2026-0041", draft.jobNumber)
-        assertEquals("MO-00427", draft.operatorId)
+        assertEquals("0000427", draft.operatorId)
+        assertEquals("Production Operator One", draft.operatorName)
         assertEquals(process, draft.category)
         assertEquals(bubbleBreaks, draft.wasteType)
     }
@@ -97,7 +104,7 @@ class WasteWizardControllerTest {
         val controller = WasteWizardController()
         controller.submitBagCode("BAG-01")
         controller.submitJobNumber("JOB-1")
-        controller.submitOperatorId("MO-1")
+        controller.resolveOperator("MO-1", "Operator")
         assertEquals(ScanDispatchResult.Ignored, controller.handleScannedValue("STRAY"))
         controller.confirmCategory(process)
         assertEquals(ScanDispatchResult.Ignored, controller.handleScannedValue("STRAY"))
@@ -145,18 +152,33 @@ class WasteWizardControllerTest {
     }
 
     @Test
-    fun `editing the bag code returns straight to review with the new value`() {
+    fun `re-entering the same bag code from review returns straight to review`() {
         val controller = completedController()
         controller.editField(WizardStep.SCAN_BAG)
         assertEquals(WizardStep.SCAN_BAG, controller.step)
 
-        assertNull(controller.submitBagCode("BAG-02"))
+        assertNull(controller.submitBagCode("BAG-01"))
 
         assertEquals(WizardStep.REVIEW, controller.step)
+        assertEquals("Production Operator One", controller.draft.operatorName)
+    }
+
+    @Test
+    fun `a different bag from review clears the operator and asks for the card again`() {
+        val controller = completedController()
+        controller.editField(WizardStep.SCAN_BAG)
+
+        assertNull(controller.submitBagCode("BAG-02"))
+
+        assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
         assertEquals("BAG-02", controller.draft.bagCode)
-        // Nothing else was disturbed.
+        assertNull(controller.draft.operatorId)
+        assertNull(controller.draft.operatorName)
+        // Nothing else was disturbed, and the re-resolved card lands back on review.
         assertEquals("JOB-2026-0041", controller.draft.jobNumber)
         assertEquals(bubbleBreaks, controller.draft.wasteType)
+        controller.resolveOperator("0000427", "Production Operator One")
+        assertEquals(WizardStep.REVIEW, controller.step)
     }
 
     @Test
@@ -169,12 +191,54 @@ class WasteWizardControllerTest {
     }
 
     @Test
-    fun `editing the operator id returns straight to review`() {
+    fun `editing the operator returns straight to review`() {
         val controller = completedController()
         controller.editField(WizardStep.SCAN_OPERATOR)
-        controller.submitOperatorId("MO-00999")
+        controller.resolveOperator("0000999", "Production Operator Two")
         assertEquals(WizardStep.REVIEW, controller.step)
-        assertEquals("MO-00999", controller.draft.operatorId)
+        assertEquals("0000999", controller.draft.operatorId)
+        assertEquals("Production Operator Two", controller.draft.operatorName)
+    }
+
+    @Test
+    fun `a new card scan drops the previous name until Station 4 resolves the new one`() {
+        val controller = completedController()
+        controller.editField(WizardStep.SCAN_OPERATOR)
+        controller.beginOperatorLookup("0000999")
+        assertNull(controller.draft.operatorId)
+        assertNull(controller.draft.operatorName)
+        assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
+    }
+
+    @Test
+    fun `the operator step validates the card and keeps leading zeroes`() {
+        val controller = WasteWizardController()
+        controller.submitBagCode("BAG-01")
+        controller.submitJobNumber("JOB-1")
+        assertEquals(ScanDispatchResult.LookupOperator("0000427"), controller.handleScannedValue("  0000427 "))
+        assertTrue(controller.beginOperatorLookup("N/A") is ScanDispatchResult.Applied)
+        assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
+    }
+
+    @Test
+    fun `a late resolution after leaving the operator step changes nothing`() {
+        val controller = WasteWizardController()
+        controller.submitBagCode("BAG-01")
+        controller.submitJobNumber("JOB-1")
+        controller.beginOperatorLookup("0000427")
+        controller.cancel()
+        assertFalse(controller.applyResolvedOperator("0000427", "Production Operator One"))
+        assertEquals(WasteTransactionDraft(), controller.draft)
+    }
+
+    @Test
+    fun `invalidating the operator from review sends the wizard back to the card step`() {
+        val controller = completedController()
+        controller.invalidateOperator()
+        assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
+        assertNull(controller.draft.operatorName)
+        controller.resolveOperator("0000427", "Production Operator One")
+        assertEquals(WizardStep.REVIEW, controller.step)
     }
 
     @Test
@@ -267,14 +331,16 @@ class WasteWizardControllerTest {
         assertFalse(controller.hasDraft)
     }
     @Test
-    fun `a badge scan on the operator step is refused and leaves the draft unchanged`() {
+    fun `a badge scan on the operator step asks Station 4 for the badge owner`() {
         val controller = WasteWizardController()
         controller.submitBagCode("BAG-01")
         controller.submitJobNumber("JOB-1")
-        val before = controller.draft
-        assertEquals(ScanDispatchResult.Applied("Scan a barcode, not a badge."), controller.handleScannedBadge("BADGE000000000000000001"))
+        assertEquals(
+            ScanDispatchResult.LookupOperator("BADGE000000000000000001"),
+            controller.handleScannedBadge("BADGE000000000000000001"),
+        )
+        // Nothing is stored until the name comes back.
         assertNull(controller.draft.operatorId)
-        assertEquals(before, controller.draft)
         assertEquals(WizardStep.SCAN_OPERATOR, controller.step)
     }
 

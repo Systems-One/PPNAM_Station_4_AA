@@ -73,6 +73,15 @@ The app cannot gate on the Capture Waste permission locally — the session carr
 — and is not meant to: the station checks the permission before the pan moves and answers
 `capture_not_permitted`.
 
+## Production-operator name lookup (contract 5.4.0 §9.3)
+
+On the wizard's operator step, a scanned card — RFID login badge, card barcode or typed numeric
+`card_code` — is sent as `waste_operator_requested` / `waste_operator_result` and the wizard only
+advances on a matching `accepted: true`. The review screen shows the returned `operatorName`; the
+collection still publishes the **card string as scanned** in `operatorId` (leading zeroes kept).
+See `domain/usecase/LookupWasteOperatorUseCase.kt`. This is a lookup, never a login: do not route
+it through `login_requested`, and never show the card code as a fallback name.
+
 ## Operator login is mirrored from Station 2 AA — and Station 4's backend has now caught up
 
 `Station4_Wastage_MQTT_Contract.md` originally defined no login/auth mechanism, so at the user's

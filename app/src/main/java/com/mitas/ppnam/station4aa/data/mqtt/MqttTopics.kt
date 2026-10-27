@@ -30,7 +30,8 @@ package com.mitas.ppnam.station4aa.data.mqtt
  * [request]/[responseWildcard] carry the schema 4.1 request/response exchange: the operator SCRAM
  * login mirrored from Station 2 AA, the waste catalogue sync ([SyncWasteCatalogueUseCase]),
  * since contract 5.1.0 the handheld-triggered weigh ([WASTE_CAPTURE_REQUESTED], §9.2), and since
- * 5.3.0 the pre-login operator directory ([OPERATOR_LIST_REQUESTED]). Station 4's backend answers
+ * 5.3.0 the pre-login operator directory ([OPERATOR_LIST_REQUESTED]), and since 5.4.0 the
+ * production-operator name lookup ([WASTE_OPERATOR_REQUESTED], §9.3). Station 4's backend answers
  * all of them — see `MqttScramAuthenticationService.cs`, `MqttAuthenticationProcessor.cs`,
  * `MqttCatalogueProcessor.cs` and its capture processor in the sibling WPF repo.
  *
@@ -56,6 +57,11 @@ object MqttTopics {
 
     /** `{type}` for the contract 5.1.0 §9.2 handheld weigh, published via [request]. */
     const val WASTE_CAPTURE_REQUESTED = "waste_capture_requested"
+
+    /** `{type}` for the contract 5.4.0 §9.3 production-operator name lookup, published via
+     * [request] and answered on `res/waste_operator_result`. Resolves a production card to its
+     * owner's name without signing that person in. */
+    const val WASTE_OPERATOR_REQUESTED = "waste_operator_requested"
 
     /** `{type}` for the contract 5.3.0 pre-login operator directory (fleet parity with Station 1
      * 3.2.0 §4.5), published via [request] with the bare envelope and answered on

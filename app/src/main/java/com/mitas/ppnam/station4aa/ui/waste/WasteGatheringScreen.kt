@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.DropdownMenuItem
@@ -72,6 +74,7 @@ fun WasteGatheringScreen(
     val lastQueuedMessage by viewModel.lastQueuedMessage.collectAsState()
     val lastMessageIsError by viewModel.lastMessageIsError.collectAsState()
     val isSubmitting by viewModel.isSubmitting.collectAsState()
+    val isLookingUpOperator by viewModel.isLookingUpOperator.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val wasteTypes by viewModel.typesForSelectedCategory.collectAsState()
 
@@ -120,7 +123,9 @@ fun WasteGatheringScreen(
                     ConfirmRow("Job number", draft.jobNumber.orEmpty()) {
                         viewModel.onEditField(WizardStep.SCAN_JOB)
                     }
-                    ConfirmRow("Operator ID", draft.operatorId.orEmpty()) {
+                    // §9.3: the name Station 4 resolved the card to. The card code itself is what
+                    // gets published, and is never shown here as a stand-in name.
+                    ConfirmRow("Production operator", draft.operatorName.orEmpty()) {
                         viewModel.onEditField(WizardStep.SCAN_OPERATOR)
                     }
                     ConfirmRow("Waste category", draft.category?.name.orEmpty()) {
@@ -238,10 +243,11 @@ fun WasteGatheringScreen(
                     onSubmit = viewModel::onJobNumberSubmitted,
                 )
                 WizardStep.SCAN_OPERATOR -> ScanStep(
-                    label = "Scan or enter the operator ID",
-                    hint = "Scan the operator's barcode, or enter the ID manually below.",
+                    label = "Scan the production operator's card",
+                    hint = "Scan their badge or card barcode, or enter the card number below.",
                     errorMessage = stepError,
                     onSubmit = viewModel::onOperatorIdSubmitted,
+                    busyMessage = if (isLookingUpOperator) "Looking up the operator at Station 4…" else null,
                 )
                 WizardStep.SELECT_CATEGORY -> CatalogueStep(
                     title = "Select waste category",
@@ -285,7 +291,7 @@ private fun StepIndicator(step: WizardStep) {
     val label = when (step) {
         WizardStep.SCAN_BAG -> "Scan bag code"
         WizardStep.SCAN_JOB -> "Scan or enter the job number"
-        WizardStep.SCAN_OPERATOR -> "Scan or enter the operator ID"
+        WizardStep.SCAN_OPERATOR -> "Scan the production operator's card"
         WizardStep.SELECT_CATEGORY -> "Select waste category"
         WizardStep.SELECT_WASTE_TYPE -> "Select waste type"
         WizardStep.REVIEW -> "Review and confirm"
@@ -303,6 +309,8 @@ private fun ScanStep(
     hint: String,
     errorMessage: String?,
     onSubmit: (String) -> Unit,
+    /** Non-null while a submitted value is being checked at Station 4; shown in place of the error. */
+    busyMessage: String? = null,
 ) {
     var manualValue by rememberSaveable(label) { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -322,7 +330,12 @@ private fun ScanStep(
         Text(hint, style = MaterialTheme.typography.labelMedium, color = TextMuted)
         // Above the field, not below it: text under the field lands exactly under the keyboard
         // (audit group (a) sub-cause 4).
-        if (errorMessage != null) {
+        if (busyMessage != null) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = BrandTint)
+                Text(busyMessage, style = MaterialTheme.typography.labelMedium, color = TextMuted)
+            }
+        } else if (errorMessage != null) {
             Text(errorMessage, style = MaterialTheme.typography.labelMedium, color = DangerRed)
         }
         OutlinedTextField(

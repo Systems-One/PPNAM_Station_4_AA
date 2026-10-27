@@ -90,6 +90,7 @@ fun AppNavGraph() {
                             scanEventBus = container.scanEventBus,
                             catalogueRepository = container.wasteCatalogueRepository,
                             syncCatalogue = container.syncWasteCatalogueUseCase,
+                            lookupWasteOperator = container.lookupWasteOperatorUseCase,
                             deviceId = container.deviceId,
                             bannerTracker = container.collectionBannerTracker,
                         )

@@ -25,29 +25,32 @@ class WasteWizardController {
     /** Set by [editField]: the next satisfied step returns to REVIEW instead of advancing. */
     private var returnToReview = false
 
-    /** Bag/job/operator barcode scans all funnel through here. Returns
+    /** Bag/job/operator barcode scans all funnel through here. On the operator step the scan is
+     * not applied directly: it comes back as [ScanDispatchResult.LookupOperator] for Station 4 to
+     * resolve to a name first (contract 5.4.0 §9.3). Returns
      * [ScanDispatchResult.Ignored] when the active step doesn't accept a scan — a stray scan is
      * dropped, never applied to a step the operator has already moved past, and never allowed to
      * rewrite a field on the review screen the operator is about to confirm. */
     fun handleScannedValue(value: String): ScanDispatchResult = when (step) {
         WizardStep.SCAN_BAG -> ScanDispatchResult.Applied(submitBagCode(value))
         WizardStep.SCAN_JOB -> ScanDispatchResult.Applied(submitJobNumber(value))
-        WizardStep.SCAN_OPERATOR -> ScanDispatchResult.Applied(submitOperatorId(value))
+        WizardStep.SCAN_OPERATOR -> beginOperatorLookup(value)
         WizardStep.SELECT_CATEGORY,
         WizardStep.SELECT_WASTE_TYPE,
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
     }
 
-    /** An RFID badge read. Nothing maps a tag to an employee id, so a badge is never submitted as
-     * the operator id: on the three scan steps it is refused with a hint rather than silently
-     * dropped (the draft is left unchanged); elsewhere it is ignored like any stray scan.
+    /** An RFID badge read. On the operator step the production operator's login badge is their
+     * card, so it goes to Station 4 for a name lookup exactly like a scanned card number. On the
+     * bag and job steps it is refused with a hint rather than silently dropped (the draft is left
+     * unchanged); elsewhere it is ignored like any stray scan.
      *
      * RFID reads are refused on barcode steps regardless of [com.mitas.ppnam.station4aa.UserTagPolicy];
      * that policy exists for screens that must tell badges from item tags. */
     fun handleScannedBadge(tagId: String): ScanDispatchResult = when (step) {
         WizardStep.SCAN_BAG,
-        WizardStep.SCAN_JOB,
-        WizardStep.SCAN_OPERATOR -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
+        WizardStep.SCAN_JOB -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
+        WizardStep.SCAN_OPERATOR -> beginOperatorLookup(tagId)
         WizardStep.SELECT_CATEGORY,
         WizardStep.SELECT_WASTE_TYPE,
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
@@ -62,7 +65,17 @@ class WasteWizardController {
     fun submitBagCode(raw: String): String? {
         val error = WasteCollectionValidator.validateBagCode(raw)
         if (error != null) return error
-        draft = draft.copy(bagCode = raw.trim())
+        val bagCode = raw.trim()
+        val bagChanged = draft.bagCode != null && draft.bagCode != bagCode
+        draft = draft.copy(bagCode = bagCode)
+        // §9.3 resolved the operator's name for the old bag; a new bag needs a fresh lookup.
+        if (bagChanged && draft.operatorId != null) {
+            draft = draft.copy(operatorId = null, operatorName = null)
+            if (returnToReview) {
+                step = WizardStep.SCAN_OPERATOR
+                return null
+            }
+        }
         advanceTo(WizardStep.SCAN_JOB)
         return null
     }
@@ -76,13 +89,50 @@ class WasteWizardController {
         return null
     }
 
-    /** Manual-entry fallback for the production-operator step. */
-    fun submitOperatorId(raw: String): String? {
+    /** The production-operator step's card scan, badge read or manual entry. Validates locally and
+     * hands back the trimmed card for a Station 4 lookup. A valid new card drops any name resolved
+     * for the previous one (§9.3: clear the name whenever the card changes); the new one is only
+     * stored by [applyResolvedOperator]. */
+    fun beginOperatorLookup(raw: String): ScanDispatchResult {
         val error = WasteCollectionValidator.validateOperatorId(raw)
-        if (error != null) return error
-        draft = draft.copy(operatorId = raw.trim())
+        if (error != null) return ScanDispatchResult.Applied(error)
+        draft = draft.copy(operatorId = null, operatorName = null)
+        return ScanDispatchResult.LookupOperator(raw.trim())
+    }
+
+    /**
+     * Station 4 accepted the card lookup. [operatorId] is the card string as scanned (what the
+     * collection publishes); [operatorName] is shown on review. Returns false — and changes
+     * nothing — when the wizard has left the operator step, so a late answer can never land on a
+     * step the operator has moved past.
+     */
+    fun applyResolvedOperator(operatorId: String, operatorName: String): Boolean {
+        if (step != WizardStep.SCAN_OPERATOR) return false
+        draft = draft.copy(operatorId = operatorId, operatorName = operatorName)
         advanceTo(WizardStep.SELECT_CATEGORY)
-        return null
+        return true
+    }
+
+    /**
+     * Drops the resolved production operator — the collector session changed, so the name was
+     * looked up for someone else. A wizard past the operator step goes back to it; from REVIEW it
+     * returns to review once a card is resolved again.
+     */
+    fun invalidateOperator() {
+        if (draft.operatorId == null) return
+        draft = draft.copy(operatorId = null, operatorName = null)
+        when (step) {
+            WizardStep.SELECT_CATEGORY,
+            WizardStep.SELECT_WASTE_TYPE -> {
+                returnToReview = false
+                step = WizardStep.SCAN_OPERATOR
+            }
+            WizardStep.REVIEW -> {
+                returnToReview = true
+                step = WizardStep.SCAN_OPERATOR
+            }
+            else -> Unit
+        }
     }
 
     /**
