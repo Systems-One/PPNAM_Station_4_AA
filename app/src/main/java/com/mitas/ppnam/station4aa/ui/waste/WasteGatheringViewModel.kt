@@ -18,6 +18,7 @@ import com.mitas.ppnam.station4aa.domain.collection.collectionBannerFlow
 import com.mitas.ppnam.station4aa.domain.collection.ShownResultTracker
 import com.mitas.ppnam.station4aa.domain.collection.isResultForSession
 import com.mitas.ppnam.station4aa.domain.feedback.CollectionVerdictSounds
+import com.mitas.ppnam.station4aa.domain.feedback.LocalRefusalDebounce
 import com.mitas.ppnam.station4aa.domain.feedback.ScanSound
 import com.mitas.ppnam.station4aa.domain.feedback.ScanSounds
 import com.mitas.ppnam.station4aa.domain.model.WasteCategory
@@ -82,6 +83,8 @@ class WasteGatheringViewModel(
     private val deviceId: String,
     /** App-scoped: remembers the last submission and its Dismiss across ViewModel instances. */
     private val bannerTracker: CollectionBannerTracker,
+    /** Monotonic clock for the suite rule S3 repeat-read window; injectable for tests. */
+    nowMs: () -> Long = android.os.SystemClock::elapsedRealtime,
 ) : ViewModel() {
 
     private val wizardController = WasteWizardController()
@@ -93,6 +96,9 @@ class WasteGatheringViewModel(
 
     /** Station 4's verdict on a collection submitted from this screen sounds once. */
     private val verdictSounds = CollectionVerdictSounds()
+
+    /** Suite rule S3: the same value refused on the handheld again within 1.5 s plays nothing. */
+    private val refusals = LocalRefusalDebounce(nowMs)
 
     private fun sound(sound: ScanSound?) {
         if (sound != null) _scanSounds.tryEmit(sound)
@@ -204,12 +210,12 @@ class WasteGatheringViewModel(
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
-                dispatch(wizardController.handleScannedValue(event.value))
+                dispatch(wizardController.handleScannedValue(event.value), event.value)
             }
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.RfidTag>().collect { event ->
-                dispatch(wizardController.handleScannedBadge(event.tagId))
+                dispatch(wizardController.handleScannedBadge(event.tagId), event.tagId)
             }
         }
         // §9.3: a production operator's name was looked up under one collector's session; a
@@ -259,19 +265,20 @@ class WasteGatheringViewModel(
 
     /** Typed stand-ins for the bag and job scans: they sound like the scan would. */
     fun onBagCodeSubmitted(raw: String) {
-        dispatch(ScanDispatchResult.Applied(wizardController.submitBagCode(raw)))
+        dispatch(ScanDispatchResult.Applied(wizardController.submitBagCode(raw)), raw)
     }
 
     fun onJobNumberSubmitted(raw: String) {
-        dispatch(ScanDispatchResult.Applied(wizardController.submitJobNumber(raw)))
+        dispatch(ScanDispatchResult.Applied(wizardController.submitJobNumber(raw)), raw)
     }
 
     fun onOperatorIdSubmitted(raw: String) {
-        dispatch(wizardController.beginOperatorLookup(raw))
+        dispatch(wizardController.beginOperatorLookup(raw), raw)
     }
 
-    private fun dispatch(result: ScanDispatchResult) {
-        sound(ScanSounds.forDispatch(result))
+    /** [value] is what was scanned or typed: a fail here is always a local refusal of it. */
+    private fun dispatch(result: ScanDispatchResult, value: String) {
+        sound(refusals.filter(value, ScanSounds.forDispatch(result)))
         when (result) {
             is ScanDispatchResult.Applied -> syncFromController(result.error)
             is ScanDispatchResult.LookupOperator -> startOperatorLookup(result.card)

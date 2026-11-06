@@ -7,6 +7,7 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.domain.feedback.LocalRefusalDebounce
 import com.mitas.ppnam.station4aa.domain.feedback.ScanSound
 import com.mitas.ppnam.station4aa.domain.feedback.ScanSounds
 import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
@@ -58,7 +59,12 @@ class WeighBagViewModel(
     private val scanEventBus: ScanEventBus,
     private val requestCapture: RequestWasteCaptureUseCase,
     private val authUseCase: AuthUseCase,
+    /** Monotonic clock for the suite rule S3 repeat window; injectable for tests. */
+    nowMs: () -> Long = android.os.SystemClock::elapsedRealtime,
 ) : ViewModel() {
+
+    /** Suite rule S3: the same invalid bag code refused again within 1.5 s plays nothing. */
+    private val refusals = LocalRefusalDebounce(nowMs)
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
@@ -108,8 +114,13 @@ class WeighBagViewModel(
 
         viewModelScope.launch {
             try {
-                val outcome = requestCapture.request(operatorSessionId, _bagCode.value)
-                _scanSounds.tryEmit(ScanSounds.forWeigh(outcome))
+                val bagCode = _bagCode.value
+                val outcome = requestCapture.request(operatorSessionId, bagCode)
+                // Only the invalid bag code is refused on the handheld; station and transport
+                // answers always sound.
+                val sound = if (outcome is WasteCaptureOutcome.InvalidBagCode) refusals.refuse(bagCode)
+                else ScanSounds.forWeigh(outcome)
+                if (sound != null) _scanSounds.tryEmit(sound)
                 when (outcome) {
                     is WasteCaptureOutcome.Weighed -> {
                         _feedback.value = WeighFeedback.Weighed(
