@@ -220,7 +220,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ppnamapplication_kt",
-      "community": 6,
+      "community": 9,
       "norm_label": "ppnamapplication.kt"
     },
     {
@@ -230,7 +230,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ppnamapplication_ppnamapplication",
-      "community": 6,
+      "community": 9,
       "norm_label": "ppnamapplication"
     },
     {
@@ -240,7 +240,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "application",
-      "community": 6,
+      "community": 9,
       "norm_label": "application"
     },
     {
@@ -250,7 +250,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ppnamapplication_ppnamapplication_oncreate",
-      "community": 6,
+      "community": 9,
       "norm_label": ".oncreate()"
     },
     {
@@ -310,7 +310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_appcontainer",
-      "community": 6,
+      "community": 9,
       "norm_label": "appcontainer.kt"
     },
     {
@@ -320,7 +320,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_appcontainer_appcontainer",
-      "community": 6,
+      "community": 9,
       "norm_label": "appcontainer"
     },
     {
@@ -330,7 +330,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_appcontainer_kt_string",
-      "community": 6,
+      "community": 9,
       "norm_label": "string"
     },
     {
@@ -660,7 +660,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_typesfor",
-      "community": 31,
+      "community": 155,
       "norm_label": ".typesfor()"
     },
     {
@@ -680,7 +680,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_seedifempty",
-      "community": 31,
+      "community": 0,
       "norm_label": ".seedifempty()"
     },
     {
@@ -700,7 +700,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_replacewith",
-      "community": 31,
+      "community": 0,
       "norm_label": ".replacewith()"
     },
     {
@@ -710,7 +710,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_recordsyncfailure",
-      "community": 31,
+      "community": 0,
       "norm_label": ".recordsyncfailure()"
     },
     {
@@ -720,7 +720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecatalogueseed_kt",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastecatalogueseed.kt"
     },
     {
@@ -730,7 +730,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecatalogueseed_wastecatalogueseed",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastecatalogueseed"
     },
     {
@@ -830,7 +830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_kt",
-      "community": 31,
+      "community": 155,
       "norm_label": "catalogueentities.kt"
     },
     {
@@ -840,7 +840,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastecategoryentity",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastecategoryentity"
     },
     {
@@ -850,7 +850,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastetypeentity",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastetypeentity"
     },
     {
@@ -860,7 +860,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_cataloguemetaentity",
-      "community": 31,
+      "community": 155,
       "norm_label": "cataloguemetaentity"
     },
     {
@@ -870,7 +870,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_todomain",
-      "community": 31,
+      "community": 155,
       "norm_label": "todomain()"
     },
     {
@@ -880,7 +880,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_toentity",
-      "community": 31,
+      "community": 155,
       "norm_label": "toentity()"
     },
     {
@@ -3430,7 +3430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_settings_sharedprefspinlockoutstore",
-      "community": 6,
+      "community": 3,
       "norm_label": "sharedprefspinlockoutstore.kt"
     },
     {
@@ -3440,7 +3440,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_settings_sharedprefspinlockoutstore_sharedprefspinlockoutstore",
-      "community": 6,
+      "community": 3,
       "norm_label": "sharedprefspinlockoutstore"
     },
     {
@@ -3750,7 +3750,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_collection_collectionresultfilter_shownresulttracker_shouldshow",
-      "community": 10,
+      "community": 1,
       "norm_label": ".shouldshow()"
     },
     {
@@ -4100,7 +4100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
-      "community": 31,
+      "community": 0,
       "norm_label": "cataloguemeta.kt"
     },
     {
@@ -4110,7 +4110,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
-      "community": 31,
+      "community": 0,
       "norm_label": "cataloguesource"
     },
     {
@@ -4200,7 +4200,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_kt",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastecategory.kt"
     },
     {
@@ -4290,7 +4290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_kt",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastetype.kt"
     },
     {
@@ -4300,7 +4300,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype",
-      "community": 184,
+      "community": 155,
       "norm_label": "wastetype"
     },
     {
@@ -4310,7 +4310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate",
-      "community": 6,
+      "community": 3,
       "norm_label": "pingate.kt"
     },
     {
@@ -4320,7 +4320,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_pinlockoutstore",
-      "community": 6,
+      "community": 3,
       "norm_label": "pinlockoutstore"
     },
     {
@@ -4350,7 +4350,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_inmemorypinlockoutstore",
-      "community": 6,
+      "community": 3,
       "norm_label": "inmemorypinlockoutstore"
     },
     {
@@ -4360,7 +4360,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_pingateresult",
-      "community": 6,
+      "community": 3,
       "norm_label": "pingateresult"
     },
     {
@@ -4370,7 +4370,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_blank",
-      "community": 6,
+      "community": 3,
       "norm_label": "blank"
     },
     {
@@ -4380,7 +4380,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_unlocked",
-      "community": 6,
+      "community": 3,
       "norm_label": "unlocked"
     },
     {
@@ -4390,7 +4390,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_wrong",
-      "community": 6,
+      "community": 3,
       "norm_label": "wrong"
     },
     {
@@ -4400,7 +4400,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_lockedout",
-      "community": 6,
+      "community": 3,
       "norm_label": "lockedout"
     },
     {
@@ -4410,7 +4410,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_pingate",
-      "community": 6,
+      "community": 3,
       "norm_label": "pingate"
     },
     {
@@ -4420,7 +4420,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_pingate_remaininglockoutms",
-      "community": 6,
+      "community": 3,
       "norm_label": ".remaininglockoutms()"
     },
     {
@@ -4440,7 +4440,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_pingate_submit",
-      "community": 6,
+      "community": 3,
       "norm_label": ".submit()"
     },
     {
@@ -4460,7 +4460,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_wrongpinmessage",
-      "community": 6,
+      "community": 3,
       "norm_label": "wrongpinmessage()"
     },
     {
@@ -4470,7 +4470,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_pin_pingate_lockoutmessage",
-      "community": 6,
+      "community": 3,
       "norm_label": "lockoutmessage()"
     },
     {
@@ -5410,7 +5410,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_applyresolvedoperator",
-      "community": 173,
+      "community": 4,
       "norm_label": ".applyresolvedoperator()"
     },
     {
@@ -5420,7 +5420,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_kt_boolean",
-      "community": 173,
+      "community": 4,
       "norm_label": "boolean"
     },
     {
@@ -5440,7 +5440,7 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_confirmcategory",
-      "community": 155,
+      "community": 4,
       "norm_label": ".confirmcategory()"
     },
     {
@@ -5450,7 +5450,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_confirmwastetype",
-      "community": 184,
+      "community": 4,
       "norm_label": ".confirmwastetype()"
     },
     {
@@ -5460,7 +5460,7 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_editfield",
-      "community": 4,
+      "community": 155,
       "norm_label": ".editfield()"
     },
     {
@@ -5490,7 +5490,7 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_advanceto",
-      "community": 173,
+      "community": 4,
       "norm_label": ".advanceto()"
     },
     {
@@ -5500,7 +5500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wizardstep_kt",
-      "community": 4,
+      "community": 155,
       "norm_label": "wizardstep.kt"
     },
     {
@@ -5510,7 +5510,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wizardstep_wizardstep",
-      "community": 4,
+      "community": 155,
       "norm_label": "wizardstep"
     },
     {
@@ -6500,7 +6500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
-      "community": 3,
+      "community": 184,
       "norm_label": "settingsscreen.kt"
     },
     {
@@ -6510,7 +6510,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
-      "community": 3,
+      "community": 184,
       "norm_label": "settingsscreen()"
     },
     {
@@ -6520,7 +6520,7 @@
       "source_location": "L395",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_applystatusrow",
-      "community": 3,
+      "community": 184,
       "norm_label": "applystatusrow()"
     },
     {
@@ -6530,7 +6530,7 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticvaluerow",
-      "community": 3,
+      "community": 184,
       "norm_label": "diagnosticvaluerow()"
     },
     {
@@ -6540,7 +6540,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_kt_string",
-      "community": 3,
+      "community": 184,
       "norm_label": "string"
     },
     {
@@ -6550,7 +6550,7 @@
       "source_location": "L455",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticrow",
-      "community": 3,
+      "community": 184,
       "norm_label": "diagnosticrow()"
     },
     {
@@ -6560,7 +6560,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_kt_color",
-      "community": 3,
+      "community": 184,
       "norm_label": "color"
     },
     {
@@ -6570,7 +6570,7 @@
       "source_location": "L484",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_sectionlabel",
-      "community": 3,
+      "community": 184,
       "norm_label": "sectionlabel()"
     },
     {
@@ -6580,7 +6580,7 @@
       "source_location": "L493",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_configsection",
-      "community": 3,
+      "community": 184,
       "norm_label": "configsection()"
     },
     {
@@ -6590,7 +6590,7 @@
       "source_location": "L513",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
-      "community": 3,
+      "community": 184,
       "norm_label": "settingstextfield()"
     },
     {
@@ -6600,7 +6600,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "keyboardtype",
-      "community": 3,
+      "community": 184,
       "norm_label": "keyboardtype"
     },
     {
@@ -6610,7 +6610,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "imeaction",
-      "community": 3,
+      "community": 184,
       "norm_label": "imeaction"
     },
     {
@@ -6620,7 +6620,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_kt_unit",
-      "community": 3,
+      "community": 184,
       "norm_label": "unit"
     },
     {
@@ -6630,7 +6630,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "visualtransformation",
-      "community": 3,
+      "community": 184,
       "norm_label": "visualtransformation"
     },
     {
@@ -6640,7 +6640,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "composable",
-      "community": 3,
+      "community": 184,
       "norm_label": "composable"
     },
     {
@@ -6650,7 +6650,7 @@
       "source_location": "L552",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstogglerow",
-      "community": 3,
+      "community": 184,
       "norm_label": "settingstogglerow()"
     },
     {
@@ -6660,7 +6660,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_kt_boolean",
-      "community": 3,
+      "community": 184,
       "norm_label": "boolean"
     },
     {
@@ -6940,7 +6940,7 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_submitpin",
-      "community": 6,
+      "community": 3,
       "norm_label": ".submitpin()"
     },
     {
@@ -6950,7 +6950,7 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_startlockoutticker",
-      "community": 6,
+      "community": 3,
       "norm_label": ".startlockoutticker()"
     },
     {
@@ -6960,7 +6960,7 @@
       "source_location": "L211",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsviewmodel_settingsviewmodel_updatedraft",
-      "community": 3,
+      "community": 1,
       "norm_label": ".updatedraft()"
     },
     {
@@ -8230,7 +8230,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_type",
-      "community": 184,
+      "community": 155,
       "norm_label": ".type()"
     },
     {
@@ -8930,7 +8930,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_data_mqtt_wastecollectionresultchanneltest_wastecollectionresultchanneltest_storedrow",
-      "community": 8,
+      "community": 1,
       "norm_label": ".storedrow()"
     },
     {
@@ -10370,7 +10370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest",
-      "community": 6,
+      "community": 3,
       "norm_label": "pingatetest.kt"
     },
     {
@@ -10380,7 +10380,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest",
-      "community": 6,
+      "community": 3,
       "norm_label": "pingatetest"
     },
     {
@@ -10390,7 +10390,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_gate",
-      "community": 6,
+      "community": 3,
       "norm_label": ".gate()"
     },
     {
@@ -10400,7 +10400,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_the_correct_pin_unlocks_and_resets_the_counter",
-      "community": 6,
+      "community": 3,
       "norm_label": ".`the correct pin unlocks and resets the counter`()"
     },
     {
@@ -10410,7 +10410,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_a_wrong_pin_reports_attempts_left",
-      "community": 6,
+      "community": 3,
       "norm_label": ".`a wrong pin reports attempts left`()"
     },
     {
@@ -10420,7 +10420,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_a_blank_pin_is_not_an_attempt",
-      "community": 6,
+      "community": 3,
       "norm_label": ".`a blank pin is not an attempt`()"
     },
     {
@@ -10430,7 +10430,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_five_wrong_attempts_lock_the_gate_for_thirty_seconds",
-      "community": 6,
+      "community": 3,
       "norm_label": ".`five wrong attempts lock the gate for thirty seconds`()"
     },
     {
@@ -10440,7 +10440,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_the_lockout_survives_a_new_gate_instance_because_it_lives_in_the_store",
-      "community": 6,
+      "community": 3,
       "norm_label": ".`the lockout survives a new gate instance because it lives in the store`()"
     },
     {
@@ -10450,7 +10450,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_pin_pingatetest_pingatetest_messages_read_the_way_the_audit_glossary_says",
-      "community": 6,
+      "community": 3,
       "norm_label": ".`messages read the way the audit glossary says`()"
     },
     {
@@ -11940,7 +11940,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_the_wizard_starts_by_scanning_the_bag",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`the wizard starts by scanning the bag`()"
     },
     {
@@ -11970,7 +11970,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_an_invalid_value_returns_an_error_and_does_not_advance",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`an invalid value returns an error and does not advance`()"
     },
     {
@@ -11980,7 +11980,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_a_placeholder_job_number_is_refused",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`a placeholder job number is refused`()"
     },
     {
@@ -11990,7 +11990,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_submitted_values_are_trimmed",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`submitted values are trimmed`()"
     },
     {
@@ -12000,7 +12000,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_scans_are_dispatched_to_whichever_scan_step_is_active",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`scans are dispatched to whichever scan step is active`()"
     },
     {
@@ -12030,7 +12030,7 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_confirmcategory_outside_its_own_step_throws",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`confirmcategory outside its own step throws`()"
     },
     {
@@ -12040,7 +12040,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_confirmwastetype_outside_its_own_step_throws",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`confirmwastetype outside its own step throws`()"
     },
     {
@@ -12050,7 +12050,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_editfield_is_only_legal_from_review",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`editfield is only legal from review`()"
     },
     {
@@ -12120,7 +12120,7 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_the_operator_step_validates_the_card_and_keeps_leading_zeroes",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`the operator step validates the card and keeps leading zeroes`()"
     },
     {
@@ -12220,7 +12220,7 @@
       "source_location": "L319",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_dismissreview_is_only_legal_from_review",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`dismissreview is only legal from review`()"
     },
     {
@@ -12230,7 +12230,7 @@
       "source_location": "L324",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_hasdraft_is_false_until_something_is_captured_and_false_again_after_cancel",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`hasdraft is false until something is captured and false again after cancel`()"
     },
     {
@@ -12250,7 +12250,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontrollertest_wastewizardcontrollertest_a_badge_scan_on_the_bag_or_job_step_is_refused_with_a_hint_and_changes_nothing",
-      "community": 4,
+      "community": 42,
       "norm_label": ".`a badge scan on the bag or job step is refused with a hint and changes nothing`()"
     },
     {
@@ -12614,6 +12614,316 @@
       "norm_label": "build.gradle.kts"
     },
     {
+      "label": "build_sop.py",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop",
+      "community": 6,
+      "norm_label": "build_sop.py"
+    },
+    {
+      "label": "BuildError",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_builderror",
+      "community": 6,
+      "norm_label": "builderror"
+    },
+    {
+      "label": "inline()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_inline",
+      "community": 6,
+      "norm_label": "inline()"
+    },
+    {
+      "label": "attr()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_attr",
+      "community": 6,
+      "norm_label": "attr()"
+    },
+    {
+      "label": "Images",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_images",
+      "community": 6,
+      "norm_label": "images"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_images_init",
+      "community": 6,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "Path",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "path",
+      "community": 6,
+      "norm_label": "path"
+    },
+    {
+      "label": ".screenshot()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_images_screenshot",
+      "community": 6,
+      "norm_label": ".screenshot()"
+    },
+    {
+      "label": ".png()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_images_png",
+      "community": 6,
+      "norm_label": ".png()"
+    },
+    {
+      "label": "figure()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L118",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_figure",
+      "community": 6,
+      "norm_label": "figure()"
+    },
+    {
+      "label": "Parser",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser",
+      "community": 6,
+      "norm_label": "parser"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L133",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_init",
+      "community": 6,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".err()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L137",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_err",
+      "community": 6,
+      "norm_label": ".err()"
+    },
+    {
+      "label": ".blocks()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L140",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_blocks",
+      "community": 6,
+      "norm_label": ".blocks()"
+    },
+    {
+      "label": ".starts_block()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L231",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_starts_block",
+      "community": 6,
+      "norm_label": ".starts_block()"
+    },
+    {
+      "label": ".listing()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L235",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_listing",
+      "community": 6,
+      "norm_label": ".listing()"
+    },
+    {
+      "label": ".table()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L243",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_table",
+      "community": 6,
+      "norm_label": ".table()"
+    },
+    {
+      "label": ".callout()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L260",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_callout",
+      "community": 6,
+      "norm_label": ".callout()"
+    },
+    {
+      "label": ".fence_step()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L270",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_fence_step",
+      "community": 6,
+      "norm_label": ".fence_step()"
+    },
+    {
+      "label": ".fence_shots()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L290",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_fence_shots",
+      "community": 6,
+      "norm_label": ".fence_shots()"
+    },
+    {
+      "label": ".fence_pills()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L302",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parser_fence_pills",
+      "community": 6,
+      "norm_label": ".fence_pills()"
+    },
+    {
+      "label": "split_front_matter()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L317",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_split_front_matter",
+      "community": 6,
+      "norm_label": "split_front_matter()"
+    },
+    {
+      "label": "parse_sections()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L328",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_parse_sections",
+      "community": 6,
+      "norm_label": "parse_sections()"
+    },
+    {
+      "label": "check_order()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L347",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_check_order",
+      "community": 6,
+      "norm_label": "check_order()"
+    },
+    {
+      "label": "fonts_css()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L362",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_fonts_css",
+      "community": 6,
+      "norm_label": "fonts_css()"
+    },
+    {
+      "label": "build_html()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L376",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_build_html",
+      "community": 6,
+      "norm_label": "build_html()"
+    },
+    {
+      "label": "print_pdf()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L446",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_print_pdf",
+      "community": 6,
+      "norm_label": "print_pdf()"
+    },
+    {
+      "label": "section_pages()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L457",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_section_pages",
+      "community": 6,
+      "norm_label": "section_pages()"
+    },
+    {
+      "label": "preview()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L482",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_preview",
+      "community": 6,
+      "norm_label": "preview()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L506",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_main",
+      "community": 6,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Escape HTML, then apply `code`, **bold**, *em*, [link](url), {ok}/{fail}/{none}.",
+      "file_type": "rationale",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "docs_sop_template_build_sop_rationale_61",
+      "community": 6,
+      "norm_label": "escape html, then apply `code`, **bold**, *em*, [link](url), {ok}/{fail}/{none}."
+    },
+    {
       "label": "gradlew",
       "file_type": "code",
       "source_file": "gradlew",
@@ -12818,6 +13128,266 @@
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_docs_readme_wastage_bag_process_flow_control_points",
       "community": 62,
       "norm_label": "control points"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme",
+      "community": 187,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "PPNAM handheld SOP template (1.0)",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "community": 187,
+      "norm_label": "ppnam handheld sop template (1.0)"
+    },
+    {
+      "label": "Files",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_files",
+      "community": 187,
+      "norm_label": "files"
+    },
+    {
+      "label": "How a repo uses it (the rule)",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_how_a_repo_uses_it_the_rule",
+      "community": 187,
+      "norm_label": "how a repo uses it (the rule)"
+    },
+    {
+      "label": "Per-app identity",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_per_app_identity",
+      "community": 187,
+      "norm_label": "per-app identity"
+    },
+    {
+      "label": "content.md",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_content_md",
+      "community": 187,
+      "norm_label": "content.md"
+    },
+    {
+      "label": "Sections: fixed order",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_sections_fixed_order",
+      "community": 187,
+      "norm_label": "sections: fixed order"
+    },
+    {
+      "label": "Blocks",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L134",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_blocks",
+      "community": 187,
+      "norm_label": "blocks"
+    },
+    {
+      "label": "Writing rules (keep the six consistent)",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L182",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_writing_rules_keep_the_six_consistent",
+      "community": 187,
+      "norm_label": "writing rules (keep the six consistent)"
+    },
+    {
+      "label": "Checking the result",
+      "file_type": "document",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L197",
+      "_origin": "ast",
+      "id": "docs_sop_template_readme_checking_the_result",
+      "community": 187,
+      "norm_label": "checking the result"
+    },
+    {
+      "label": "content.md",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_sop_content",
+      "community": 185,
+      "norm_label": "content.md"
+    },
+    {
+      "label": "Purpose and scope {#purpose}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "docs_sop_content_purpose_and_scope_purpose",
+      "community": 185,
+      "norm_label": "purpose and scope {#purpose}"
+    },
+    {
+      "label": "What it does",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "docs_sop_content_what_it_does",
+      "community": 185,
+      "norm_label": "what it does"
+    },
+    {
+      "label": "What it does not do",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "docs_sop_content_what_it_does_not_do",
+      "community": 185,
+      "norm_label": "what it does not do"
+    },
+    {
+      "label": "Before you start {#before}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "docs_sop_content_before_you_start_before",
+      "community": 185,
+      "norm_label": "before you start {#before}"
+    },
+    {
+      "label": "The status pill and header {#status}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L66",
+      "_origin": "ast",
+      "id": "docs_sop_content_the_status_pill_and_header_status",
+      "community": 185,
+      "norm_label": "the status pill and header {#status}"
+    },
+    {
+      "label": "Signing in {#signin}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L94",
+      "_origin": "ast",
+      "id": "docs_sop_content_signing_in_signin",
+      "community": 185,
+      "norm_label": "signing in {#signin}"
+    },
+    {
+      "label": "Automatic sign-out",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "docs_sop_content_automatic_sign_out",
+      "community": 185,
+      "norm_label": "automatic sign-out"
+    },
+    {
+      "label": "Waste Collection {#workflow-collection}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L138",
+      "_origin": "ast",
+      "id": "docs_sop_content_waste_collection_workflow_collection",
+      "community": 185,
+      "norm_label": "waste collection {#workflow-collection}"
+    },
+    {
+      "label": "Weigh Bag {#workflow-weigh}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L247",
+      "_origin": "ast",
+      "id": "docs_sop_content_weigh_bag_workflow_weigh",
+      "community": 185,
+      "norm_label": "weigh bag {#workflow-weigh}"
+    },
+    {
+      "label": "Scan sounds and vibration {#sounds}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L287",
+      "_origin": "ast",
+      "id": "docs_sop_content_scan_sounds_and_vibration_sounds",
+      "community": 185,
+      "norm_label": "scan sounds and vibration {#sounds}"
+    },
+    {
+      "label": "The repeat-read rule",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L311",
+      "_origin": "ast",
+      "id": "docs_sop_content_the_repeat_read_rule",
+      "community": 185,
+      "norm_label": "the repeat-read rule"
+    },
+    {
+      "label": "Messages and what to do {#messages}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L317",
+      "_origin": "ast",
+      "id": "docs_sop_content_messages_and_what_to_do_messages",
+      "community": 185,
+      "norm_label": "messages and what to do {#messages}"
+    },
+    {
+      "label": "Settings {#settings}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L406",
+      "_origin": "ast",
+      "id": "docs_sop_content_settings_settings",
+      "community": 185,
+      "norm_label": "settings {#settings}"
+    },
+    {
+      "label": "Finishing up {#finishing}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L438",
+      "_origin": "ast",
+      "id": "docs_sop_content_finishing_up_finishing",
+      "community": 185,
+      "norm_label": "finishing up {#finishing}"
+    },
+    {
+      "label": "Troubleshooting {#troubleshooting}",
+      "file_type": "document",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L460",
+      "_origin": "ast",
+      "id": "docs_sop_content_troubleshooting_troubleshooting",
+      "community": 185,
+      "norm_label": "troubleshooting {#troubleshooting}"
     },
     {
       "label": "2026-08-05-scan-driven-waste-wizard.md",
@@ -15112,7 +15682,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
       "confidence_score": 1.0
     },
     {
@@ -15123,7 +15693,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_wastecategory",
       "confidence_score": 1.0
     },
     {
@@ -15343,7 +15913,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_typesfor",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype",
       "confidence_score": 1.0
     },
     {
@@ -15354,7 +15924,7 @@
       "source_location": "L41",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_seedifempty",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
       "confidence_score": 1.0
     },
     {
@@ -15365,7 +15935,7 @@
       "source_location": "L76",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_replacewith",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
       "confidence_score": 1.0
     },
     {
@@ -15376,7 +15946,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_replacewith",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_wastecategory",
       "confidence_score": 1.0
     },
     {
@@ -15387,7 +15957,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_replacewith",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype",
       "confidence_score": 1.0
     },
     {
@@ -15398,7 +15968,7 @@
       "source_location": "L91",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_recordsyncfailure",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
       "confidence_score": 1.0
     },
     {
@@ -15419,7 +15989,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecatalogueseed_wastecatalogueseed",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_wastecategory",
       "confidence_score": 1.0
     },
     {
@@ -15430,7 +16000,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecatalogueseed_wastecatalogueseed",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype",
       "confidence_score": 1.0
     },
     {
@@ -15607,7 +16177,7 @@
       "source_location": "L55",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_todomain",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
       "confidence_score": 1.0
     },
     {
@@ -15618,7 +16188,7 @@
       "source_location": "L43",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_todomain",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_wastecategory",
       "confidence_score": 1.0
     },
     {
@@ -15629,7 +16199,7 @@
       "source_location": "L49",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_todomain",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_kt",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype",
       "confidence_score": 1.0
     },
     {
@@ -17484,7 +18054,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_wastecollectionpublisher_wastecollectionpublisher",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_wastecollectionresultmessage",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
       "confidence_score": 1.0
     },
     {
@@ -17717,7 +18287,7 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_wastecollectionresultchannel_evaluateoutcome",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_wastecollectionresultmessage",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
       "confidence_score": 1.0
     },
     {
@@ -17847,7 +18417,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_wastecollectionresultchannel_wastecollectionresultchannel",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_wastecollectionresultmessage",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
       "confidence_score": 1.0
     },
     {
@@ -18346,16 +18916,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessage.kt",
-      "source_location": "L18",
-      "weight": 1.0,
-      "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_wastecollectionresultmessage",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/collection/CollectionResultFilter.kt",
@@ -18363,7 +18923,7 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_collection_collectionresultfilter_isresultforsession",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_wastecollectionresultmessage",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
       "confidence_score": 1.0
     },
     {
@@ -18374,6 +18934,16 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_collection_collectionresultfilter_shownresulttracker_shouldshow",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCollectionResultMessage.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_kt",
       "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_dto_wastecollectionresultmessage_wastecollectionresultmessage",
       "confidence_score": 1.0
     },
@@ -20404,7 +20974,7 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatus_describecatalogue",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
       "confidence_score": 1.0
     },
     {
@@ -21610,6 +22180,16 @@
       "source_location": "L11",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_domain_usecase_loginfailures_logintransportexception",
+      "target": "exception",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_builderror",
       "target": "exception",
       "confidence_score": 1.0
     },
@@ -33945,6 +34525,857 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_attr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L376",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_build_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L347",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_check_order",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_figure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L362",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_fonts_css",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_images",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L506",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L328",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_parse_sections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_parser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L482",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_preview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L446",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_print_pdf",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L457",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_section_pages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L317",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop",
+      "target": "docs_sop_template_build_sop_split_front_matter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L380",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L352",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_check_order",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images_png",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images_screenshot",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L338",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parse_sections",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_err",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L448",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_print_pdf",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L320",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_split_front_matter",
+      "target": "docs_sop_template_build_sop_builderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L396",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_figure",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_blocks",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L267",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_callout",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L311",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_pills",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L281",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_step",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L237",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_listing",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L255",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_table",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_rationale_61",
+      "target": "docs_sop_template_build_sop_inline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L407",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_attr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_figure",
+      "target": "docs_sop_template_build_sop_attr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L386",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_images",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images",
+      "target": "docs_sop_template_build_sop_images_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images",
+      "target": "docs_sop_template_build_sop_images_png",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images",
+      "target": "docs_sop_template_build_sop_images_screenshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_init",
+      "target": "docs_sop_template_build_sop_images",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images_init",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L376",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_images_png",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L482",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_preview",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L446",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_print_pdf",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L457",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_section_pages",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L297",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_shots",
+      "target": "docs_sop_template_build_sop_images_screenshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L285",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_step",
+      "target": "docs_sop_template_build_sop_images_screenshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L425",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_images_png"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L297",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_shots",
+      "target": "docs_sop_template_build_sop_figure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L286",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_step",
+      "target": "docs_sop_template_build_sop_figure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L412",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_parser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_blocks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L260",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_callout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L137",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_err",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L302",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_fence_pills",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L290",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_fence_shots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L270",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_fence_step",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L235",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_listing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L231",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_starts_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L243",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser",
+      "target": "docs_sop_template_build_sop_parser_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_blocks",
+      "target": "docs_sop_template_build_sop_parser_err",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L263",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_callout",
+      "target": "docs_sop_template_build_sop_parser_err",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L309",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_pills",
+      "target": "docs_sop_template_build_sop_parser_err",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L299",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_shots",
+      "target": "docs_sop_template_build_sop_parser_err",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_table",
+      "target": "docs_sop_template_build_sop_parser_err",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L412",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_parser_blocks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L167",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_blocks",
+      "target": "docs_sop_template_build_sop_parser_callout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L214",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_blocks",
+      "target": "docs_sop_template_build_sop_parser_listing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L221",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_blocks",
+      "target": "docs_sop_template_build_sop_parser_starts_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L191",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_blocks",
+      "target": "docs_sop_template_build_sop_parser_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L277",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_parser_fence_step",
+      "target": "docs_sop_template_build_sop_parser_blocks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L377",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_split_front_matter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L382",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_parse_sections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L383",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_check_order",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L421",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_build_html",
+      "target": "docs_sop_template_build_sop_fonts_css",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L514",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_main",
+      "target": "docs_sop_template_build_sop_build_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L522",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_main",
+      "target": "docs_sop_template_build_sop_print_pdf",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L523",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_main",
+      "target": "docs_sop_template_build_sop_section_pages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/build_sop.py",
+      "source_location": "L543",
+      "weight": 1.0,
+      "source": "docs_sop_template_build_sop_main",
+      "target": "docs_sop_template_build_sop_preview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "gradlew",
       "source_location": "L1",
       "weight": 1.0,
@@ -34112,6 +35543,246 @@
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_docs_readme_wastage_bag_process_flow_ppnam_station_4_final_wastage_bag_process",
       "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_docs_readme_wastage_bag_process_flow_phase_2_scan_and_weigh_the_same_bag_at_station_4",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme",
+      "target": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L197",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "target": "docs_sop_template_readme_checking_the_result",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "target": "docs_sop_template_readme_content_md",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "target": "docs_sop_template_readme_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "target": "docs_sop_template_readme_how_a_repo_uses_it_the_rule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "target": "docs_sop_template_readme_per_app_identity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L182",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_ppnam_handheld_sop_template_1_0",
+      "target": "docs_sop_template_readme_writing_rules_keep_the_six_consistent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_content_md",
+      "target": "docs_sop_template_readme_blocks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/_template/README.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "docs_sop_template_readme_content_md",
+      "target": "docs_sop_template_readme_sections_fixed_order",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_before_you_start_before",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L438",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_finishing_up_finishing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L317",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_messages_and_what_to_do_messages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_purpose_and_scope_purpose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L287",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_scan_sounds_and_vibration_sounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L406",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_settings_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_signing_in_signin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_the_status_pill_and_header_status",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L460",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_troubleshooting_troubleshooting",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_waste_collection_workflow_collection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "docs_sop_content",
+      "target": "docs_sop_content_weigh_bag_workflow_weigh",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "docs_sop_content_purpose_and_scope_purpose",
+      "target": "docs_sop_content_what_it_does",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "docs_sop_content_purpose_and_scope_purpose",
+      "target": "docs_sop_content_what_it_does_not_do",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "docs_sop_content_signing_in_signin",
+      "target": "docs_sop_content_automatic_sign_out",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/sop/content.md",
+      "source_location": "L311",
+      "weight": 1.0,
+      "source": "docs_sop_content_scan_sounds_and_vibration_sounds",
+      "target": "docs_sop_content_the_repeat_read_rule",
       "confidence_score": 1.0
     },
     {
@@ -35486,5 +37157,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c655534eca4fd5c88727a1dd85342dc56b0f4bd5"
+  "built_at_commit": "f1c4f1003e5715f417e2f4533a0d1b5c5fa4474a"
 }
