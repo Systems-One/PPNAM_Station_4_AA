@@ -125,7 +125,12 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.labelMedium,
                         color = TextMuted,
                     )
-                    TextButton(onClick = { viewModel.refreshCatalogue() }) {
+                    // No start padding, so the action lines up with the catalogue line above it
+                    // (skill critique 2026-11-06 P3-5).
+                    TextButton(
+                        onClick = { viewModel.refreshCatalogue() },
+                        contentPadding = PaddingValues(start = 0.dp, top = 8.dp, end = 12.dp, bottom = 8.dp),
+                    ) {
                         Text("Refresh catalogue", color = BrandTint)
                     }
 
