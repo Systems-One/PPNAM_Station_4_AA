@@ -144,6 +144,12 @@ class WasteGatheringViewModel(
         .map { it?.isError == true }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    /** Whether [lastQueuedMessage] is the accepted line, so it can be drawn as a success (visual
+     * critique 2026-11-06 P2-6). */
+    val lastMessageIsSuccess: StateFlow<Boolean> = banner
+        .map { it?.isSuccess == true }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     /** True from the moment [onReviewConfirmed] commits to a publish until that publish's
      * coroutine finishes (success or failure). Guards against a double-tap on the REVIEW dialog's
      * Confirm button minting two events for one physical bag while `publisher.submit` — a full

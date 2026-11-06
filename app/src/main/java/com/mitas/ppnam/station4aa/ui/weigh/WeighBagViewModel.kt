@@ -8,6 +8,7 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
 import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
+import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.WasteCaptureOutcome
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
@@ -51,6 +52,7 @@ class WeighBagViewModel(
     private val sessionHolder: OperatorSessionHolder,
     private val scanEventBus: ScanEventBus,
     private val requestCapture: RequestWasteCaptureUseCase,
+    private val authUseCase: AuthUseCase,
 ) : ViewModel() {
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
@@ -131,5 +133,11 @@ class WeighBagViewModel(
                 _isWeighing.value = false
             }
         }
+    }
+
+    /** The header's Log out. It was never wired here, so confirming it on this screen did nothing
+     * (visual critique 2026-11-06 P1-2). Same call as Home and Waste Collection. */
+    fun logout() {
+        viewModelScope.launch { authUseCase.logout() }
     }
 }

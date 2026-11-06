@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 
-/** The banner shown above the wizard for the collection the operator last submitted. */
-data class CollectionBanner(val message: String, val isError: Boolean)
+/** The banner shown above the wizard for the collection the operator last submitted.
+ * [isSuccess] marks the accepted line so the UI can colour it as a success rather than the muted
+ * grey of a routine note (visual critique 2026-11-06 P2-6). */
+data class CollectionBanner(val message: String, val isError: Boolean, val isSuccess: Boolean = false)
 
 /** The last submitted collection, who submitted it, and whether the operator dismissed its banner. */
 data class TrackedCollection(
@@ -56,7 +58,7 @@ fun collectionBannerFor(
         WasteOutboxEntity.Status.PENDING ->
             if (sameSession) CollectionBanner("Queued ${row.collectionId} for delivery", isError = false) else null
         WasteOutboxEntity.Status.ACCEPTED ->
-            if (sameSession) CollectionBanner("Collection ${row.collectionId} accepted by Station 4.", isError = false) else null
+            if (sameSession) CollectionBanner("Collection ${row.collectionId} accepted by Station 4.", isError = false, isSuccess = true) else null
         WasteOutboxEntity.Status.REJECTED ->
             CollectionBanner(CollectionRejections.describe(row.bagCode, row.errorCode).message, isError = true)
         else -> null

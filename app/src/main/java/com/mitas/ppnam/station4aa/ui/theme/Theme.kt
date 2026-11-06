@@ -25,7 +25,20 @@ private val AppColorScheme = darkColorScheme(
     onSurfaceVariant = TextMuted,
     error = DangerRed,
     onError = TextPrimary,
-    outline = GraphiteBorder
+    // Interactive outlines (OutlinedTextField, OutlinedButton, Switch) need 3:1; see GraphiteOutline.
+    outline = GraphiteOutline,
+    outlineVariant = GraphiteBorder,
+    // darkColorScheme() leaves every surface container at the Material baseline (#211F26 and
+    // friends, a warm purple-grey), which is what dropdown menus and the Switch's off track were
+    // drawing in (visual critique 2026-11-06 P2-3). Map them onto the graphite palette instead.
+    surfaceTint = GraphiteSurfaceVariant,
+    surfaceDim = GraphiteBackground,
+    surfaceBright = GraphiteSurfaceVariant,
+    surfaceContainerLowest = GraphiteBackground,
+    surfaceContainerLow = GraphiteSurface,
+    surfaceContainer = GraphiteSurfaceVariant,
+    surfaceContainerHigh = GraphiteSurfaceVariant,
+    surfaceContainerHighest = GraphiteBorder,
 )
 
 private val AppShapes = Shapes(

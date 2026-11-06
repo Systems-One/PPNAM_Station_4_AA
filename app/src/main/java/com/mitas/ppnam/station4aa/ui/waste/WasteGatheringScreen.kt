@@ -1,6 +1,17 @@
 package com.mitas.ppnam.station4aa.ui.waste
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import com.mitas.ppnam.station4aa.ui.theme.SuccessGreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -73,6 +84,7 @@ fun WasteGatheringScreen(
     val stepError by viewModel.stepError.collectAsState()
     val lastQueuedMessage by viewModel.lastQueuedMessage.collectAsState()
     val lastMessageIsError by viewModel.lastMessageIsError.collectAsState()
+    val lastMessageIsSuccess by viewModel.lastMessageIsSuccess.collectAsState()
     val isSubmitting by viewModel.isSubmitting.collectAsState()
     val isLookingUpOperator by viewModel.isLookingUpOperator.collectAsState()
     val categories by viewModel.categories.collectAsState()
@@ -141,10 +153,11 @@ fun WasteGatheringScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                // Filled: this is the action that publishes the collection, and as a text button
+                // it carried the same weight as Back (visual critique 2026-11-06 P2-4).
+                Button(
                     onClick = { viewModel.onReviewConfirmed() },
                     enabled = !isSubmitting,
-                    colors = brandTextButtonColors(),
                 ) {
                     Text("Confirm")
                 }
@@ -177,54 +190,37 @@ fun WasteGatheringScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            // Each outcome is a tinted, bordered banner with an icon rather than a bare text row:
+            // as plain text a rejection blended into the hints and the accepted line was the same
+            // muted grey as "Scan the barcode…" (visual critique 2026-11-06 P2-6).
             if (staleCount > 0) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        "$staleCount collection${if (staleCount == 1) "" else "s"} from a previous sign-in " +
-                            "${if (staleCount == 1) "was" else "were"} not delivered. Re-capture ${if (staleCount == 1) "it" else "them"}.",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = DangerRed,
-                        modifier = Modifier.weight(1f),
-                    )
-                    TextButton(onClick = { viewModel.dismissStale() }, colors = brandTextButtonColors()) {
-                        Text("Dismiss")
-                    }
-                }
+                StatusBanner(
+                    "$staleCount collection${if (staleCount == 1) "" else "s"} from a previous sign-in " +
+                        "${if (staleCount == 1) "was" else "were"} not delivered. Re-capture ${if (staleCount == 1) "it" else "them"}.",
+                    tone = BannerTone.Error,
+                    actionLabel = "Dismiss",
+                    onAction = { viewModel.dismissStale() },
+                )
             }
             if (pendingCount > 0) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        "$pendingCount collection${if (pendingCount == 1) "" else "s"} queued, awaiting delivery",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = WarningOrange,
-                        modifier = Modifier.weight(1f),
-                    )
-                    TextButton(onClick = { viewModel.retryNow() }, colors = brandTextButtonColors()) {
-                        Text("Retry now")
-                    }
-                }
+                StatusBanner(
+                    "$pendingCount collection${if (pendingCount == 1) "" else "s"} queued, awaiting delivery",
+                    tone = BannerTone.Warning,
+                    actionLabel = "Retry now",
+                    onAction = { viewModel.retryNow() },
+                )
             }
             lastQueuedMessage?.let {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        it,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = if (lastMessageIsError) DangerRed else TextMuted,
-                        modifier = Modifier.weight(1f),
-                    )
-                    TextButton(onClick = { viewModel.dismissLastQueuedMessage() }, colors = brandTextButtonColors()) {
-                        Text("Dismiss")
-                    }
-                }
+                StatusBanner(
+                    it,
+                    tone = when {
+                        lastMessageIsError -> BannerTone.Error
+                        lastMessageIsSuccess -> BannerTone.Success
+                        else -> BannerTone.Neutral
+                    },
+                    actionLabel = "Dismiss",
+                    onAction = { viewModel.dismissLastQueuedMessage() },
+                )
             }
 
             StepIndicator(step)
@@ -270,8 +266,14 @@ fun WasteGatheringScreen(
                 WizardStep.REVIEW -> Unit // rendered as the AlertDialog above
             }
 
-            TextButton(onClick = { if (hasDraft) showDiscardDialog = true }) {
-                Text("Cancel transaction", color = DangerRed)
+            // Disabled with nothing captured: at step 1 it used to sit there in red and do nothing
+            // when tapped (visual critique 2026-11-06 P2-8).
+            TextButton(
+                onClick = { showDiscardDialog = true },
+                enabled = hasDraft,
+                colors = ButtonDefaults.textButtonColors(contentColor = DangerRed),
+            ) {
+                Text("Cancel transaction")
             }
         }
     }
@@ -296,10 +298,13 @@ private fun StepIndicator(step: WizardStep) {
         WizardStep.SELECT_WASTE_TYPE -> "Select waste type"
         WizardStep.REVIEW -> "Review and confirm"
     }
+    // Just the position: the step's own heading directly below already says what to do, so
+    // repeating it here printed every instruction twice (visual critique 2026-11-06 P2-7).
     Text(
-        "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 5 — $label",
+        "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 5",
         style = MaterialTheme.typography.labelLarge,
         color = BrandTint,
+        modifier = Modifier.semantics { contentDescription = "Step ${WIZARD_STEP_ORDINALS.getValue(step)} of 5 — $label" },
     )
 }
 
@@ -428,7 +433,9 @@ private fun <T> CatalogueStep(
 
 @Composable
 private fun ConfirmRow(label: String, value: String, onEdit: (() -> Unit)? = null) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    // Same minimum height with or without an Edit button, so the last row (no Edit) no longer
+    // crowds the one above it (visual critique 2026-11-06 P3-11).
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.heightIn(min = 48.dp)) {
         Column(Modifier.weight(1f)) {
             Text(label, style = MaterialTheme.typography.labelSmall, color = TextMuted)
             Text(value, style = MaterialTheme.typography.bodyLarge, color = TextPrimary)
@@ -485,6 +492,39 @@ private fun <T> DropdownSelector(
                     },
                 )
             }
+        }
+    }
+}
+
+private enum class BannerTone { Neutral, Success, Warning, Error }
+
+/** One outcome line above the wizard: tinted fill, coloured border and icon, then its action. */
+@Composable
+private fun StatusBanner(text: String, tone: BannerTone, actionLabel: String, onAction: () -> Unit) {
+    val (color, icon) = when (tone) {
+        BannerTone.Neutral -> TextMuted to Icons.Filled.Info
+        BannerTone.Success -> SuccessGreen to Icons.Filled.CheckCircle
+        BannerTone.Warning -> WarningOrange to Icons.Filled.Warning
+        BannerTone.Error -> DangerRed to Icons.Filled.Error
+    }
+    Card(
+        colors = CardDefaults.cardColors(containerColor = GraphiteSurface),
+        border = BorderStroke(1.dp, color.copy(alpha = 0.6f)),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(start = 12.dp, top = 4.dp, bottom = 4.dp, end = 4.dp),
+        ) {
+            Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
+            Text(
+                text,
+                style = MaterialTheme.typography.labelMedium,
+                color = if (tone == BannerTone.Neutral) TextPrimary else color,
+                modifier = Modifier.weight(1f).padding(vertical = 8.dp),
+            )
+            TextButton(onClick = onAction, colors = brandTextButtonColors()) { Text(actionLabel) }
         }
     }
 }
