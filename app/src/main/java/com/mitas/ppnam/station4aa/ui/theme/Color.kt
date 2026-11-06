@@ -7,6 +7,11 @@ val GraphiteBackground     = Color(0xFF07101A)
 val GraphiteSurface        = Color(0xFF102233)
 val GraphiteSurfaceVariant = Color(0xFF14293D)
 val GraphiteBorder         = Color(0xFF25384C)
+// Outline for interactive components (field borders, outlined buttons, switch off-state).
+// GraphiteBorder is only 1.35:1 on GraphiteSurface and 1.59:1 on GraphiteBackground, so every
+// unfocused field read as borderless (visual critique 2026-11-06 P1-1). This is 3.44:1 / 4.07:1,
+// above WCAG 1.4.11's 3:1 for UI components. GraphiteBorder stays for card borders and dividers.
+val GraphiteOutline        = Color(0xFF5E7690)
 
 // Text — matches WPF TextColor / SecondaryTextColor
 val TextPrimary            = Color(0xFFEDF4FB)

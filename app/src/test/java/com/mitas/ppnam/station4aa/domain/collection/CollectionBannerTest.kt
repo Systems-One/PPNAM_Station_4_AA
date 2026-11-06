@@ -80,6 +80,22 @@ class CollectionBannerTest {
     }
 
     @Test
+    fun `only an accepted collection reads as a success`() = runTest {
+        // Visual critique 2026-11-06 P2-6: the accepted line was drawn in the same muted grey as
+        // the hint text, so a delivered bag looked no different from a routine "Queued" note.
+        val rig = Rig(row(Status.ACCEPTED))
+        rig.tracker.track("WC-1", "sess-1")
+        val banner = rig.banner()
+        assertEquals(true, banner.first()?.isSuccess)
+
+        rig.rowFlow.value = row(Status.PENDING)
+        assertEquals(false, banner.first()?.isSuccess)
+
+        rig.rowFlow.value = row(Status.REJECTED, errorCode = "bag_code_in_use")
+        assertEquals(false, banner.first()?.isSuccess)
+    }
+
+    @Test
     fun `a new submission after a dismiss shows again`() = runTest {
         val rig = Rig(row(Status.ACCEPTED))
         rig.tracker.track("WC-1", "sess-1")

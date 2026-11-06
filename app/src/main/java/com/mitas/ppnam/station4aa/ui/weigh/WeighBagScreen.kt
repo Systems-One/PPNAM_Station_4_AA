@@ -78,6 +78,7 @@ fun WeighBagScreen(
         onSettings = onSettings,
         operatorName = operatorName.takeIf { it.isNotBlank() },
         operatorRole = session?.role,
+        onLogout = viewModel::logout,
         loading = isWeighing,
     ) { padding ->
         // Scrollable so the field, the button and the result card are all reachable with the

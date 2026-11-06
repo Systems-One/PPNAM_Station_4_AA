@@ -128,6 +128,9 @@ fun AppScaffold(
                         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
                             TextButton(
                                 onClick = { showLogoutDialog = true },
+                                // A screen that passes no onLogout must not offer a Log out whose
+                                // confirm silently does nothing (visual critique 2026-11-06 P1-2).
+                                enabled = onLogout != null,
                                 modifier = Modifier.focusProperties { canFocus = false },
                             ) {
                                 Icon(
@@ -160,18 +163,27 @@ fun AppScaffold(
                                 )
                             }
                         }
-                        statusPill()
                     }
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                    // The pill sits on the title row, not the operator row: next to the name it
+                    // took up to ~260 px ("Station 4 offline") and truncated the signed-in
+                    // operator to "Sam Collect…" (visual critique 2026-11-06 P2-5). The title row
+                    // has room to spare.
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 10.dp)
-                    )
+                            .padding(start = 16.dp, end = 4.dp, bottom = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f).padding(end = 8.dp)
+                        )
+                        statusPill()
+                    }
                 } else {
                     // No operator to anchor a second row on - a single standard bar with the
                     // title in its usual slot has plenty of room and needs no extra row.

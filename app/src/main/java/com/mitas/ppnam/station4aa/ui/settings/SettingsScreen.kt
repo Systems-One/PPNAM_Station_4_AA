@@ -285,7 +285,10 @@ fun SettingsScreen(
                         )
                         SettingsTextField(
                             value = draft.mqttPassword,
-                            label = "Password (blank = keep current)",
+                            // A short label plus a hint line: the old label wrapped onto two lines
+                            // and doubled the field's height (visual critique 2026-11-06 P3-10).
+                            label = "Password",
+                            hint = "Leave blank to keep the current password",
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done,
                             onDone = {
@@ -509,6 +512,7 @@ private fun SettingsTextField(
     imeAction: ImeAction = ImeAction.Next,
     onDone: (() -> Unit)? = null,
     errorMessage: String? = null,
+    hint: String? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -520,7 +524,8 @@ private fun SettingsTextField(
         isError = errorMessage != null,
         // supportingText is part of the field's own layout, so bringing the field into view
         // above the keyboard brings the message with it.
-        supportingText = errorMessage?.let { { Text(it, color = DangerRed) } },
+        supportingText = errorMessage?.let { { Text(it, color = DangerRed) } }
+            ?: hint?.let { { Text(it, color = TextMuted) } },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         keyboardActions = KeyboardActions(onDone = {
             EnterKeyGuard.arm()

@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
@@ -25,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -69,7 +72,6 @@ import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
 import com.mitas.ppnam.station4aa.ui.theme.BrandTint
 import com.mitas.ppnam.station4aa.ui.theme.DangerRed
-import com.mitas.ppnam.station4aa.ui.theme.GraphiteBackground
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
@@ -269,6 +271,10 @@ fun LoginScreen(
                     Button(
                         onClick = submit,
                         enabled = uiState !is LoginUiState.LoggingIn,
+                        // This button is only ever disabled while logging in. The default disabled
+                        // content (onSurface at 38%) and the graphite spinner (1.6:1 on the disabled
+                        // fill) left a blank grey bar (visual critique 2026-11-06 P2-9).
+                        colors = ButtonDefaults.buttonColors(disabledContentColor = TextMuted),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
@@ -277,9 +283,11 @@ fun LoginScreen(
                         if (uiState is LoginUiState.LoggingIn) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
-                                color = GraphiteBackground,
+                                color = BrandTint,
                                 strokeWidth = 2.dp
                             )
+                            Spacer(Modifier.width(12.dp))
+                            Text("Logging in…")
                         } else {
                             Text("Log In")
                         }
