@@ -4,6 +4,9 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,9 +33,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mitas.ppnam.station4aa.R
-import com.mitas.ppnam.station4aa.ui.components.AppScaffold
+import com.mitas.ppnam.station4aa.ui.components.HomeHeaderCard
 import com.mitas.ppnam.station4aa.ui.components.ExitAppDialog
 import com.mitas.ppnam.station4aa.ui.theme.BrandPrimary
+import com.mitas.ppnam.station4aa.ui.theme.GraphiteBackground
 
 /**
  * The operator's dashboard: one tile per sub-app, mirroring Station 1 AA's `activity_main.xml`
@@ -70,13 +75,25 @@ fun HomeScreen(
         )
     }
 
-    AppScaffold(
-        title = "Station 4",
-        status = connectionStatus,
-        onSettings = onSettings,
-        operatorName = session?.operatorName?.ifBlank { session?.operatorId },
-        operatorRole = session?.role,
-        onLogout = viewModel::logout,
+    // Home carries the suite's header card (suite consistency C2, Station 5's `cardHeader`); the
+    // inner screens keep AppScaffold's back-arrow top bar.
+    Scaffold(
+        topBar = {
+            HomeHeaderCard(
+                status = connectionStatus,
+                operatorName = session?.operatorName?.ifBlank { session?.operatorId },
+                operatorRole = session?.role,
+                onSettings = onSettings,
+                onLogout = viewModel::logout,
+                // Under the status bar (MainActivity is edge-to-edge), inset like Station 5's
+                // 16 dp root padding; the content's own 16 dp gives the gap below the card.
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+            )
+        },
+        containerColor = GraphiteBackground,
+        contentWindowInsets = WindowInsets.safeDrawing,
     ) { padding ->
         Column(
             modifier = Modifier

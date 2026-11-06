@@ -58,6 +58,19 @@ private val AppTextSelectionColors = TextSelectionColors(
 @Composable
 fun brandTextButtonColors(): ButtonColors = ButtonDefaults.textButtonColors(contentColor = BrandTint)
 
+/**
+ * The neutral (dismiss/Cancel) action of a dialog: [TextPrimary], so only the destructive action
+ * carries a colour (suite consistency C6, matching Station 5's `text_primary` Cancel).
+ */
+@Composable
+fun neutralTextButtonColors(): ButtonColors = ButtonDefaults.textButtonColors(contentColor = TextPrimary)
+
+/**
+ * Filled and outlined action buttons use 14 dp corners, the suite standard (Station 5's login
+ * `cornerRadius=14dp`), rather than M3's fully round pill (suite consistency C7).
+ */
+val ActionButtonShape = RoundedCornerShape(14.dp)
+
 /** OutlinedButton colours in [BrandTint]. */
 @Composable
 fun brandOutlinedButtonColors(): ButtonColors = ButtonDefaults.outlinedButtonColors(contentColor = BrandTint)
