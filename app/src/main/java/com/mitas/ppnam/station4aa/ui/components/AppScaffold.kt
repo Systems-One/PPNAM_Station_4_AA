@@ -136,9 +136,12 @@ fun AppScaffold(
                             .padding(start = 16.dp, end = 4.dp, bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // titleLarge, the same style as the single-row bar on Login/Settings: as a
+                        // label style it was smaller than the step heading below it, so the screen
+                        // title read as metadata (skill critique 2026-11-06 P2-3).
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.labelLarge,
+                            style = MaterialTheme.typography.titleLarge,
                             color = TextPrimary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,

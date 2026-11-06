@@ -9,9 +9,11 @@ val GraphiteSurfaceVariant = Color(0xFF14293D)
 val GraphiteBorder         = Color(0xFF25384C)
 // Outline for interactive components (field borders, outlined buttons, switch off-state).
 // GraphiteBorder is only 1.35:1 on GraphiteSurface and 1.59:1 on GraphiteBackground, so every
-// unfocused field read as borderless (visual critique 2026-11-06 P1-1). This is 3.44:1 / 4.07:1,
-// above WCAG 1.4.11's 3:1 for UI components. GraphiteBorder stays for card borders and dividers.
-val GraphiteOutline        = Color(0xFF5E7690)
+// unfocused field read as borderless (visual critique 2026-11-06 P1-1). GraphiteBorder stays for
+// card borders and dividers. The value is the suite's `field_stroke` (consistency rule C1, Station
+// 1's text_field_stroke.xml): 4.85:1 on GraphiteSurface, 5.74:1 on GraphiteBackground (skill
+// critique 2026-11-06 P1-1; the earlier #5E7690 passed 3:1 but drifted from the suite).
+val GraphiteOutline        = Color(0xFF7A8FA5)
 
 // Text — matches WPF TextColor / SecondaryTextColor
 val TextPrimary            = Color(0xFFEDF4FB)
@@ -23,8 +25,11 @@ val BrandPrimary           = Color(0xFF55368C)
 val AmberPrimary           = BrandPrimary
 val AmberDark              = Color(0xFFFFFFFF)   // on-primary (white text on violet buttons)
 // Lighter violet for foreground uses (text, icon tint, focused outline/label, cursor, spinners) on the
-// graphite surfaces, where the filled-surface violet is below 3:1.
-val BrandTint              = Color(0xFFB39DDB)
+// graphite surfaces, where the filled-surface violet is below 3:1. It is the icon pack's own
+// light tint for Station 4 (the back "P", `Android app logo directions/README.md`), which suite
+// rule C1 names as the focused field outline (skill critique 2026-11-06 P1-1; was #B39DDB).
+// 7.62:1 on GraphiteSurface, 9.01:1 on GraphiteBackground.
+val BrandTint              = Color(0xFFBCAAD9)
 
 // Status colours — matches WPF GreenColor / RedColor
 val SuccessGreen           = Color(0xFF2BC36D)

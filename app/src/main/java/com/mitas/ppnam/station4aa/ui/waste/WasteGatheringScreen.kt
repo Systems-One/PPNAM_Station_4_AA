@@ -14,6 +14,7 @@ import androidx.compose.ui.semantics.semantics
 import com.mitas.ppnam.station4aa.ui.theme.SuccessGreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -275,12 +276,18 @@ fun WasteGatheringScreen(
                 onClick = { showDiscardDialog = true },
                 enabled = hasDraft,
                 colors = ButtonDefaults.textButtonColors(contentColor = DangerRed),
+                // No start padding: the label lines up with the step copy and the full-width
+                // buttons above instead of floating 12 dp in (skill critique 2026-11-06 P3-5).
+                contentPadding = FlushStartTextButtonPadding,
             ) {
                 Text("Cancel transaction")
             }
         }
     }
 }
+
+/** TextButton padding with no start inset, so a left-aligned text action sits on the content edge. */
+private val FlushStartTextButtonPadding = PaddingValues(start = 0.dp, top = 8.dp, end = 12.dp, bottom = 8.dp)
 
 private val WIZARD_STEP_ORDINALS = mapOf(
     WizardStep.SCAN_BAG to 1,
@@ -335,16 +342,18 @@ private fun ScanStep(
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(label, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
-        Text(hint, style = MaterialTheme.typography.labelMedium, color = TextMuted)
+        // Body style, not a label: these are sentences, and labelMedium's 12 sp with label
+        // tracking read as spaced-out metadata (skill critique 2026-11-06 P3-4).
+        Text(hint, style = MaterialTheme.typography.bodyMedium, color = TextMuted)
         // Above the field, not below it: text under the field lands exactly under the keyboard
         // (audit group (a) sub-cause 4).
         if (busyMessage != null) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = BrandTint)
-                Text(busyMessage, style = MaterialTheme.typography.labelMedium, color = TextMuted)
+                Text(busyMessage, style = MaterialTheme.typography.bodyMedium, color = TextMuted)
             }
         } else if (errorMessage != null) {
-            Text(errorMessage, style = MaterialTheme.typography.labelMedium, color = DangerRed)
+            Text(errorMessage, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
         }
         OutlinedTextField(
             value = manualValue,
@@ -412,7 +421,7 @@ private fun <T> CatalogueStep(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(title, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
         if (options.isEmpty()) {
-            Text(emptyMessage, style = MaterialTheme.typography.labelMedium, color = WarningOrange)
+            Text(emptyMessage, style = MaterialTheme.typography.bodyMedium, color = WarningOrange)
             return@Column
         }
         var selectedValue by remember(current) { mutableStateOf(current) }
@@ -472,7 +481,11 @@ private fun <T> DropdownSelector(
             value = display(selected),
             onValueChange = {},
             readOnly = true,
-            singleLine = true,
+            // Wraps instead of scrolling: a single line clipped a long catalogue name mid-glyph
+            // ("REJ — Rejected product (off-spec ba"), hiding exactly what the operator is about
+            // to confirm (skill critique 2026-11-06 P2-2).
+            singleLine = false,
+            maxLines = 3,
             label = { Text(label) },
             trailingIcon = { Icon(Icons.Filled.ArrowDropDown, contentDescription = null) },
             colors = OutlinedTextFieldDefaults.colors(

@@ -99,7 +99,8 @@ fun WeighBagScreen(
             )
             Text(
                 "Nobody needs to be signed in at the station — the weight is recorded against you.",
-                style = MaterialTheme.typography.labelMedium,
+                // A sentence, so body style rather than a tracked-out label (skill critique 2026-11-06 P3-4).
+                style = MaterialTheme.typography.bodyMedium,
                 color = TextMuted,
             )
 
@@ -170,11 +171,11 @@ private fun WeighedCard(result: WeighFeedback.Weighed) {
                 color = TextPrimary,
             )
             result.capturedBy?.takeIf { it.isNotBlank() }?.let {
-                Text("Captured by $it", style = MaterialTheme.typography.labelMedium, color = TextMuted)
+                Text("Captured by $it", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
             }
             Text(
                 "Scan the next bag.",
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 color = TextMuted,
             )
         }
@@ -198,7 +199,8 @@ private fun ProblemCard(problem: WeighFeedback.Problem, onRetry: (() -> Unit)?) 
                 // The bag code is still in the field precisely so this is one tap away.
                 Text(
                     "The bag code is still here — fix the problem and tap Retry.",
-                    style = MaterialTheme.typography.labelSmall,
+                    // Body style like the other sentences on this screen (skill critique 2026-11-06 P3-4).
+                    style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted,
                 )
                 OutlinedButton(
