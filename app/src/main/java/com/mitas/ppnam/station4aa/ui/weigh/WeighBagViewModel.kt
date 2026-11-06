@@ -7,13 +7,18 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.domain.feedback.ScanSound
+import com.mitas.ppnam.station4aa.domain.feedback.ScanSounds
 import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.WasteCaptureOutcome
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
 import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -74,6 +79,11 @@ class WeighBagViewModel(
     private val _isWeighing = MutableStateFlow(false)
     val isWeighing: StateFlow<Boolean> = _isWeighing.asStateFlow()
 
+    /** Suite rule S1: one sound per weigh, on Station 4's answer (or its failure); the raw bag
+     * scan makes none. Played by the screen; not replayed. */
+    private val _scanSounds = MutableSharedFlow<ScanSound>(extraBufferCapacity = 8)
+    val scanSounds: SharedFlow<ScanSound> = _scanSounds.asSharedFlow()
+
     init {
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
@@ -98,7 +108,9 @@ class WeighBagViewModel(
 
         viewModelScope.launch {
             try {
-                when (val outcome = requestCapture.request(operatorSessionId, _bagCode.value)) {
+                val outcome = requestCapture.request(operatorSessionId, _bagCode.value)
+                _scanSounds.tryEmit(ScanSounds.forWeigh(outcome))
+                when (outcome) {
                     is WasteCaptureOutcome.Weighed -> {
                         _feedback.value = WeighFeedback.Weighed(
                             bagCode = outcome.bagCode,

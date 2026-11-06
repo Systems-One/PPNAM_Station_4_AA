@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import com.mitas.ppnam.station4aa.ui.feedback.ScanSoundEffect
 import com.mitas.ppnam.station4aa.ui.components.consumeEnterKeyUp
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -62,6 +63,7 @@ fun WeighBagScreen(
     val bagCode by viewModel.bagCode.collectAsState()
     val feedback by viewModel.feedback.collectAsState()
     val isWeighing by viewModel.isWeighing.collectAsState()
+    ScanSoundEffect(viewModel.scanSounds)
     val focusManager = LocalFocusManager.current
 
     val requestWeight: () -> Unit = {
