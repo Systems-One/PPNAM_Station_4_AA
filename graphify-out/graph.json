@@ -310,7 +310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_data_appcontainer",
-      "community": 6,
+      "community": 9,
       "norm_label": "appcontainer.kt"
     },
     {
@@ -660,7 +660,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_typesfor",
-      "community": 155,
+      "community": 0,
       "norm_label": ".typesfor()"
     },
     {
@@ -680,7 +680,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_seedifempty",
-      "community": 155,
+      "community": 0,
       "norm_label": ".seedifempty()"
     },
     {
@@ -700,7 +700,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_replacewith",
-      "community": 155,
+      "community": 0,
       "norm_label": ".replacewith()"
     },
     {
@@ -710,7 +710,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_recordsyncfailure",
-      "community": 155,
+      "community": 0,
       "norm_label": ".recordsyncfailure()"
     },
     {
@@ -720,7 +720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecatalogueseed_kt",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastecatalogueseed.kt"
     },
     {
@@ -730,7 +730,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecatalogueseed_wastecatalogueseed",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastecatalogueseed"
     },
     {
@@ -830,7 +830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_kt",
-      "community": 155,
+      "community": 0,
       "norm_label": "catalogueentities.kt"
     },
     {
@@ -840,7 +840,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastecategoryentity",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastecategoryentity"
     },
     {
@@ -850,7 +850,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_wastetypeentity",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastetypeentity"
     },
     {
@@ -860,7 +860,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_cataloguemetaentity",
-      "community": 155,
+      "community": 0,
       "norm_label": "cataloguemetaentity"
     },
     {
@@ -870,7 +870,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_todomain",
-      "community": 155,
+      "community": 0,
       "norm_label": "todomain()"
     },
     {
@@ -880,7 +880,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_toentity",
-      "community": 155,
+      "community": 0,
       "norm_label": "toentity()"
     },
     {
@@ -3940,7 +3940,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
-      "community": 155,
+      "community": 0,
       "norm_label": "cataloguemeta.kt"
     },
     {
@@ -3950,7 +3950,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
-      "community": 155,
+      "community": 0,
       "norm_label": "cataloguesource"
     },
     {
@@ -3960,7 +3960,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
-      "community": 155,
+      "community": 31,
       "norm_label": "cataloguemeta"
     },
     {
@@ -4040,7 +4040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_kt",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastecategory.kt"
     },
     {
@@ -4050,7 +4050,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecategory_wastecategory",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastecategory"
     },
     {
@@ -4130,7 +4130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_kt",
-      "community": 155,
+      "community": 0,
       "norm_label": "wastetype.kt"
     },
     {
@@ -4140,7 +4140,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastetype_wastetype",
-      "community": 155,
+      "community": 4,
       "norm_label": "wastetype"
     },
     {
@@ -5300,7 +5300,7 @@
       "source_location": "L173",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastewizardcontroller_wastewizardcontroller_editfield",
-      "community": 155,
+      "community": 4,
       "norm_label": ".editfield()"
     },
     {
@@ -5430,7 +5430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold",
-      "community": 60,
+      "community": 138,
       "norm_label": "appscaffold.kt"
     },
     {
@@ -5440,7 +5440,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold",
-      "community": 60,
+      "community": 138,
       "norm_label": "appscaffold()"
     },
     {
@@ -5450,7 +5450,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_kt_string",
-      "community": 60,
+      "community": 138,
       "norm_label": "string"
     },
     {
@@ -5460,7 +5460,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_kt_unit",
-      "community": 60,
+      "community": 138,
       "norm_label": "unit"
     },
     {
@@ -5470,8 +5470,38 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_kt_boolean",
-      "community": 60,
+      "community": 138,
       "norm_label": "boolean"
+    },
+    {
+      "label": "LogoutConfirmDialog()",
+      "file_type": "code",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L226",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_logoutconfirmdialog",
+      "community": 138,
+      "norm_label": "logoutconfirmdialog()"
+    },
+    {
+      "label": "ConnectionPill()",
+      "file_type": "code",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L244",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_connectionpill",
+      "community": 138,
+      "norm_label": "connectionpill()"
+    },
+    {
+      "label": "Modifier",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_kt_modifier",
+      "community": 138,
+      "norm_label": "modifier"
     },
     {
       "label": "ConnectionStatus.kt",
@@ -5644,6 +5674,56 @@
       "norm_label": "boolean"
     },
     {
+      "label": "HomeHeader.kt",
+      "file_type": "code",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader",
+      "community": 138,
+      "norm_label": "homeheader.kt"
+    },
+    {
+      "label": "HomeHeaderCard()",
+      "file_type": "code",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "community": 138,
+      "norm_label": "homeheadercard()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_kt_string",
+      "community": 138,
+      "norm_label": "string"
+    },
+    {
+      "label": "Unit",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_kt_unit",
+      "community": 138,
+      "norm_label": "unit"
+    },
+    {
+      "label": "Modifier",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_kt_modifier",
+      "community": 138,
+      "norm_label": "modifier"
+    },
+    {
       "label": "HomeScreen.kt",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
@@ -5657,7 +5737,7 @@
       "label": "HomeScreen()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L48",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_homescreen",
       "community": 5,
@@ -5667,7 +5747,7 @@
       "label": "DashboardTile()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L119",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
       "community": 5,
@@ -5679,8 +5759,8 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "c_dev_clients_ppnam_station_4_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_string",
-      "community": 185,
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_string",
+      "community": 5,
       "norm_label": "string"
     },
     {
@@ -5689,8 +5769,8 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "c_dev_clients_ppnam_station_4_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_int",
-      "community": 183,
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_int",
+      "community": 5,
       "norm_label": "int"
     },
     {
@@ -5699,8 +5779,8 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "c_dev_clients_ppnam_station_4_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_color",
-      "community": 182,
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_color",
+      "community": 5,
       "norm_label": "color"
     },
     {
@@ -5709,8 +5789,8 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "c_dev_clients_ppnam_station_4_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_modifier",
-      "community": 184,
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_modifier",
+      "community": 5,
       "norm_label": "modifier"
     },
     {
@@ -5789,8 +5869,8 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "c_dev_clients_ppnam_station_4_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_kt_throwable",
-      "community": 188,
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_kt_throwable",
+      "community": 12,
       "norm_label": "throwable"
     },
     {
@@ -5799,8 +5879,8 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "c_dev_clients_ppnam_station_4_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_kt_string",
-      "community": 187,
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_kt_string",
+      "community": 12,
       "norm_label": "string"
     },
     {
@@ -5810,17 +5890,17 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginscreen",
-      "community": 60,
+      "community": 5,
       "norm_label": "loginscreen.kt"
     },
     {
       "label": "LoginScreen()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginScreen.kt",
-      "source_location": "L82",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginscreen_loginscreen",
-      "community": 60,
+      "community": 5,
       "norm_label": "loginscreen()"
     },
     {
@@ -5830,7 +5910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel",
-      "community": 23,
+      "community": 12,
       "norm_label": "loginviewmodel.kt"
     },
     {
@@ -5840,7 +5920,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginuistate",
-      "community": 23,
+      "community": 12,
       "norm_label": "loginuistate"
     },
     {
@@ -5850,7 +5930,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_idle",
-      "community": 23,
+      "community": 12,
       "norm_label": "idle"
     },
     {
@@ -5860,7 +5940,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loggingin",
-      "community": 23,
+      "community": 12,
       "norm_label": "loggingin"
     },
     {
@@ -5870,7 +5950,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_error",
-      "community": 23,
+      "community": 12,
       "norm_label": "error"
     },
     {
@@ -5880,7 +5960,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loggedin",
-      "community": 23,
+      "community": 12,
       "norm_label": "loggedin"
     },
     {
@@ -5890,7 +5970,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel",
-      "community": 23,
+      "community": 12,
       "norm_label": "loginviewmodel"
     },
     {
@@ -5950,7 +6030,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_refreshoperatorsoneachconnect",
-      "community": 23,
+      "community": 12,
       "norm_label": ".refreshoperatorsoneachconnect()"
     },
     {
@@ -5960,7 +6040,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_refreshoperatorsnow",
-      "community": 23,
+      "community": 12,
       "norm_label": ".refreshoperatorsnow()"
     },
     {
@@ -5970,7 +6050,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_refreshoperators",
-      "community": 23,
+      "community": 12,
       "norm_label": ".refreshoperators()"
     },
     {
@@ -5980,7 +6060,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_startlisteningforbadgescans",
-      "community": 23,
+      "community": 12,
       "norm_label": ".startlisteningforbadgescans()"
     },
     {
@@ -5990,7 +6070,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_submitcredentials",
-      "community": 23,
+      "community": 12,
       "norm_label": ".submitcredentials()"
     },
     {
@@ -6000,7 +6080,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_attemptlogin",
-      "community": 23,
+      "community": 12,
       "norm_label": ".attemptlogin()"
     },
     {
@@ -6010,7 +6090,7 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginviewmodel_loginviewmodel_oncleared",
-      "community": 23,
+      "community": 12,
       "norm_label": ".oncleared()"
     },
     {
@@ -6050,7 +6130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatus",
-      "community": 155,
+      "community": 31,
       "norm_label": "cataloguestatus.kt"
     },
     {
@@ -6060,7 +6140,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatus_formattimestampfordisplay",
-      "community": 155,
+      "community": 31,
       "norm_label": "formattimestampfordisplay()"
     },
     {
@@ -6080,7 +6160,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "zoneid",
-      "community": 155,
+      "community": 31,
       "norm_label": "zoneid"
     },
     {
@@ -6090,7 +6170,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatus_describecatalogue",
-      "community": 155,
+      "community": 31,
       "norm_label": "describecatalogue()"
     },
     {
@@ -6107,7 +6187,7 @@
       "label": "SettingsScreen()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L36",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
       "community": 3,
@@ -6117,7 +6197,7 @@
       "label": "ApplyStatusRow()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L388",
+      "source_location": "L390",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_applystatusrow",
       "community": 3,
@@ -6127,7 +6207,7 @@
       "label": "DiagnosticValueRow()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L427",
+      "source_location": "L429",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticvaluerow",
       "community": 3,
@@ -6147,7 +6227,7 @@
       "label": "DiagnosticRow()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L448",
+      "source_location": "L450",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticrow",
       "community": 3,
@@ -6167,7 +6247,7 @@
       "label": "SectionLabel()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L477",
+      "source_location": "L479",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_sectionlabel",
       "community": 3,
@@ -6177,7 +6257,7 @@
       "label": "ConfigSection()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L486",
+      "source_location": "L488",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_configsection",
       "community": 3,
@@ -6187,7 +6267,7 @@
       "label": "SettingsTextField()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
       "community": 3,
@@ -6247,7 +6327,7 @@
       "label": "SettingsToggleRow()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L545",
+      "source_location": "L547",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstogglerow",
       "community": 3,
@@ -6600,7 +6680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_color",
-      "community": 5,
+      "community": 139,
       "norm_label": "color.kt"
     },
     {
@@ -6634,10 +6714,20 @@
       "norm_label": "buttoncolors"
     },
     {
+      "label": "neutralTextButtonColors()",
+      "file_type": "code",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors",
+      "community": 60,
+      "norm_label": "neutraltextbuttoncolors()"
+    },
+    {
       "label": "brandOutlinedButtonColors()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
-      "source_location": "L62",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandoutlinedbuttoncolors",
       "community": 60,
@@ -6647,10 +6737,10 @@
       "label": "PPNAMStation4AATheme()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
-      "source_location": "L65",
+      "source_location": "L78",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_ppnamstation4aatheme",
-      "community": 60,
+      "community": 41,
       "norm_label": "ppnamstation4aatheme()"
     },
     {
@@ -6670,37 +6760,37 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastegatheringscreen.kt"
     },
     {
       "label": "WasteGatheringScreen()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L71",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
-      "community": 31,
+      "community": 155,
       "norm_label": "wastegatheringscreen()"
     },
     {
       "label": "StepIndicator()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L291",
+      "source_location": "L294",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_stepindicator",
-      "community": 31,
+      "community": 155,
       "norm_label": "stepindicator()"
     },
     {
       "label": "ScanStep()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L311",
+      "source_location": "L314",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_scanstep",
-      "community": 31,
+      "community": 155,
       "norm_label": "scanstep()"
     },
     {
@@ -6710,17 +6800,17 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_kt_string",
-      "community": 31,
+      "community": 155,
       "norm_label": "string"
     },
     {
       "label": "CatalogueStep()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L398",
+      "source_location": "L402",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
-      "community": 31,
+      "community": 155,
       "norm_label": "cataloguestep()"
     },
     {
@@ -6730,7 +6820,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_kt_list",
-      "community": 31,
+      "community": 155,
       "norm_label": "list"
     },
     {
@@ -6740,17 +6830,17 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_kt_t",
-      "community": 31,
+      "community": 155,
       "norm_label": "t"
     },
     {
       "label": "ConfirmRow()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L434",
+      "source_location": "L439",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_confirmrow",
-      "community": 31,
+      "community": 155,
       "norm_label": "confirmrow()"
     },
     {
@@ -6760,37 +6850,37 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_kt_unit",
-      "community": 31,
+      "community": 155,
       "norm_label": "unit"
     },
     {
       "label": "DropdownSelector()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L449",
+      "source_location": "L454",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_dropdownselector",
-      "community": 31,
+      "community": 155,
       "norm_label": "dropdownselector()"
     },
     {
       "label": "BannerTone",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L499",
+      "source_location": "L504",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_bannertone",
-      "community": 31,
+      "community": 155,
       "norm_label": "bannertone"
     },
     {
       "label": "StatusBanner()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L502",
+      "source_location": "L507",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_statusbanner",
-      "community": 31,
+      "community": 155,
       "norm_label": "statusbanner()"
     },
     {
@@ -7047,7 +7137,7 @@
       "label": "WeighBagScreen()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L52",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighbagscreen",
       "community": 44,
@@ -7057,7 +7147,7 @@
       "label": "WeighedCard()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L146",
+      "source_location": "L149",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighedcard",
       "community": 44,
@@ -7067,7 +7157,7 @@
       "label": "ProblemCard()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L181",
+      "source_location": "L184",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_problemcard",
       "community": 44,
@@ -7087,7 +7177,7 @@
       "label": "formatKilograms()",
       "file_type": "code",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L212",
+      "source_location": "L216",
       "_origin": "ast",
       "id": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_formatkilograms",
       "community": 44,
@@ -7790,7 +7880,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepositorytest_wastecataloguerepositorytest_type",
-      "community": 155,
+      "community": 4,
       "norm_label": ".type()"
     },
     {
@@ -7940,7 +8030,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_kt",
-      "community": 155,
+      "community": 31,
       "norm_label": "catalogueentitiestest.kt"
     },
     {
@@ -7950,7 +8040,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_catalogueentitiestest",
-      "community": 155,
+      "community": 31,
       "norm_label": "catalogueentitiestest"
     },
     {
@@ -7960,7 +8050,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_catalogueentitiestest_category_round_trips_through_its_entity",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`category round-trips through its entity`()"
     },
     {
@@ -7970,7 +8060,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_catalogueentitiestest_waste_type_round_trips_through_its_entity",
-      "community": 155,
+      "community": 4,
       "norm_label": ".`waste type round-trips through its entity`()"
     },
     {
@@ -7980,7 +8070,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_catalogueentitiestest_synced_meta_round_trips_through_its_entity",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`synced meta round-trips through its entity`()"
     },
     {
@@ -7990,7 +8080,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_catalogueentitiestest_seed_meta_with_a_recorded_failure_round_trips_through_its_entity",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`seed meta with a recorded failure round-trips through its entity`()"
     },
     {
@@ -8000,7 +8090,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_test_java_com_mitas_ppnam_station4aa_data_local_catalogueentitiestest_catalogueentitiestest_meta_always_occupies_the_single_reserved_row",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`meta always occupies the single reserved row`()"
     },
     {
@@ -11660,7 +11750,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest",
-      "community": 155,
+      "community": 31,
       "norm_label": "cataloguestatustest.kt"
     },
     {
@@ -11670,7 +11760,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest",
-      "community": 155,
+      "community": 31,
       "norm_label": "cataloguestatustest"
     },
     {
@@ -11680,7 +11770,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_no_cached_catalogue_at_all_reads_as_not_loaded",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`no cached catalogue at all reads as not loaded`()"
     },
     {
@@ -11690,7 +11780,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_the_built_in_seed_says_so_explicitly",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`the built-in seed says so explicitly`()"
     },
     {
@@ -11700,7 +11790,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_a_synced_catalogue_shows_its_version_and_a_readable_local_timestamp",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`a synced catalogue shows its version and a readable local timestamp`()"
     },
     {
@@ -11710,7 +11800,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_microsecond_timestamps_from_the_station_are_parsed_and_shortened",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`microsecond timestamps from the station are parsed and shortened`()"
     },
     {
@@ -11720,7 +11810,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_the_zone_is_applied",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`the zone is applied`()"
     },
     {
@@ -11730,7 +11820,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_a_later_failed_refresh_is_appended_without_hiding_the_good_sync",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`a later failed refresh is appended without hiding the good sync`()"
     },
     {
@@ -11740,7 +11830,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_a_seed_whose_refresh_failed_reports_both_facts",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`a seed whose refresh failed reports both facts`()"
     },
     {
@@ -11750,7 +11840,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "app_src_test_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatustest_cataloguestatustest_an_unparseable_timestamp_is_shown_as_is_rather_than_crashing",
-      "community": 155,
+      "community": 31,
       "norm_label": ".`an unparseable timestamp is shown as-is rather than crashing`()"
     },
     {
@@ -14262,7 +14352,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
       "confidence_score": 1.0
     },
     {
@@ -14504,7 +14594,7 @@
       "source_location": "L41",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_seedifempty",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
       "confidence_score": 1.0
     },
     {
@@ -14515,7 +14605,7 @@
       "source_location": "L76",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_replacewith",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
       "confidence_score": 1.0
     },
     {
@@ -14548,7 +14638,7 @@
       "source_location": "L91",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_catalogue_wastecataloguerepository_wastecataloguerepository_recordsyncfailure",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
       "confidence_score": 1.0
     },
     {
@@ -14757,7 +14847,7 @@
       "source_location": "L55",
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_data_local_catalogueentities_todomain",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
       "confidence_score": 1.0
     },
     {
@@ -15468,7 +15558,7 @@
       "source_location": "L55",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_data_local_wasteoutboxentity_toevent",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecollectionevent_generatecollectionid",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecollectionevent_create",
       "confidence_score": 1.0
     },
     {
@@ -16667,7 +16757,7 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_wastecollectionpublisher_wastecollectionpublisher_submit",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecollectionevent_generatecollectionid",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecollectionevent_create",
       "confidence_score": 1.0
     },
     {
@@ -16689,7 +16779,7 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_data_mqtt_wastecollectionpublisher_wastecollectionpublisher_attemptpublish",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecollectionevent_generatecollectionid",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_wastecollectionevent_create",
       "confidence_score": 1.0
     },
     {
@@ -19142,6 +19232,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/CatalogueStatus.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatus_describecatalogue",
+      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/domain/model/CatalogueMeta.kt",
@@ -19159,17 +19260,6 @@
       "weight": 1.0,
       "source": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_kt",
       "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguesource",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/CatalogueStatus.kt",
-      "source_location": "L27",
-      "weight": 1.0,
-      "context": "parameter_type",
-      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_cataloguestatus_describecatalogue",
-      "target": "c_dev_clients_ppnam_andriod_ppnam_station_4_aa_app_src_main_java_com_mitas_ppnam_station4aa_domain_model_cataloguemeta_cataloguemeta",
       "confidence_score": 1.0
     },
     {
@@ -21496,7 +21586,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L93",
+      "source_location": "L95",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_domain_wizard_wastetransactiondraft_wastetransactiondraft"
@@ -22117,7 +22207,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L291",
+      "source_location": "L294",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_stepindicator",
@@ -22323,6 +22413,17 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppDialogs.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appdialogs_exitappdialog",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "C:/Dev/Clients/PPNAM/Station 4/PPNAM_Station_4_AA/app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
       "source_location": "L64",
       "weight": 1.0,
@@ -22356,8 +22457,19 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppDialogs.kt",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appdialogs_discarddraftdialog",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L110",
+      "source_location": "L112",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appdialogs_discarddraftdialog"
@@ -22370,6 +22482,37 @@
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L244",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_connectionpill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L226",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_logoutconfirmdialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_connectionpill",
       "confidence_score": 1.0
     },
     {
@@ -22403,6 +22546,17 @@
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_kt_unit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_logoutconfirmdialog",
       "confidence_score": 1.0
     },
     {
@@ -22466,7 +22620,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L172",
+      "source_location": "L175",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold"
@@ -22481,6 +22635,61 @@
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_appscaffold"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L236",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_logoutconfirmdialog",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_logoutconfirmdialog"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L244",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_connectionpill",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_kt_modifier",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt",
+      "source_location": "L244",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_connectionpill",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_connectionstatus_connectionstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_appscaffold_connectionpill"
     },
     {
       "relation": "contains",
@@ -22585,6 +22794,17 @@
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_connectionstatus_resolveconnectionstatus",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_connectionstatus_connectionstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_connectionstatus_connectionstatus",
       "confidence_score": 1.0
     },
@@ -22730,8 +22950,62 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_kt_modifier",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_kt_unit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L119",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_homescreen",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_components_homeheader_homeheadercard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
+      "source_location": "L136",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
@@ -22741,7 +23015,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L48",
+      "source_location": "L53",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_homescreen",
@@ -22752,7 +23026,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L92",
+      "source_location": "L109",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_homescreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
@@ -22762,7 +23036,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L48",
+      "source_location": "L53",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_homescreen",
@@ -22773,11 +23047,44 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
-      "source_location": "L119",
+      "source_location": "L136",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
-      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_color",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_color",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
+      "source_location": "L136",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
+      "source_location": "L136",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_modifier",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt",
+      "source_location": "L136",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_dashboardtile",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_home_homescreen_kt_string",
       "confidence_score": 1.0
     },
     {
@@ -22861,6 +23168,28 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginErrorMessage.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_loginerrormessage",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginErrorMessage.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_loginerrormessage",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginerrormessage_kt_throwable",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "INFERRED",
@@ -22941,7 +23270,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginScreen.kt",
-      "source_location": "L82",
+      "source_location": "L83",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginscreen_loginscreen",
@@ -22951,7 +23280,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginScreen.kt",
-      "source_location": "L82",
+      "source_location": "L83",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_login_loginscreen_loginscreen",
@@ -23349,7 +23678,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L388",
+      "source_location": "L390",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_applystatusrow",
@@ -23359,7 +23688,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L486",
+      "source_location": "L488",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_configsection",
@@ -23369,7 +23698,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L448",
+      "source_location": "L450",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticrow",
@@ -23379,7 +23708,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L427",
+      "source_location": "L429",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticvaluerow",
@@ -23389,7 +23718,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L477",
+      "source_location": "L479",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_sectionlabel",
@@ -23399,7 +23728,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L36",
+      "source_location": "L35",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
@@ -23409,7 +23738,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23419,7 +23748,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L545",
+      "source_location": "L547",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstogglerow",
@@ -23430,7 +23759,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L181",
+      "source_location": "L180",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_applystatusrow",
@@ -23452,7 +23781,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L98",
+      "source_location": "L97",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticrow",
@@ -23463,7 +23792,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L113",
+      "source_location": "L112",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticvaluerow",
@@ -23474,7 +23803,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L85",
+      "source_location": "L84",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_sectionlabel",
@@ -23506,7 +23835,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L36",
+      "source_location": "L35",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
@@ -23525,10 +23854,21 @@
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandtextbuttoncolors"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingsscreen",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors"
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L388",
+      "source_location": "L390",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_applystatusrow",
@@ -23539,7 +23879,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L427",
+      "source_location": "L429",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticvaluerow",
@@ -23550,7 +23890,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L486",
+      "source_location": "L488",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_configsection",
@@ -23561,7 +23901,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L448",
+      "source_location": "L450",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticrow",
@@ -23572,7 +23912,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L477",
+      "source_location": "L479",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_sectionlabel",
@@ -23583,7 +23923,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23594,7 +23934,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L545",
+      "source_location": "L547",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstogglerow",
@@ -23605,7 +23945,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L448",
+      "source_location": "L450",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_diagnosticrow",
@@ -23616,7 +23956,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23627,7 +23967,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23638,7 +23978,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23649,7 +23989,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23660,7 +24000,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstextfield",
@@ -23671,7 +24011,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt",
-      "source_location": "L545",
+      "source_location": "L547",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_settings_settingsscreen_settingstogglerow",
@@ -24170,7 +24510,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
-      "source_location": "L62",
+      "source_location": "L75",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandoutlinedbuttoncolors",
@@ -24193,6 +24533,16 @@
       "source_location": "L65",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme",
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_ppnamstation4aatheme",
       "confidence_score": 1.0
     },
@@ -24213,10 +24563,32 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L527",
+      "source_location": "L532",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_statusbanner",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandtextbuttoncolors"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
+      "source_location": "L75",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandoutlinedbuttoncolors",
+      "target": "buttoncolors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
+      "source_location": "L65",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors",
+      "target": "buttoncolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -24224,21 +24596,10 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L166",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
-      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandtextbuttoncolors"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt",
-      "source_location": "L62",
-      "weight": 1.0,
-      "context": "return_type",
-      "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_brandoutlinedbuttoncolors",
-      "target": "buttoncolors",
-      "confidence_score": 1.0
+      "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_theme_theme_neutraltextbuttoncolors"
     },
     {
       "relation": "calls",
@@ -24255,7 +24616,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L499",
+      "source_location": "L504",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_bannertone",
@@ -24265,7 +24626,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L398",
+      "source_location": "L402",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
@@ -24275,7 +24636,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L434",
+      "source_location": "L439",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_confirmrow",
@@ -24285,7 +24646,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L449",
+      "source_location": "L454",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_dropdownselector",
@@ -24295,7 +24656,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L311",
+      "source_location": "L314",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_scanstep",
@@ -24305,7 +24666,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L502",
+      "source_location": "L507",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_statusbanner",
@@ -24315,7 +24676,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L291",
+      "source_location": "L294",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_stepindicator",
@@ -24325,7 +24686,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L71",
+      "source_location": "L73",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
@@ -24336,7 +24697,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L248",
+      "source_location": "L251",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
@@ -24347,7 +24708,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L132",
+      "source_location": "L134",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_confirmrow",
@@ -24358,7 +24719,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L229",
+      "source_location": "L232",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_scanstep",
@@ -24369,7 +24730,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L197",
+      "source_location": "L200",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_statusbanner",
@@ -24380,7 +24741,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L226",
+      "source_location": "L229",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_stepindicator",
@@ -24390,7 +24751,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L71",
+      "source_location": "L73",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_wastegatheringscreen",
@@ -24401,7 +24762,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L311",
+      "source_location": "L314",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_scanstep",
@@ -24412,7 +24773,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L398",
+      "source_location": "L402",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
@@ -24423,7 +24784,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L434",
+      "source_location": "L439",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_confirmrow",
@@ -24434,7 +24795,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L449",
+      "source_location": "L454",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_dropdownselector",
@@ -24445,7 +24806,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L502",
+      "source_location": "L507",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_statusbanner",
@@ -24457,7 +24818,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L418",
+      "source_location": "L422",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_dropdownselector",
@@ -24467,7 +24828,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L398",
+      "source_location": "L402",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
@@ -24478,7 +24839,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L398",
+      "source_location": "L402",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_cataloguestep",
@@ -24489,7 +24850,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L449",
+      "source_location": "L454",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_dropdownselector",
@@ -24500,7 +24861,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L449",
+      "source_location": "L454",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_dropdownselector",
@@ -24511,7 +24872,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L434",
+      "source_location": "L439",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_confirmrow",
@@ -24522,7 +24883,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt",
-      "source_location": "L502",
+      "source_location": "L507",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_waste_wastegatheringscreen_statusbanner",
@@ -24956,7 +25317,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L212",
+      "source_location": "L216",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_formatkilograms",
@@ -24966,7 +25327,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L181",
+      "source_location": "L184",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_problemcard",
@@ -24976,7 +25337,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L52",
+      "source_location": "L53",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighbagscreen",
@@ -24986,7 +25347,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L146",
+      "source_location": "L149",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighedcard",
@@ -24997,7 +25358,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L136",
+      "source_location": "L139",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_problemcard",
@@ -25008,7 +25369,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L135",
+      "source_location": "L138",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighbagscreen",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighedcard",
@@ -25018,7 +25379,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L52",
+      "source_location": "L53",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighbagscreen",
@@ -25030,7 +25391,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L160",
+      "source_location": "L163",
       "weight": 1.0,
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighedcard",
       "target": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_formatkilograms",
@@ -25040,7 +25401,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L146",
+      "source_location": "L149",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_weighedcard",
@@ -25051,7 +25412,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L181",
+      "source_location": "L184",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_problemcard",
@@ -25062,7 +25423,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L181",
+      "source_location": "L184",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_problemcard",
@@ -25073,7 +25434,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L212",
+      "source_location": "L216",
       "weight": 1.0,
       "context": "return_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_formatkilograms",
@@ -25084,7 +25445,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt",
-      "source_location": "L212",
+      "source_location": "L216",
       "weight": 1.0,
       "context": "parameter_type",
       "source": "app_src_main_java_com_mitas_ppnam_station4aa_ui_weigh_weighbagscreen_formatkilograms",
@@ -33028,5 +33389,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9efe71ecd88f31d49a8de92ff6735a4f9e062514"
+  "built_at_commit": "c6faab9e579bc1cf3c6a2d13d2d350cb2d97b680"
 }
