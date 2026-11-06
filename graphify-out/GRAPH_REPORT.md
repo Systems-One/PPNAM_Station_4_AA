@@ -1,16 +1,16 @@
 # Graph Report - PPNAM_Station_4_AA  (2026-11-06)
 
 ## Corpus Check
-- 153 files · ~543,330 words
+- 156 files · ~631,448 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1427 nodes · 2025 edges · 259 communities (50 shown, 209 thin omitted)
+- 1484 nodes · 2130 edges · 261 communities (53 shown, 208 thin omitted)
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 207 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c655534e`
+- Built from commit: `f1c4f100`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -197,7 +197,9 @@
 - HomeScreenTest
 - WeighBagScreen
 - WasteType
+- content.md
 - StateFlow
+- PPNAM handheld SOP template (1.0)
 - Flow
 - Job
 - List
@@ -297,14 +299,14 @@
 ## Import Cycles
 - None detected.
 
-## Communities (259 total, 209 thin omitted)
+## Communities (261 total, 208 thin omitted)
 
 ### Community 0 - "LoginViewModel"
-Cohesion: 0.08
-Nodes (14): WasteCatalogueRepository, WasteCatalogueRequestPayload, WasteCatalogueResponse, WasteCategoryDto, WasteTypeDto, CatalogueSyncResult, Failed, Replaced (+6 more)
+Cohesion: 0.07
+Nodes (15): WasteCatalogueRepository, WasteCatalogueRequestPayload, WasteCatalogueResponse, WasteCategoryDto, WasteTypeDto, CatalogueSource, CatalogueSyncResult, Failed (+7 more)
 
 ### Community 1 - "FakeWasteOutboxDao"
-Cohesion: 0.07
+Cohesion: 0.06
 Nodes (17): MqttClientFactory, Keys, SettingsRepository, AppSettings, FakeWasteOutboxDao, WasteCollectionResultChannelHandleIncomingTest, WasteCollectionResultChannelTest, WasteCollectionResultMessage (+9 more)
 
 ### Community 2 - "MqttConnectionManager"
@@ -312,20 +314,20 @@ Cohesion: 0.11
 Nodes (18): WasteOperatorPayload, WasteOperatorResultMessage, Failed, Invalid, String, LookupWasteOperatorUseCase, Refused, Resolved (+10 more)
 
 ### Community 3 - "WasteGatheringViewModel"
-Cohesion: 0.07
-Nodes (31): ApplyStatusRow(), ConfigSection(), DiagnosticRow(), DiagnosticValueRow(), Boolean, Color, String, Unit (+23 more)
+Cohesion: 0.06
+Nodes (27): SharedPrefsPinLockoutStore, Blank, InMemoryPinLockoutStore, LockedOut, lockoutMessage(), PinGate, PinGateResult, PinLockoutStore (+19 more)
 
 ### Community 4 - "WasteWizardController"
-Cohesion: 0.09
-Nodes (3): WasteTransactionDraft, WasteWizardController, WizardStep
+Cohesion: 0.21
+Nodes (3): WasteTransactionDraft, Boolean, WasteWizardController
 
 ### Community 5 - "ScramCrypto"
 Cohesion: 0.20
 Nodes (9): Dimension ratings, False positives dropped, Overall assessment, P1: Critical, P2: Important, P3: Polish, Resolution (branch `fix/skill-critique-2026-11-06`), verified on the emulator. See `after/`, Suite-level (left alone) (+1 more)
 
 ### Community 6 - "WasteCollectionPublisher"
-Cohesion: 0.09
-Nodes (16): AppContainer, String, SharedPrefsPinLockoutStore, Blank, InMemoryPinLockoutStore, LockedOut, lockoutMessage(), PinGate (+8 more)
+Cohesion: 0.17
+Nodes (17): attr(), build_html(), BuildError, check_order(), figure(), fonts_css(), Images, inline() (+9 more)
 
 ### Community 7 - ".request"
 Cohesion: 0.07
@@ -336,11 +338,11 @@ Cohesion: 0.06
 Nodes (11): WasteOutboxDao, Status, toEvent(), WasteCollectionPublisher, FakeOutboxDao, WasteCollectionPublisherTest, WasteCollectionMessage, create() (+3 more)
 
 ### Community 9 - "WasteOutboxDao"
-Cohesion: 0.08
-Nodes (7): seedCatalogueSafely(), WasteCatalogueDao, create(), WasteOutboxDatabase, AppContainerTest, FakeWasteCatalogueDao, RoomDatabase
+Cohesion: 0.07
+Nodes (11): AppContainer, String, seedCatalogueSafely(), Application, WasteCatalogueDao, create(), WasteOutboxDatabase, PpnamApplication (+3 more)
 
 ### Community 10 - "OperatorSession"
-Cohesion: 0.31
+Cohesion: 0.35
 Nodes (3): isResultForSession(), ShownResultTracker, CollectionResultFilterTest
 
 ### Community 12 - "AuthMessages.kt"
@@ -400,8 +402,8 @@ Cohesion: 0.20
 Nodes (3): SessionGuard, signedOutAfterMinutes(), SessionMessagesTest
 
 ### Community 31 - "SessionStateTest"
-Cohesion: 0.09
-Nodes (13): describeCatalogue(), formatTimestampForDisplay(), CatalogueStatusTest, WasteCatalogueSeed, CatalogueMetaEntity, toDomain(), toEntity(), WasteCategoryEntity (+5 more)
+Cohesion: 0.18
+Nodes (6): describeCatalogue(), formatTimestampForDisplay(), CatalogueStatusTest, CatalogueMeta, CatalogueEntitiesTest, ZoneId
 
 ### Community 32 - "gradlew"
 Cohesion: 0.15
@@ -456,16 +458,16 @@ Cohesion: 0.19
 Nodes (11): AppScaffold(), ConnectionPill(), Boolean, Modifier, String, Unit, LogoutConfirmDialog(), HomeHeaderCard() (+3 more)
 
 ### Community 155 - "WasteType"
-Cohesion: 0.08
-Nodes (13): OperatorSession, OperatorSessionHolder, Boolean, Int, Job, List, SharedFlow, StateFlow (+5 more)
+Cohesion: 0.06
+Nodes (21): OperatorSession, OperatorSessionHolder, Boolean, Int, Job, List, SharedFlow, StateFlow (+13 more)
 
 ### Community 156 - "ConnectionStatus"
 Cohesion: 0.29
 Nodes (6): ConnectionStatus, connectionStatusFlow(), connectionStatusStateFlow(), resolveConnectionStatus(), ConnectionStatusTest, CoroutineScope
 
 ### Community 173 - "ScanDispatchResult"
-Cohesion: 0.26
-Nodes (6): Applied, Ignored, LookupOperator, ScanDispatchResult, Boolean, String
+Cohesion: 0.35
+Nodes (5): Applied, Ignored, LookupOperator, ScanDispatchResult, String
 
 ### Community 174 - "MainActivity"
 Cohesion: 0.20
@@ -479,20 +481,32 @@ Nodes (7): DiscardDraftDialog(), ExitAppDialog(), LoginScreen(), brandOutlinedBu
 Cohesion: 0.24
 Nodes (9): Flow, ScanSoundEffect(), formatKilograms(), String, Unit, ProblemCard(), WeighBagScreen(), WeighedCard() (+1 more)
 
+### Community 184 - "WasteType"
+Cohesion: 0.21
+Nodes (16): ApplyStatusRow(), ConfigSection(), DiagnosticRow(), DiagnosticValueRow(), Boolean, Color, String, Unit (+8 more)
+
+### Community 185 - "content.md"
+Cohesion: 0.12
+Nodes (15): Automatic sign-out, Before you start {#before}, Finishing up {#finishing}, Messages and what to do {#messages}, Purpose and scope {#purpose}, Scan sounds and vibration {#sounds}, Settings {#settings}, Signing in {#signin} (+7 more)
+
+### Community 187 - "PPNAM handheld SOP template (1.0)"
+Cohesion: 0.20
+Nodes (9): Blocks, Checking the result, content.md, Files, How a repo uses it (the rule), Per-app identity, PPNAM handheld SOP template (1.0), Sections: fixed order (+1 more)
+
 ## Knowledge Gaps
-- **141 isolated node(s):** `Status`, `FailureKind`, `EmptyPayload`, `WireJson`, `ScramPurpose` (+136 more)
+- **159 isolated node(s):** `Status`, `FailureKind`, `EmptyPayload`, `WireJson`, `ScramPurpose` (+154 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **209 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **208 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WasteGatheringViewModel` connect `WasteType` to `WasteWizardController`, `AppNavGraph`, `Scan-Driven Waste Collection Wizard Implementation Plan`, `ConnectionStatus`, `WasteType`, `ScanFeedback`, `WasteGatheringScreen`?**
-  _High betweenness centrality (0.139) - this node is a cross-community bridge._
-- **Why does `AppNavGraph()` connect `AppNavGraph` to `WasteGatheringViewModel`, `AuthMessages.kt`, `MainActivity`, `brandTextButtonColors`, `.build`, `WeighBagScreen`, `WasteType`, `WasteGatheringScreen`?**
-  _High betweenness centrality (0.076) - this node is a cross-community bridge._
+- **Why does `WasteGatheringViewModel` connect `WasteType` to `WasteWizardController`, `AppNavGraph`, `Scan-Driven Waste Collection Wizard Implementation Plan`, `ConnectionStatus`, `ScanFeedback`, `WasteGatheringScreen`?**
+  _High betweenness centrality (0.142) - this node is a cross-community bridge._
+- **Why does `AppNavGraph()` connect `AppNavGraph` to `WasteGatheringViewModel`, `AuthMessages.kt`, `MainActivity`, `brandTextButtonColors`, `.build`, `WeighBagScreen`, `WasteType`, `WasteType`, `WasteGatheringScreen`?**
+  _High betweenness centrality (0.079) - this node is a cross-community bridge._
 - **Why does `LoginViewModel` connect `AuthMessages.kt` to `AppNavGraph`, `ConnectionStatus`, `FakeWasteCatalogueDao`, `brandTextButtonColors`?**
-  _High betweenness centrality (0.065) - this node is a cross-community bridge._
+  _High betweenness centrality (0.077) - this node is a cross-community bridge._
 - **Are the 12 inferred relationships involving `WasteWizardController` (e.g. with `.`a badge read on the bag step repeated by one trigger buzzes once`()` and `.`a bag code refused by validation and read again within 1_5 s buzzes once`()`) actually correct?**
   _`WasteWizardController` has 12 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 19 inferred relationships involving `WasteCatalogueRepository` (e.g. with `.`a seed failure is swallowed rather than propagating`()` and `.`a successful seed still populates the catalogue`()`) actually correct?**
@@ -500,4 +514,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 8 inferred relationships involving `MqttConnectionManager` (e.g. with `.publisher()` and `.`a result for a row queued under an earlier sign-in is still applied and emitted`()`) actually correct?**
   _`MqttConnectionManager` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Status`, `FailureKind`, `EmptyPayload` to the rest of the system?**
-  _141 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _160 weakly-connected nodes found - possible documentation gaps or missing edges._

@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "app/build.gradle.kts": {
-    "mtime": 1793103868.219578,
-    "ast_hash": "8e7a766dfe146a4ce708f38474f6797f",
+    "mtime": 1793967873.4115767,
+    "ast_hash": "623b1be26d4fb888e25747b8c958df6b",
     "semantic_hash": ""
   },
   "build.gradle.kts": {
@@ -385,13 +385,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt": {
-    "mtime": 1793966093.812368,
+    "mtime": 1793966362.5901973,
     "ast_hash": "47bb2d6eb2669362c6e3286aa46088e6",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt": {
-    "mtime": 1793966160.9249668,
-    "ast_hash": "c198560977e57c2d7d2a9d25148f8344",
+    "mtime": 1793966362.5901973,
+    "ast_hash": "99871bb354748b6768199bdb4a43eba8",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/ExampleUnitTest.kt": {
@@ -565,13 +565,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt": {
-    "mtime": 1793966093.8143673,
+    "mtime": 1793966362.5911956,
     "ast_hash": "1e230b684c457152efb08bc898d419d1",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagViewModel.kt": {
-    "mtime": 1793966160.9264443,
-    "ast_hash": "50c7012adfddbcef16b3500b8be7e475",
+    "mtime": 1793966362.5921953,
+    "ast_hash": "3b037ca0aa9f9f38fe55c870e5043084",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessagesTest.kt": {
@@ -812,11 +812,6 @@
   "app/src/test/java/com/mitas/ppnam/station4aa/domain/usecase/LookupWasteOperatorUseCaseTest.kt": {
     "mtime": 1793103868.2303505,
     "ast_hash": "53d6911ea7dc9a261a64db0f8cc86dfe",
-    "semantic_hash": ""
-  },
-  "docs/Station4_Handheld_SOP.html": {
-    "mtime": 1789041561.0402236,
-    "ast_hash": "be0a0a1f302ab018e80f4b0a9612cebe",
     "semantic_hash": ""
   },
   "screenshots/CRITIQUE.md": {
@@ -1500,43 +1495,208 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/domain/feedback/ScanSounds.kt": {
-    "mtime": 1793966093.8103683,
+    "mtime": 1793966362.587233,
     "ast_hash": "2ffd689e2a96401230e29c5220506f39",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/feedback/ScanFeedback.kt": {
-    "mtime": 1793966093.8113673,
+    "mtime": 1793966362.588717,
     "ast_hash": "ecefc39f0ebc675ab1b38cfb84649519",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/feedback/ScanSoundEffect.kt": {
-    "mtime": 1793966093.812368,
+    "mtime": 1793966362.588717,
     "ast_hash": "e5a18576fc1c0bdf6eb6d7b947f21237",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/domain/feedback/ScanSoundsTest.kt": {
-    "mtime": 1793966093.817366,
+    "mtime": 1793966362.5961046,
     "ast_hash": "388bb9dc4ab85258c31cc7fbd79f12f6",
     "semantic_hash": ""
   },
   "app/src/main/res/raw/scan_fail.wav": {
-    "mtime": 1793966093.81538,
+    "mtime": 1793966362.5933914,
     "ast_hash": "3081f99709092516c20230f53c8b641a",
     "semantic_hash": ""
   },
   "app/src/main/res/raw/scan_success.wav": {
-    "mtime": 1793966093.8163671,
+    "mtime": 1793966362.5933914,
     "ast_hash": "cda3bcec8ea7705ea2bae0bb88b32307",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/domain/feedback/LocalRefusalDebounce.kt": {
-    "mtime": 1793966137.8468378,
-    "ast_hash": "a5e5f6be3f14283fb854ec0c90ea137b",
+    "mtime": 1793966362.587233,
+    "ast_hash": "521f7f847fd4eba20276b23e3e562492",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/domain/feedback/LocalRefusalDebounceTest.kt": {
-    "mtime": 1793966105.8975153,
-    "ast_hash": "a9e1645b3d9e4603beaef9c741182275",
+    "mtime": 1793966362.5961046,
+    "ast_hash": "f017bfb127fc1e487ac0b03ed3d05ac0",
+    "semantic_hash": ""
+  },
+  "docs/sop/_template/build_sop.py": {
+    "mtime": 1793970568.5459416,
+    "ast_hash": "1a410e5a062f295445e218e3f9908be5",
+    "semantic_hash": ""
+  },
+  "docs/sop/PPNAM_Station_4_Handheld_SOP.html": {
+    "mtime": 1793970575.7366402,
+    "ast_hash": "45b977daec469a8af7dbfdbc9b7a379d",
+    "semantic_hash": ""
+  },
+  "docs/sop/_template/README.md": {
+    "mtime": 1793970611.7448766,
+    "ast_hash": "23962abeda9ba4eaf959e16861781348",
+    "semantic_hash": ""
+  },
+  "docs/sop/_template/template.html": {
+    "mtime": 1793970568.5597177,
+    "ast_hash": "35f208a8f3b7d2750f3d46d9368528b1",
+    "semantic_hash": ""
+  },
+  "docs/sop/content.md": {
+    "mtime": 1793970300.8160393,
+    "ast_hash": "d81ad2b6292960f52c15a4ec348010db",
+    "semantic_hash": ""
+  },
+  "docs/sop/PPNAM_Station_4_Handheld_SOP.pdf": {
+    "mtime": 1793970577.1943872,
+    "ast_hash": "ac6c511e3ae61a9534d27b3211d930c7",
+    "semantic_hash": ""
+  },
+  "docs/sop/_template/assets/ppnam-logo.png": {
+    "mtime": 1793970568.5889552,
+    "ast_hash": "bab30901a79fb78512601e802fb19780",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/01_login_empty.png": {
+    "mtime": 1793968774.128204,
+    "ast_hash": "692da6c10487fbd499c49951cb50f00a",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/02_login_offline.png": {
+    "mtime": 1793969289.2111416,
+    "ast_hash": "7473ae640048a9d8b62e19f8a3bc4e89",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/04_login_dropdown.png": {
+    "mtime": 1793969258.5496135,
+    "ast_hash": "8c501a34fd1932a8efd83b166683cf74",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/05_login_logging_in.png": {
+    "mtime": 1793968847.1350617,
+    "ast_hash": "af31d50731cbc7cd224e30f68cd16c58",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/06_login_error.png": {
+    "mtime": 1793968813.2143621,
+    "ast_hash": "0eff86ed10428bc356192d6c2b5a3ee0",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/08_settings_diag.png": {
+    "mtime": 1793968866.6527653,
+    "ast_hash": "98c057c074fb4603f746c67978a6c597",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/10_settings_unlocked.png": {
+    "mtime": 1793968727.3093956,
+    "ast_hash": "d4638688416d08bdbc9aa55ac6871088",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/13_home.png": {
+    "mtime": 1793968850.4275274,
+    "ast_hash": "528db625da119e55ba0924de516fb219",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/14_home_reconnecting.png": {
+    "mtime": 1793969156.899293,
+    "ast_hash": "f4f71d483eedbecd5f20c986eed84cd1",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/17_waste_step1.png": {
+    "mtime": 1793968898.3440757,
+    "ast_hash": "7e0c6859924fb12f226326a3545159c4",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/18_waste_step2.png": {
+    "mtime": 1793968908.2291853,
+    "ast_hash": "ce996ff319202b03e760586c8915b9cd",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/20_waste_step3_lookup.png": {
+    "mtime": 1793968920.7074614,
+    "ast_hash": "f59cadf317380a631ef81524f59b934f",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/21_waste_step3_refused.png": {
+    "mtime": 1793968920.1457818,
+    "ast_hash": "c36a1528ab2df2dc255b6da830e3bdbc",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/23_waste_step4_menu.png": {
+    "mtime": 1793968933.5450425,
+    "ast_hash": "c408e976a656408eb129805fa3e18f75",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/24_waste_step5_menu.png": {
+    "mtime": 1793968949.839194,
+    "ast_hash": "6c51b7aaf1e360974f351132090b049d",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/25_waste_review.png": {
+    "mtime": 1793968952.7669606,
+    "ast_hash": "6aa15a04d54e922c49fb3cbe8b287722",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/26_waste_accepted.png": {
+    "mtime": 1793968961.6404545,
+    "ast_hash": "8c9455e8606ce86c860cdd9e6e5157a2",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/27_waste_rejected.png": {
+    "mtime": 1793968993.329938,
+    "ast_hash": "13fb9bcd09a5e4fd6d72b61b11165a04",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/28_waste_queued_offline.png": {
+    "mtime": 1793969018.5915003,
+    "ast_hash": "477b90b17ad9db8cf9181512d63fe142",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/31_home_station_offline.png": {
+    "mtime": 1793969104.0494258,
+    "ast_hash": "7d32c6596032f2843b2d69836ba27564",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/33_weigh_filled.png": {
+    "mtime": 1793969059.8319097,
+    "ast_hash": "f17108b74036dc1a90e38f760287b0c7",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/35_weigh_result.png": {
+    "mtime": 1793969062.5125172,
+    "ast_hash": "03998105900efeb43b248f366aab1725",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/36_weigh_refused_retry.png": {
+    "mtime": 1793969082.3242428,
+    "ast_hash": "6ebd20e1dca64d0666d9f056434b3240",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/39_logout_dialog.png": {
+    "mtime": 1793969211.748008,
+    "ast_hash": "5f72e868e9d84ef6201fd2b2e6cb53f7",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/40_exit_dialog.png": {
+    "mtime": 1793969222.0851753,
+    "ast_hash": "e87ef470fab4307d6f663a1edbabbc51",
+    "semantic_hash": ""
+  },
+  "docs/sop/images/icon.png": {
+    "mtime": 1793970059.7365668,
+    "ast_hash": "e1df6e87ba29bf3917a0243a0a313402",
     "semantic_hash": ""
   }
 }
