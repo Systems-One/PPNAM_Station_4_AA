@@ -335,8 +335,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt": {
-    "mtime": 1793963508.4115176,
-    "ast_hash": "d83c044462eaa556fd03cbead32ba29a",
+    "mtime": 1793964117.664399,
+    "ast_hash": "cbb32d25eedfb478963774e3334530a9",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/ConnectionStatus.kt": {
@@ -360,8 +360,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt": {
-    "mtime": 1793963508.5002894,
-    "ast_hash": "ad0b25794ca3243d273a6e8c36a4126f",
+    "mtime": 1793964117.6656282,
+    "ast_hash": "7aed6022ecd5e9da658b3926b14b1686",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt": {
@@ -370,8 +370,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Color.kt": {
-    "mtime": 1793963508.4115176,
-    "ast_hash": "2977f2e4dc6325cc0ee5829072857ced",
+    "mtime": 1793964117.6686275,
+    "ast_hash": "5d0b025762371969f4f33dc5b957ea1d",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt": {
@@ -385,13 +385,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt": {
-    "mtime": 1793963508.499287,
-    "ast_hash": "597832f36d33bcdc98e0d1adb2c235db",
+    "mtime": 1793965667.4669745,
+    "ast_hash": "db1c7fd83e1810974f8c7f7935f3ad98",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt": {
-    "mtime": 1793950043.6212227,
-    "ast_hash": "4ae275284be8adce857b855c7bf94f8a",
+    "mtime": 1793965667.382341,
+    "ast_hash": "0fee5ab660c355f5c706ec662763ae34",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/ExampleUnitTest.kt": {
@@ -565,13 +565,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt": {
-    "mtime": 1793963743.7360606,
-    "ast_hash": "eed3bb5a1d95c7695a8908d0dd15d78f",
+    "mtime": 1793965667.5594213,
+    "ast_hash": "34d8d0b0231b15786c07bd4f91c55a83",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagViewModel.kt": {
-    "mtime": 1793950043.623222,
-    "ast_hash": "976fbac1f4bbcc9e7e914929cf0b115a",
+    "mtime": 1793965667.3840716,
+    "ast_hash": "6c615c0daeae724ffc2cf492b9307ed1",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessagesTest.kt": {
@@ -1175,8 +1175,8 @@
     "semantic_hash": ""
   },
   "screenshots/skill-run/CRITIQUE.md": {
-    "mtime": 1793963921.2113116,
-    "ast_hash": "c169b11d001e7c55f65f87b59186c751",
+    "mtime": 1793963999.1872597,
+    "ast_hash": "d742bd51c3c440edee99383a685c4191",
     "semantic_hash": ""
   },
   "screenshots/skill-run/01_login_empty_offline.png": {
@@ -1497,6 +1497,36 @@
   "screenshots/skill-run/after/52_home_badge.png": {
     "mtime": 1793963855.5192115,
     "ast_hash": "ec59158f003c7868084b5339429961fd",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/feedback/ScanSounds.kt": {
+    "mtime": 1793965582.0334537,
+    "ast_hash": "62ffbbc428928be92c056e79b40874f2",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/feedback/ScanFeedback.kt": {
+    "mtime": 1793965625.308021,
+    "ast_hash": "57fb56d0d6c5e83443ca0687b94eb48b",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/feedback/ScanSoundEffect.kt": {
+    "mtime": 1793965660.0155754,
+    "ast_hash": "306b0ed4b6cfb5a39f08fd8b3537a0b0",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/feedback/ScanSoundsTest.kt": {
+    "mtime": 1793965543.8785608,
+    "ast_hash": "93b4d796f3039ab50e6c7c3c31fd771d",
+    "semantic_hash": ""
+  },
+  "app/src/main/res/raw/scan_fail.wav": {
+    "mtime": 1793965625.4155798,
+    "ast_hash": "3081f99709092516c20230f53c8b641a",
+    "semantic_hash": ""
+  },
+  "app/src/main/res/raw/scan_success.wav": {
+    "mtime": 1793965625.404415,
+    "ast_hash": "cda3bcec8ea7705ea2bae0bb88b32307",
     "semantic_hash": ""
   }
 }
