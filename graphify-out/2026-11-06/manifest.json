@@ -335,8 +335,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppScaffold.kt": {
-    "mtime": 1793950451.7120914,
-    "ast_hash": "f787914244e25c5fe9d648c3eac49f09",
+    "mtime": 1793964117.664399,
+    "ast_hash": "cbb32d25eedfb478963774e3334530a9",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/ConnectionStatus.kt": {
@@ -345,8 +345,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginScreen.kt": {
-    "mtime": 1793950430.8668962,
-    "ast_hash": "14b5ef35cfb63a32f045ba5954d5ddc9",
+    "mtime": 1793951986.8339794,
+    "ast_hash": "4ee1af5d61c3d54c1beb71e6e09cf971",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginViewModel.kt": {
@@ -360,8 +360,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsScreen.kt": {
-    "mtime": 1793950437.7388844,
-    "ast_hash": "5de3b0bdb7ba290e9a6dc39a67884cb0",
+    "mtime": 1793964117.6656282,
+    "ast_hash": "7aed6022ecd5e9da658b3926b14b1686",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsViewModel.kt": {
@@ -370,12 +370,12 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Color.kt": {
-    "mtime": 1793950043.6187365,
-    "ast_hash": "272c27ff311d57dbfbc2f1e68a925c3b",
+    "mtime": 1793964117.6686275,
+    "ast_hash": "5d0b025762371969f4f33dc5b957ea1d",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/theme/Theme.kt": {
-    "mtime": 1793950415.3047411,
+    "mtime": 1793951986.835978,
     "ast_hash": "39fcc7c5a82e65ed9683f3db270d3b4c",
     "semantic_hash": ""
   },
@@ -385,13 +385,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringScreen.kt": {
-    "mtime": 1793950431.022089,
-    "ast_hash": "b8778f9f3ed637a813689d72a4838ec7",
+    "mtime": 1793965667.4669745,
+    "ast_hash": "db1c7fd83e1810974f8c7f7935f3ad98",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/waste/WasteGatheringViewModel.kt": {
-    "mtime": 1793950043.6212227,
-    "ast_hash": "4ae275284be8adce857b855c7bf94f8a",
+    "mtime": 1793965667.382341,
+    "ast_hash": "0fee5ab660c355f5c706ec662763ae34",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/ExampleUnitTest.kt": {
@@ -565,13 +565,13 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagScreen.kt": {
-    "mtime": 1793950430.9581392,
-    "ast_hash": "e377325c2393f070311d64f0f09da2c5",
+    "mtime": 1793965667.5594213,
+    "ast_hash": "34d8d0b0231b15786c07bd4f91c55a83",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/weigh/WeighBagViewModel.kt": {
-    "mtime": 1793950043.623222,
-    "ast_hash": "976fbac1f4bbcc9e7e914929cf0b115a",
+    "mtime": 1793965667.3840716,
+    "ast_hash": "6c615c0daeae724ffc2cf492b9307ed1",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/data/mqtt/dto/WasteCaptureMessagesTest.kt": {
@@ -595,7 +595,7 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/home/HomeScreen.kt": {
-    "mtime": 1793950492.7810855,
+    "mtime": 1793951986.8324842,
     "ast_hash": "e89402580a30731f115ea746b5a77cff",
     "semantic_hash": ""
   },
@@ -685,7 +685,7 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/AppDialogs.kt": {
-    "mtime": 1793950425.3757684,
+    "mtime": 1793951986.8299086,
     "ast_hash": "cb299e9541a62f9aaec5a6f266d2ea1b",
     "semantic_hash": ""
   },
@@ -695,8 +695,8 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/login/LoginErrorMessage.kt": {
-    "mtime": 1793950437.7896588,
-    "ast_hash": "032adf17e6b69d98625ebcbc53042837",
+    "mtime": 1793951986.8324842,
+    "ast_hash": "d3f7082996476ae5835583d8874b0372",
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/settings/SettingsValidation.kt": {
@@ -760,8 +760,8 @@
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/ui/login/LoginErrorMessageTest.kt": {
-    "mtime": 1793950437.834098,
-    "ast_hash": "898e79d3b04eb51f8a73e680d068ef62",
+    "mtime": 1793951986.8405228,
+    "ast_hash": "794a7974c9ae091d1094fcfa33e92a2b",
     "semantic_hash": ""
   },
   "app/src/test/java/com/mitas/ppnam/station4aa/ui/settings/SettingsValidationTest.kt": {
@@ -1110,12 +1110,12 @@
     "semantic_hash": ""
   },
   "app/src/main/java/com/mitas/ppnam/station4aa/ui/components/HomeHeader.kt": {
-    "mtime": 1793950978.4406781,
+    "mtime": 1793951986.830417,
     "ast_hash": "d31bb413f07c32273b5fc29a5b8e1bcb",
     "semantic_hash": ""
   },
   "app/src/main/res/drawable/s1_logo_white.png": {
-    "mtime": 1793950415.2049992,
+    "mtime": 1793951986.8385115,
     "ast_hash": "a156fe45738f588e77aac7523f8dfd5f",
     "semantic_hash": ""
   },
@@ -1172,6 +1172,361 @@
   "screenshots/tmp.png": {
     "mtime": 1793950712.9190612,
     "ast_hash": "9cf8548a8e1404ca725a574f56ea2b47",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/CRITIQUE.md": {
+    "mtime": 1793963999.1872597,
+    "ast_hash": "d742bd51c3c440edee99383a685c4191",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/01_login_empty_offline.png": {
+    "mtime": 1793962648.5353057,
+    "ast_hash": "d306bbb3a834fb2c4b4c510a0df3e0d7",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/02_settings_locked.png": {
+    "mtime": 1793962651.3803627,
+    "ast_hash": "1e9a257a6050caab98cf18f3e6c24cde",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/03_settings_pin_wrong.png": {
+    "mtime": 1793962665.3424232,
+    "ast_hash": "0781657bbbfe5fe812707799bf791f54",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/04_settings_pin_typing.png": {
+    "mtime": 1793962678.1443038,
+    "ast_hash": "6ee06618a3418edd109cabcdc26b2590",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/05_settings_unlocked.png": {
+    "mtime": 1793962691.924452,
+    "ast_hash": "88f680211ef2df5b0f16aca2170f93e2",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/06_settings_unlocked_form.png": {
+    "mtime": 1793962700.3463337,
+    "ast_hash": "26c40953a1b10f6e7adbc0c68ba4d857",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/07_settings_unlocked_bottom.png": {
+    "mtime": 1793962703.7769866,
+    "ast_hash": "b0ea40b38ce897987f85885dec060430",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/08_settings_applied.png": {
+    "mtime": 1793962714.8003974,
+    "ast_hash": "44a962fc69e6d3580ed139e0d45f32f9",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/09_settings_catalogue_needs_login.png": {
+    "mtime": 1793962724.010348,
+    "ast_hash": "4e01ec26b071240667462f7d974674c3",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/10_login_empty.png": {
+    "mtime": 1793962729.9005382,
+    "ast_hash": "d99bb0083d2a763ea142c8470fed4982",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/11_login_operator_dropdown.png": {
+    "mtime": 1793962738.508669,
+    "ast_hash": "cb134a1521c93f36f1ac7807ae7517da",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/12_login_filled.png": {
+    "mtime": 1793962765.7806442,
+    "ast_hash": "8792d725990c3a0bb6bed0bfda1e2271",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/13_login_logging_in.png": {
+    "mtime": 1793962772.6308818,
+    "ast_hash": "dbe56d8782cb850860ee076afd980688",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/15_login_error_refused.png": {
+    "mtime": 1793962785.4310286,
+    "ast_hash": "0c3ae5b0b5c29e36c6f91cbe6f3af27b",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/16_login_badge_unknown.png": {
+    "mtime": 1793962791.1649048,
+    "ast_hash": "8235ccf35aa2bbb24651bd85471cf77f",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/17_login_station_offline.png": {
+    "mtime": 1793962800.0751326,
+    "ast_hash": "fe99f0ac149baf5f1c2559618ed77cca",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/18_home.png": {
+    "mtime": 1793962820.425228,
+    "ast_hash": "9399088a6a1ecf2cdee67cbd637d1461",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/19_logout_dialog.png": {
+    "mtime": 1793962833.653268,
+    "ast_hash": "9ed94838f4a620b913af444941039ee0",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/20_exit_dialog.png": {
+    "mtime": 1793962838.9262838,
+    "ast_hash": "4e71c01a14944c4e813a4ee858e2e72f",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/21_home_station_offline.png": {
+    "mtime": 1793962849.316841,
+    "ast_hash": "15bf925722a87af006e3a13be9337e7e",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/22_waste_step1_bag.png": {
+    "mtime": 1793962854.356272,
+    "ast_hash": "088729b405826fbda3ea5fd3401f1399",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/23_waste_step2_job.png": {
+    "mtime": 1793962867.6104023,
+    "ast_hash": "881b90602cd37511d3c8a35d4412cd66",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/24_waste_step2_error.png": {
+    "mtime": 1793962891.3712566,
+    "ast_hash": "ab823b5837a2fd01b43ee862d68051d9",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/25_waste_step3_operator.png": {
+    "mtime": 1793962896.1314893,
+    "ast_hash": "7dc1b069fda5821a58ea05a942c8079e",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/26_waste_step3_lookup_busy.png": {
+    "mtime": 1793962904.561849,
+    "ast_hash": "67e7d162ab9b05605a9ff3365938dfa6",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/27_waste_step3_lookup_refused.png": {
+    "mtime": 1793962906.9654498,
+    "ast_hash": "73e931942a14a17eac6855a9a7f31c09",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/28_waste_step3_station_offline.png": {
+    "mtime": 1793962942.7255251,
+    "ast_hash": "8aa07a95252fcdb09f7ab40426c338af",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/29_waste_step4_category.png": {
+    "mtime": 1793962954.2500453,
+    "ast_hash": "405865c5b38d14cc0aba14f5dc0349c9",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/30_waste_step4_category_menu.png": {
+    "mtime": 1793962962.677384,
+    "ast_hash": "a77146f2ca7dc04c9ca4c7a77de1bc1a",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/31_waste_step5_type.png": {
+    "mtime": 1793962968.596129,
+    "ast_hash": "d91ac6b4b36bc6ea813e223b60434231",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/32_waste_step5_type_menu.png": {
+    "mtime": 1793962978.875882,
+    "ast_hash": "d5c6721335854d0fc6606224311b7dcd",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/33_waste_review_dialog.png": {
+    "mtime": 1793962984.5696268,
+    "ast_hash": "145caef4de232cd3bef9637317bad44f",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/34_waste_step5_long_selection.png": {
+    "mtime": 1793963014.8400152,
+    "ast_hash": "cea5ac4b690f9731910457d39c8fe536",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/35_waste_review_long.png": {
+    "mtime": 1793963023.0805662,
+    "ast_hash": "8c560e293aa58e58fdc92f501414ecb6",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/36_waste_submitted.png": {
+    "mtime": 1793963032.841237,
+    "ast_hash": "176bfe7696377549d5f07b07f3ac1e46",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/37_waste_rejected.png": {
+    "mtime": 1793963065.117076,
+    "ast_hash": "bfab161ed3ad5efa6a413383c1049780",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/38_waste_station_offline.png": {
+    "mtime": 1793963076.1082933,
+    "ast_hash": "ef27119efb9c2dddfbd11b2e81adb6d8",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/39_waste_queued_offline.png": {
+    "mtime": 1793963176.0995479,
+    "ast_hash": "d3b5260424b26b93e787b56b05a49e98",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/40_home_broker_down.png": {
+    "mtime": 1793963189.178494,
+    "ast_hash": "83e934424e207be48cc9d341bab2a607",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/41_waste_step2_with_banner.png": {
+    "mtime": 1793963216.1799219,
+    "ast_hash": "8ee7731c5d9efe2251e8870d645c60aa",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/42_waste_discard_dialog.png": {
+    "mtime": 1793963218.0834312,
+    "ast_hash": "c830e9c09c41c4239f4390b3f7770cb7",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/43_weigh_empty.png": {
+    "mtime": 1793963230.219093,
+    "ast_hash": "b8e425b2e541a08b89fedaec277c9729",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/44_weigh_filled.png": {
+    "mtime": 1793963237.1771903,
+    "ast_hash": "379c211079fd037c0a106961e4764178",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/45_weigh_weighing.png": {
+    "mtime": 1793963244.5240924,
+    "ast_hash": "e5cae5d9121c654967662909fc807fdc",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/46_weigh_result.png": {
+    "mtime": 1793963246.888124,
+    "ast_hash": "95203759b479bdd1b9147c084762525d",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/47_weigh_refused_retry.png": {
+    "mtime": 1793963257.1942046,
+    "ast_hash": "9aee0bc1d19138626ef667408a7b0c51",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/48_weigh_refused_terminal.png": {
+    "mtime": 1793963263.127655,
+    "ast_hash": "e30a3b9d6b269c3ae8acce858e1b7d39",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/49_weigh_station_offline.png": {
+    "mtime": 1793963272.0598855,
+    "ast_hash": "610cb16d67c307cce9f3e7a90489e308",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/50_settings_signed_in_refreshed.png": {
+    "mtime": 1793963286.4329896,
+    "ast_hash": "82f3d76342448faa27fe15271370d2b9",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/51_weigh_logout_dialog.png": {
+    "mtime": 1793963298.5967422,
+    "ast_hash": "29f95d65698f31b5a57ae96cc0567b16",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/52_home_badge_login.png": {
+    "mtime": 1793963313.2377994,
+    "ast_hash": "ebdf3484a9b085ce7d8aed02b3e546a8",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/06_settings_unlocked_form.png": {
+    "mtime": 1793963664.5316212,
+    "ast_hash": "7aefc93bd07e651226a181408f9db9d8",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/10_login_empty.png": {
+    "mtime": 1793963623.6709049,
+    "ast_hash": "250b26027d0f0844d1db355a8c6bfa3d",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/12_login_focused.png": {
+    "mtime": 1793963627.6169195,
+    "ast_hash": "bc3c68c0f3375455e4860a3c82f85c4a",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/18_home.png": {
+    "mtime": 1793963729.88171,
+    "ast_hash": "6b9db0c65790c755f1a34a5712a523e8",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/22_waste_step1_bag.png": {
+    "mtime": 1793963676.101321,
+    "ast_hash": "34cd33ac8728c0853cd94685eb29862f",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/26_waste_step3_lookup_busy.png": {
+    "mtime": 1793963679.9740548,
+    "ast_hash": "1a1c0fab1af0ae00a71611c2610dfea1",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/27_waste_step3_lookup_refused.png": {
+    "mtime": 1793963682.3251963,
+    "ast_hash": "753a2148cca80b7d082a644853acfdc3",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/34_waste_step5_long_selection.png": {
+    "mtime": 1793963698.8852637,
+    "ast_hash": "017b1ceafc2d6f5d5c862d9a764f6f9c",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/38_waste_station_offline_banner.png": {
+    "mtime": 1793963719.5802553,
+    "ast_hash": "eccf463e37c61b51239f3b44485f7af2",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/46_weigh_result.png": {
+    "mtime": 1793963849.3916612,
+    "ast_hash": "9d2c14ec79a6025d75ae91b2e0c86be4",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/47_weigh_refused_retry.png": {
+    "mtime": 1793963853.0295434,
+    "ast_hash": "71f1266e8ebb47fb324589a9a65a9d6c",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/50_settings_refresh.png": {
+    "mtime": 1793963646.8992782,
+    "ast_hash": "ab438bbd5c032787a61ed0ba7025424d",
+    "semantic_hash": ""
+  },
+  "screenshots/skill-run/after/52_home_badge.png": {
+    "mtime": 1793963855.5192115,
+    "ast_hash": "ec59158f003c7868084b5339429961fd",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/domain/feedback/ScanSounds.kt": {
+    "mtime": 1793965582.0334537,
+    "ast_hash": "62ffbbc428928be92c056e79b40874f2",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/feedback/ScanFeedback.kt": {
+    "mtime": 1793965625.308021,
+    "ast_hash": "57fb56d0d6c5e83443ca0687b94eb48b",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/com/mitas/ppnam/station4aa/ui/feedback/ScanSoundEffect.kt": {
+    "mtime": 1793965660.0155754,
+    "ast_hash": "306b0ed4b6cfb5a39f08fd8b3537a0b0",
+    "semantic_hash": ""
+  },
+  "app/src/test/java/com/mitas/ppnam/station4aa/domain/feedback/ScanSoundsTest.kt": {
+    "mtime": 1793965543.8785608,
+    "ast_hash": "93b4d796f3039ab50e6c7c3c31fd771d",
+    "semantic_hash": ""
+  },
+  "app/src/main/res/raw/scan_fail.wav": {
+    "mtime": 1793965625.4155798,
+    "ast_hash": "3081f99709092516c20230f53c8b641a",
+    "semantic_hash": ""
+  },
+  "app/src/main/res/raw/scan_success.wav": {
+    "mtime": 1793965625.404415,
+    "ast_hash": "cda3bcec8ea7705ea2bae0bb88b32307",
     "semantic_hash": ""
   }
 }

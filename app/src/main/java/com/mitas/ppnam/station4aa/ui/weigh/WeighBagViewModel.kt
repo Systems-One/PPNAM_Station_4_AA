@@ -7,13 +7,19 @@ import com.mitas.ppnam.station4aa.data.rfid.ScanEvent
 import com.mitas.ppnam.station4aa.data.rfid.ScanEventBus
 import com.mitas.ppnam.station4aa.data.session.OperatorSession
 import com.mitas.ppnam.station4aa.data.session.OperatorSessionHolder
+import com.mitas.ppnam.station4aa.domain.feedback.LocalRefusalDebounce
+import com.mitas.ppnam.station4aa.domain.feedback.ScanSound
+import com.mitas.ppnam.station4aa.domain.feedback.ScanSounds
 import com.mitas.ppnam.station4aa.domain.session.SIGNED_OUT_SESSION_ENDED
 import com.mitas.ppnam.station4aa.domain.usecase.AuthUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.RequestWasteCaptureUseCase
 import com.mitas.ppnam.station4aa.domain.usecase.WasteCaptureOutcome
 import com.mitas.ppnam.station4aa.ui.components.ConnectionStatus
 import com.mitas.ppnam.station4aa.ui.components.connectionStatusStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,7 +59,12 @@ class WeighBagViewModel(
     private val scanEventBus: ScanEventBus,
     private val requestCapture: RequestWasteCaptureUseCase,
     private val authUseCase: AuthUseCase,
+    /** Monotonic clock for the suite rule S3 repeat window; injectable for tests. */
+    nowMs: () -> Long = android.os.SystemClock::elapsedRealtime,
 ) : ViewModel() {
+
+    /** Suite rule S3: the same invalid bag code refused again within 1.5 s plays nothing. */
+    private val refusals = LocalRefusalDebounce(nowMs)
 
     val connectionStatus: StateFlow<ConnectionStatus> = connectionManager.connectionStatusStateFlow(viewModelScope)
 
@@ -73,6 +84,11 @@ class WeighBagViewModel(
      * same pan twice — the same protection `onReviewConfirmed` gives the collection publish. */
     private val _isWeighing = MutableStateFlow(false)
     val isWeighing: StateFlow<Boolean> = _isWeighing.asStateFlow()
+
+    /** Suite rule S1: one sound per weigh, on Station 4's answer (or its failure); the raw bag
+     * scan makes none. Played by the screen; not replayed. */
+    private val _scanSounds = MutableSharedFlow<ScanSound>(extraBufferCapacity = 8)
+    val scanSounds: SharedFlow<ScanSound> = _scanSounds.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -98,7 +114,14 @@ class WeighBagViewModel(
 
         viewModelScope.launch {
             try {
-                when (val outcome = requestCapture.request(operatorSessionId, _bagCode.value)) {
+                val bagCode = _bagCode.value
+                val outcome = requestCapture.request(operatorSessionId, bagCode)
+                // Only the invalid bag code is refused on the handheld; station and transport
+                // answers always sound.
+                val sound = if (outcome is WasteCaptureOutcome.InvalidBagCode) refusals.refuse(bagCode)
+                else ScanSounds.forWeigh(outcome)
+                if (sound != null) _scanSounds.tryEmit(sound)
+                when (outcome) {
                     is WasteCaptureOutcome.Weighed -> {
                         _feedback.value = WeighFeedback.Weighed(
                             bagCode = outcome.bagCode,

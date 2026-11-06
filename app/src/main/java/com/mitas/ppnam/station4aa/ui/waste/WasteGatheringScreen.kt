@@ -57,6 +57,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
+import com.mitas.ppnam.station4aa.ui.feedback.ScanSoundEffect
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.components.DiscardDraftDialog
@@ -92,6 +93,7 @@ fun WasteGatheringScreen(
     val isLookingUpOperator by viewModel.isLookingUpOperator.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val wasteTypes by viewModel.typesForSelectedCategory.collectAsState()
+    ScanSoundEffect(viewModel.scanSounds)
 
     val hasDraft = draft != WasteTransactionDraft()
     var showDiscardDialog by rememberSaveable { mutableStateOf(false) }
