@@ -13,8 +13,8 @@ android {
         applicationId = "com.mitas.ppnam.station4aa"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.2.4"
+        versionCode = 7
+        versionName = "1.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
