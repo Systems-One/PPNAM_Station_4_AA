@@ -38,6 +38,7 @@ import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.SuccessGreen
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.ActionButtonShape
 import com.mitas.ppnam.station4aa.ui.theme.brandOutlinedButtonColors
 import java.util.Locale
 
@@ -124,6 +125,8 @@ fun WeighBagScreen(
             )
 
             Button(
+
+                shape = ActionButtonShape,
                 onClick = requestWeight,
                 enabled = bagCode.isNotBlank() && !isWeighing,
                 modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -199,6 +202,7 @@ private fun ProblemCard(problem: WeighFeedback.Problem, onRetry: (() -> Unit)?) 
                     color = TextMuted,
                 )
                 OutlinedButton(
+                    shape = ActionButtonShape,
                     onClick = onRetry,
                     colors = brandOutlinedButtonColors(),
                     modifier = Modifier.fillMaxWidth().height(56.dp),

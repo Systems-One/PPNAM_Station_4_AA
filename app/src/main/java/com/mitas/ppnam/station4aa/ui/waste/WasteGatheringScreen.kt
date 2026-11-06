@@ -65,8 +65,10 @@ import com.mitas.ppnam.station4aa.ui.theme.DangerRed
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.ActionButtonShape
 import com.mitas.ppnam.station4aa.ui.theme.WarningOrange
 import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
+import com.mitas.ppnam.station4aa.ui.theme.neutralTextButtonColors
 
 @Composable
 fun WasteGatheringScreen(
@@ -156,6 +158,7 @@ fun WasteGatheringScreen(
                 // Filled: this is the action that publishes the collection, and as a text button
                 // it carried the same weight as Back (visual critique 2026-11-06 P2-4).
                 Button(
+                    shape = ActionButtonShape,
                     onClick = { viewModel.onReviewConfirmed() },
                     enabled = !isSubmitting,
                 ) {
@@ -163,7 +166,7 @@ fun WasteGatheringScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onReviewDismissed() }, colors = brandTextButtonColors()) { Text("Back") }
+                TextButton(onClick = { viewModel.onReviewDismissed() }, colors = neutralTextButtonColors()) { Text("Back") }
             },
             containerColor = GraphiteSurface
         )
@@ -364,6 +367,7 @@ private fun ScanStep(
             modifier = Modifier.fillMaxWidth().consumeEnterKeyUp(),
         )
         Button(
+            shape = ActionButtonShape,
             onClick = submit,
             enabled = manualValue.isNotBlank(),
             modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -423,6 +427,7 @@ private fun <T> CatalogueStep(
             onSelected = { selectedValue = it },
         )
         Button(
+            shape = ActionButtonShape,
             onClick = { onConfirm(selected) },
             modifier = Modifier.fillMaxWidth().height(56.dp),
         ) {

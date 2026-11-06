@@ -12,7 +12,7 @@ class LoginErrorMessageTest {
     @Test
     fun `a rejected password never echoes the backend reason`() {
         assertEquals(
-            "Incorrect username or password",
+            "Incorrect username or password.",
             loginErrorMessage(LoginRejectedException("authentication_failed", "SCRAM proof rejected.")),
         )
     }
@@ -20,7 +20,7 @@ class LoginErrorMessageTest {
     @Test
     fun `each credential code maps to the incorrect username or password line`() {
         for (code in listOf("scram_proof_invalid", "scram_client_final_invalid", "authentication_failed")) {
-            assertEquals("Incorrect username or password", loginErrorMessage(LoginRejectedException(code, "x")))
+            assertEquals("Incorrect username or password.", loginErrorMessage(LoginRejectedException(code, "x")))
         }
     }
 

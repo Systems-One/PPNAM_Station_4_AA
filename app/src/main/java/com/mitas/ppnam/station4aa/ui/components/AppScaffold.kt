@@ -21,7 +21,6 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mitas.ppnam.station4aa.ui.theme.*
-import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 /**
  * Shared top-bar chrome, mirroring Station 2's AppScaffold. With operatorName null the bar
@@ -40,57 +39,20 @@ fun AppScaffold(
     loading: Boolean = false,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    val (dotColor, statusLabel) = when (status) {
-        ConnectionStatus.Connected      -> SuccessGreen to "Connected"
-        ConnectionStatus.Reconnecting   -> WarningOrange to "Reconnecting"
-        // Broker reachable, Station 4 itself is not: publishes still leave the device and queue
-        // in the outbox, so this is a warning rather than the red "nothing works" state.
-        ConnectionStatus.StationOffline -> WarningOrange to "Station 4 offline"
-        ConnectionStatus.Offline        -> DangerRed to "Offline"
-    }
-
     var showLogoutDialog by remember { mutableStateOf(false) }
 
     if (showLogoutDialog) {
-        AlertDialog(
-            onDismissRequest = { showLogoutDialog = false },
-            title = { Text("Log out?", color = TextPrimary) },
-            text = { Text("You'll need to log in again to continue.", color = TextMuted) },
-            confirmButton = {
-                TextButton(onClick = {
-                    showLogoutDialog = false
-                    onLogout?.invoke()
-                }) { Text("Log out", color = DangerRed) }
+        LogoutConfirmDialog(
+            onDismiss = { showLogoutDialog = false },
+            onConfirm = {
+                showLogoutDialog = false
+                onLogout?.invoke()
             },
-            dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }, colors = brandTextButtonColors()) { Text("Cancel") }
-            },
-            containerColor = GraphiteSurface
         )
     }
 
     val statusPill: @Composable () -> Unit = {
-        Box(
-            modifier = Modifier
-                .padding(end = 12.dp)
-                .clip(RoundedCornerShape(50))
-                .background(dotColor.copy(alpha = 0.12f))
-                .padding(horizontal = 10.dp, vertical = 5.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Canvas(modifier = Modifier.size(6.dp)) {
-                    drawCircle(color = dotColor)
-                }
-                Spacer(Modifier.width(5.dp))
-                Text(
-                    text = statusLabel,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = dotColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
+        ConnectionPill(status, Modifier.padding(end = 12.dp))
     }
 
     Scaffold(
@@ -257,4 +219,56 @@ fun AppScaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
         content = content
     )
+}
+
+/** The fleet's "Log out?" confirmation: neutral Cancel, red destructive Log out (suite C6). Shared
+ * by [AppScaffold] and the Home [HomeHeaderCard]. */
+@Composable
+internal fun LogoutConfirmDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Log out?", color = TextPrimary) },
+        text = { Text("You'll need to log in again to continue.", color = TextMuted) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) { Text("Log out", color = DangerRed) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, colors = neutralTextButtonColors()) { Text("Cancel") }
+        },
+        containerColor = GraphiteSurface
+    )
+}
+
+/** The connection pill: dot plus label, tinted by state. Shared by [AppScaffold] and
+ * [HomeHeaderCard] so both read the same. */
+@Composable
+internal fun ConnectionPill(status: ConnectionStatus, modifier: Modifier = Modifier) {
+    val (dotColor, statusLabel) = when (status) {
+        ConnectionStatus.Connected      -> SuccessGreen to "Connected"
+        ConnectionStatus.Reconnecting   -> WarningOrange to "Reconnecting"
+        // Broker reachable, Station 4 itself is not: publishes still leave the device and queue
+        // in the outbox, so this is a warning rather than the red "nothing works" state.
+        ConnectionStatus.StationOffline -> WarningOrange to "Station 4 offline"
+        ConnectionStatus.Offline        -> DangerRed to "Offline"
+    }
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(dotColor.copy(alpha = 0.12f))
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Canvas(modifier = Modifier.size(6.dp)) {
+                drawCircle(color = dotColor)
+            }
+            Spacer(Modifier.width(5.dp))
+            Text(
+                text = statusLabel,
+                style = MaterialTheme.typography.labelSmall,
+                color = dotColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
 }

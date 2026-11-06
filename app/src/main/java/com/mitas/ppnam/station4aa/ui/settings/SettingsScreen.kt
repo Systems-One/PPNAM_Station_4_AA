@@ -31,7 +31,6 @@ import com.mitas.ppnam.station4aa.data.mqtt.MqttConnectionState
 import com.mitas.ppnam.station4aa.ui.components.AppScaffold
 import com.mitas.ppnam.station4aa.ui.components.EnterKeyGuard
 import com.mitas.ppnam.station4aa.ui.theme.*
-import com.mitas.ppnam.station4aa.ui.theme.brandTextButtonColors
 
 @Composable
 fun SettingsScreen(
@@ -63,7 +62,7 @@ fun SettingsScreen(
                 }) { Text("Log out", color = DangerRed) }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }, colors = brandTextButtonColors()) { Text("Cancel") }
+                TextButton(onClick = { showLogoutDialog = false }, colors = neutralTextButtonColors()) { Text("Cancel") }
             },
             containerColor = GraphiteSurface
         )
@@ -231,6 +230,7 @@ fun SettingsScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                                 Button(
+                                    shape = ActionButtonShape,
                                     onClick = {
                                         focusManager.clearFocus()
                                         viewModel.submitPin()
@@ -327,6 +327,7 @@ fun SettingsScreen(
                     // are on screen when Test & Apply is tapped (audit S4-R06).
                     ApplyStatusRow(applyState)
                     Button(
+                        shape = ActionButtonShape,
                         onClick = { focusManager.clearFocus(); viewModel.testAndApply() },
                         enabled = applyState !is ApplyState.Testing,
                         modifier = Modifier
@@ -370,6 +371,7 @@ fun SettingsScreen(
                             )
                         }
                         OutlinedButton(
+                            shape = ActionButtonShape,
                             onClick = { showLogoutDialog = true },
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = DangerRed),
                             border = BorderStroke(1.dp, DangerRed.copy(alpha = 0.5f)),

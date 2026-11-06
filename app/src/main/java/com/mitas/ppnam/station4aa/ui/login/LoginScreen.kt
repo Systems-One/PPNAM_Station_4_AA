@@ -76,6 +76,7 @@ import com.mitas.ppnam.station4aa.ui.theme.GraphiteBorder
 import com.mitas.ppnam.station4aa.ui.theme.GraphiteSurface
 import com.mitas.ppnam.station4aa.ui.theme.TextMuted
 import com.mitas.ppnam.station4aa.ui.theme.TextPrimary
+import com.mitas.ppnam.station4aa.ui.theme.ActionButtonShape
 
 /** Ported from Station 2 AA's LoginScreen — see
  * `com.mitas.ppnam.station4aa.data.mqtt.MqttTopics`' class doc. */
@@ -269,6 +270,8 @@ fun LoginScreen(
                     )
 
                     Button(
+
+                        shape = ActionButtonShape,
                         onClick = submit,
                         enabled = uiState !is LoginUiState.LoggingIn,
                         // This button is only ever disabled while logging in. The default disabled
