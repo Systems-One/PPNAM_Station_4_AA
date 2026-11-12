@@ -91,6 +91,7 @@ fun WasteGatheringScreen(
     val lastMessageIsSuccess by viewModel.lastMessageIsSuccess.collectAsState()
     val isSubmitting by viewModel.isSubmitting.collectAsState()
     val isLookingUpOperator by viewModel.isLookingUpOperator.collectAsState()
+    val scanEntry by viewModel.scanEntry.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val wasteTypes by viewModel.typesForSelectedCategory.collectAsState()
     ScanSoundEffect(viewModel.scanSounds)
@@ -234,21 +235,27 @@ fun WasteGatheringScreen(
             when (step) {
                 WizardStep.SCAN_BAG -> ScanStep(
                     label = "Scan bag code",
-                    hint = "Scan the barcode, or enter it manually below.",
+                    hint = "Scan the barcode or enter it below, then tap Confirm.",
                     errorMessage = stepError,
-                    onSubmit = viewModel::onBagCodeSubmitted,
+                    value = scanEntry,
+                    onValueChange = viewModel::onScanEntryChanged,
+                    onConfirm = viewModel::onScanEntryConfirmed,
                 )
                 WizardStep.SCAN_JOB -> ScanStep(
                     label = "Scan or enter the job number",
-                    hint = "Scan the barcode, or enter it manually below.",
+                    hint = "Scan the barcode or enter it below, then tap Confirm.",
                     errorMessage = stepError,
-                    onSubmit = viewModel::onJobNumberSubmitted,
+                    value = scanEntry,
+                    onValueChange = viewModel::onScanEntryChanged,
+                    onConfirm = viewModel::onScanEntryConfirmed,
                 )
                 WizardStep.SCAN_OPERATOR -> ScanStep(
                     label = "Scan the production operator's card",
-                    hint = "Scan their badge or card barcode, or enter the card number below.",
+                    hint = "Scan their badge or card barcode, or enter the card number below, then tap Confirm.",
                     errorMessage = stepError,
-                    onSubmit = viewModel::onOperatorIdSubmitted,
+                    value = scanEntry,
+                    onValueChange = viewModel::onScanEntryChanged,
+                    onConfirm = viewModel::onScanEntryConfirmed,
                     busyMessage = if (isLookingUpOperator) "Looking up the operator at Station 4…" else null,
                 )
                 WizardStep.SELECT_CATEGORY -> CatalogueStep(
@@ -320,25 +327,31 @@ private fun StepIndicator(step: WizardStep) {
     )
 }
 
+/**
+ * One scan step. The field shows the last scanner read or what the operator typed, and nothing is
+ * applied until Confirm is tapped: the scanner has no debounce, so a read that advanced the wizard
+ * by itself let a repeat of the same code land on the next step. The text lives in the ViewModel
+ * ([WasteGatheringViewModel.scanEntry]) because that is where scanner reads arrive.
+ */
 @Composable
 private fun ScanStep(
     label: String,
     hint: String,
     errorMessage: String?,
-    onSubmit: (String) -> Unit,
-    /** Non-null while a submitted value is being checked at Station 4; shown in place of the error. */
+    value: String,
+    onValueChange: (String) -> Unit,
+    onConfirm: () -> Unit,
+    /** Non-null while a confirmed value is being checked at Station 4; shown in place of the error. */
     busyMessage: String? = null,
 ) {
-    var manualValue by rememberSaveable(label) { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     val submit: () -> Unit = {
-        if (manualValue.isNotBlank()) {
+        if (value.isNotBlank()) {
             // Clearing focus first stops a hardware Enter from landing on the toolbar icons
             // (audit S4-15) and closes the keyboard so the next step is fully visible.
             EnterKeyGuard.arm()
             focusManager.clearFocus()
-            onSubmit(manualValue)
-            manualValue = ""
+            onConfirm()
         }
     }
 
@@ -358,9 +371,9 @@ private fun ScanStep(
             Text(errorMessage, style = MaterialTheme.typography.bodyMedium, color = DangerRed)
         }
         OutlinedTextField(
-            value = manualValue,
-            onValueChange = { manualValue = it },
-            label = { Text("Manual entry") },
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text("Scanned or entered value") },
             singleLine = true,
             isError = errorMessage != null,
             keyboardOptions = KeyboardOptions(
@@ -380,10 +393,10 @@ private fun ScanStep(
         Button(
             shape = ActionButtonShape,
             onClick = submit,
-            enabled = manualValue.isNotBlank(),
+            enabled = value.isNotBlank(),
             modifier = Modifier.fillMaxWidth().height(56.dp),
         ) {
-            Text("Submit")
+            Text("Confirm")
         }
     }
 }

@@ -81,10 +81,10 @@ class LocalRefusalDebounceTest {
     fun `a badge read on the bag step repeated by one trigger buzzes once`() {
         val wizard = WasteWizardController()
         val badge = "E2801170000002"
-        assertEquals(ScanSound.FAIL, debounce.filter(badge, ScanSounds.forDispatch(wizard.handleScannedBadge(badge))))
+        assertEquals(ScanSound.FAIL, debounce.filter(badge, ScanSounds.forStage(wizard.stageScannedBadge(badge))))
         repeat(3) {
             now += 50
-            assertNull(debounce.filter(badge, ScanSounds.forDispatch(wizard.handleScannedBadge(badge))))
+            assertNull(debounce.filter(badge, ScanSounds.forStage(wizard.stageScannedBadge(badge))))
         }
     }
 
