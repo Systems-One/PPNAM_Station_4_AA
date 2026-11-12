@@ -25,12 +25,44 @@ class WasteWizardController {
     /** Set by [editField]: the next satisfied step returns to REVIEW instead of advancing. */
     private var returnToReview = false
 
-    /** Bag/job/operator barcode scans all funnel through here. On the operator step the scan is
-     * not applied directly: it comes back as [ScanDispatchResult.LookupOperator] for Station 4 to
-     * resolve to a name first (contract 5.4.0 §9.3). Returns
-     * [ScanDispatchResult.Ignored] when the active step doesn't accept a scan — a stray scan is
-     * dropped, never applied to a step the operator has already moved past, and never allowed to
-     * rewrite a field on the review screen the operator is about to confirm. */
+    /**
+     * A raw barcode read. It is never applied directly — the scanner has no debounce, so one
+     * trigger pull can deliver the same code twice and the repeat would be taken as the next
+     * step's value. The read is only held ([ScanStageResult.Staged]) until the operator confirms
+     * it, which is what calls [handleScannedValue]. A newer read simply replaces the held one, and
+     * a read on a step that takes no scan is dropped.
+     */
+    fun stageScannedValue(value: String): ScanStageResult = when (step) {
+        WizardStep.SCAN_BAG,
+        WizardStep.SCAN_JOB,
+        WizardStep.SCAN_OPERATOR -> ScanStageResult.Staged(value.trim())
+        WizardStep.SELECT_CATEGORY,
+        WizardStep.SELECT_WASTE_TYPE,
+        WizardStep.REVIEW -> ScanStageResult.Ignored
+    }
+
+    /** A raw RFID badge read. On the operator step the production operator's login badge is their
+     * card, so it is held for confirmation exactly like a scanned card number. On the bag and job
+     * steps it is refused with a hint rather than silently dropped; elsewhere it is ignored like
+     * any stray scan. Like [stageScannedValue], it never changes the wizard.
+     *
+     * RFID reads are refused on barcode steps regardless of [com.mitas.ppnam.station4aa.UserTagPolicy];
+     * that policy exists for screens that must tell badges from item tags. */
+    fun stageScannedBadge(tagId: String): ScanStageResult = when (step) {
+        WizardStep.SCAN_BAG,
+        WizardStep.SCAN_JOB -> ScanStageResult.Refused(BADGE_NOT_BARCODE)
+        WizardStep.SCAN_OPERATOR -> ScanStageResult.Staged(tagId.trim())
+        WizardStep.SELECT_CATEGORY,
+        WizardStep.SELECT_WASTE_TYPE,
+        WizardStep.REVIEW -> ScanStageResult.Ignored
+    }
+
+    /** The operator's Confirm on a held scan or a typed value: bag, job and operator card all
+     * funnel through here. On the operator step the value is not applied directly: it comes back
+     * as [ScanDispatchResult.LookupOperator] for Station 4 to resolve to a name first (contract
+     * 5.4.0 §9.3). Returns [ScanDispatchResult.Ignored] when the active step doesn't take a
+     * value, so nothing can rewrite a field on the review screen the operator is about to
+     * confirm. */
     fun handleScannedValue(value: String): ScanDispatchResult = when (step) {
         WizardStep.SCAN_BAG -> ScanDispatchResult.Applied(submitBagCode(value))
         WizardStep.SCAN_JOB -> ScanDispatchResult.Applied(submitJobNumber(value))
@@ -40,27 +72,11 @@ class WasteWizardController {
         WizardStep.REVIEW -> ScanDispatchResult.Ignored
     }
 
-    /** An RFID badge read. On the operator step the production operator's login badge is their
-     * card, so it goes to Station 4 for a name lookup exactly like a scanned card number. On the
-     * bag and job steps it is refused with a hint rather than silently dropped (the draft is left
-     * unchanged); elsewhere it is ignored like any stray scan.
-     *
-     * RFID reads are refused on barcode steps regardless of [com.mitas.ppnam.station4aa.UserTagPolicy];
-     * that policy exists for screens that must tell badges from item tags. */
-    fun handleScannedBadge(tagId: String): ScanDispatchResult = when (step) {
-        WizardStep.SCAN_BAG,
-        WizardStep.SCAN_JOB -> ScanDispatchResult.Applied(BADGE_NOT_BARCODE)
-        WizardStep.SCAN_OPERATOR -> beginOperatorLookup(tagId)
-        WizardStep.SELECT_CATEGORY,
-        WizardStep.SELECT_WASTE_TYPE,
-        WizardStep.REVIEW -> ScanDispatchResult.Ignored
-    }
-
     private companion object {
         const val BADGE_NOT_BARCODE = "Scan a barcode, not a badge."
     }
 
-    /** Manual-entry fallback for the bag step; a scan calls this too via [handleScannedValue].
+    /** The bag step's confirmed value, reached via [handleScannedValue].
      * Returns an error message, or null on success. */
     fun submitBagCode(raw: String): String? {
         val error = WasteCollectionValidator.validateBagCode(raw)
@@ -80,7 +96,7 @@ class WasteWizardController {
         return null
     }
 
-    /** Manual-entry fallback for the job-number step. */
+    /** The job-number step's confirmed value. */
     fun submitJobNumber(raw: String): String? {
         val error = WasteCollectionValidator.validateJobNumber(raw)
         if (error != null) return error
@@ -89,7 +105,7 @@ class WasteWizardController {
         return null
     }
 
-    /** The production-operator step's card scan, badge read or manual entry. Validates locally and
+    /** The production-operator step's confirmed card scan, badge read or typed entry. Validates locally and
      * hands back the trimmed card for a Station 4 lookup. A valid new card drops any name resolved
      * for the previous one (§9.3: clear the name whenever the card changes); the new one is only
      * stored by [applyResolvedOperator]. */

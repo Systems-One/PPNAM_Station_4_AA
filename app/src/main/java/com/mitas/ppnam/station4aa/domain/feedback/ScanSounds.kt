@@ -3,6 +3,7 @@ package com.mitas.ppnam.station4aa.domain.feedback
 import com.mitas.ppnam.station4aa.domain.usecase.WasteCaptureOutcome
 import com.mitas.ppnam.station4aa.domain.usecase.WasteOperatorOutcome
 import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
+import com.mitas.ppnam.station4aa.domain.wizard.ScanStageResult
 
 /** The two suite scan sounds (UI_Design/sounds/README.md). */
 enum class ScanSound { SUCCESS, FAIL }
@@ -17,7 +18,19 @@ enum class ScanSound { SUCCESS, FAIL }
 object ScanSounds {
 
     /**
-     * A bag, job or operator-card scan (or its typed stand-in) routed through the wizard. Bag and
+     * A raw scanner read on the wizard. A read that is held for the operator's Confirm is silent
+     * here — the scanner service has already beeped for it, and its outcome sounds when it is
+     * confirmed ([forDispatch]). Only a read refused on the spot (a badge on a barcode step)
+     * sounds.
+     */
+    fun forStage(result: ScanStageResult): ScanSound? = when (result) {
+        is ScanStageResult.Refused -> ScanSound.FAIL
+        is ScanStageResult.Staged -> null
+        ScanStageResult.Ignored -> null
+    }
+
+    /**
+     * A confirmed bag, job or operator-card value (scanned or typed) routed through the wizard. Bag and
      * job are decided on the handheld; an operator card sent for lookup sounds on Station 4's
      * answer instead ([forOperatorLookup]). A scan on a step that takes none is dropped silently,
      * as Station 5 does for screens that are not taking scans.

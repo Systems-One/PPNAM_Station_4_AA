@@ -7,6 +7,7 @@ import com.mitas.ppnam.station4aa.domain.usecase.WasteCaptureOutcome
 import com.mitas.ppnam.station4aa.domain.usecase.WasteOperatorOutcome
 import com.mitas.ppnam.station4aa.domain.usecase.WasteOperatorRefusals
 import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
+import com.mitas.ppnam.station4aa.domain.wizard.ScanStageResult
 import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
 import org.junit.Assert.assertEquals
@@ -52,9 +53,21 @@ class ScanSoundsTest {
     @Test
     fun `a badge read on the bag or job step is refused locally with a fail`() {
         val wizard = WasteWizardController()
-        assertEquals(ScanSound.FAIL, ScanSounds.forDispatch(wizard.handleScannedBadge("E2801170000002")))
+        assertEquals(ScanSound.FAIL, ScanSounds.forStage(wizard.stageScannedBadge("E2801170000002")))
         wizard.handleScannedValue("BAG-01")
-        assertEquals(ScanSound.FAIL, ScanSounds.forDispatch(wizard.handleScannedBadge("E2801170000002")))
+        assertEquals(ScanSound.FAIL, ScanSounds.forStage(wizard.stageScannedBadge("E2801170000002")))
+    }
+
+    @Test
+    fun `a read held for Confirm is silent and sounds once when it is confirmed`() {
+        val wizard = WasteWizardController()
+        val staged = wizard.stageScannedValue("BAG-01")
+        assertEquals(ScanStageResult.Staged("BAG-01"), staged)
+        assertNull(ScanSounds.forStage(staged))
+        // A repeat of the same read is just as silent, and still changes nothing.
+        assertNull(ScanSounds.forStage(wizard.stageScannedValue("BAG-01")))
+        assertEquals(WizardStep.SCAN_BAG, wizard.step)
+        assertEquals(ScanSound.SUCCESS, ScanSounds.forDispatch(wizard.handleScannedValue("BAG-01")))
     }
 
     @Test
@@ -117,7 +130,8 @@ class ScanSoundsTest {
         wizard.applyResolvedOperator("0000427", "Production Operator One")
         assertEquals(WizardStep.SELECT_CATEGORY, wizard.step)
         assertNull(ScanSounds.forDispatch(wizard.handleScannedValue("BAG-02")))
-        assertNull(ScanSounds.forDispatch(wizard.handleScannedBadge("E2801170000002")))
+        assertNull(ScanSounds.forStage(wizard.stageScannedValue("BAG-02")))
+        assertNull(ScanSounds.forStage(wizard.stageScannedBadge("E2801170000002")))
         wizard.confirmCategory(process)
         wizard.confirmWasteType(bubbleBreaks)
         assertEquals(WizardStep.REVIEW, wizard.step)

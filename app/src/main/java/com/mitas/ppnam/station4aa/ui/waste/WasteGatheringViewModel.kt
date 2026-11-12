@@ -31,6 +31,7 @@ import com.mitas.ppnam.station4aa.domain.usecase.WasteOperatorOutcome
 import com.mitas.ppnam.station4aa.domain.usecase.SyncWasteCatalogueUseCase
 import com.mitas.ppnam.station4aa.domain.validation.WasteCollectionValidator
 import com.mitas.ppnam.station4aa.domain.wizard.ScanDispatchResult
+import com.mitas.ppnam.station4aa.domain.wizard.ScanStageResult
 import com.mitas.ppnam.station4aa.domain.wizard.WasteTransactionDraft
 import com.mitas.ppnam.station4aa.domain.wizard.WasteWizardController
 import com.mitas.ppnam.station4aa.domain.wizard.WizardStep
@@ -63,7 +64,10 @@ import kotlinx.coroutines.launch
  * "Required handheld workflow", per
  * `docs/superpowers/specs/2026-09-02-phase-1-wastage-bag-flow-design.md`. All step transitions
  * (scan bag → scan job → scan operator → select category → select waste type → review) only mutate
- * local [wizardController] state, except the operator step: a scanned production-operator card
+ * local [wizardController] state, and none of them happens on a scanner read alone: a read only
+ * fills [scanEntry], and the operator's Confirm ([onScanEntryConfirmed]) is what applies it — the
+ * scanner has no debounce, so a repeated read must not be able to run on into the next step. The
+ * operator step additionally goes to Station 4: a scanned production-operator card
  * (barcode, RFID badge or typed card number) is resolved to its owner's name by Station 4 —
  * contract 5.4.0 §9.3 — before the wizard moves on. That lookup is read-only; [onReviewConfirmed]
  * is still the wizard's one and only collection publish point.
@@ -142,6 +146,12 @@ class WasteGatheringViewModel(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
+    /** What the active scan step's entry field holds: the last scanner read, or whatever the
+     * operator typed. Nothing in it is applied until [onScanEntryConfirmed]; a newer read replaces
+     * it, and it is emptied whenever the step changes. */
+    private val _scanEntry = MutableStateFlow("")
+    val scanEntry: StateFlow<String> = _scanEntry.asStateFlow()
+
     /** Set by a failed scan or manual-entry attempt on the active step, or by a failed
      * [WasteCollectionValidator.validateCollectedBy] check on REVIEW's Confirm; cleared on every
      * new attempt, successful advance, or cancel. */
@@ -210,12 +220,12 @@ class WasteGatheringViewModel(
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.Barcode>().collect { event ->
-                dispatch(wizardController.handleScannedValue(event.value), event.value)
+                stage(wizardController.stageScannedValue(event.value), event.value)
             }
         }
         viewModelScope.launch {
             scanEventBus.events.filterIsInstance<ScanEvent.RfidTag>().collect { event ->
-                dispatch(wizardController.handleScannedBadge(event.tagId), event.tagId)
+                stage(wizardController.stageScannedBadge(event.tagId), event.tagId)
             }
         }
         // §9.3: a production operator's name was looked up under one collector's session; a
@@ -263,17 +273,36 @@ class WasteGatheringViewModel(
         viewModelScope.launch { publisher.retryPending(sessionHolder.currentSessionIdOrEmpty()) }
     }
 
-    /** Typed stand-ins for the bag and job scans: they sound like the scan would. */
-    fun onBagCodeSubmitted(raw: String) {
-        dispatch(ScanDispatchResult.Applied(wizardController.submitBagCode(raw)), raw)
+    /** Typing in the scan step's entry field. */
+    fun onScanEntryChanged(text: String) {
+        _scanEntry.value = text
     }
 
-    fun onJobNumberSubmitted(raw: String) {
-        dispatch(ScanDispatchResult.Applied(wizardController.submitJobNumber(raw)), raw)
+    /**
+     * The scan step's Confirm button (or the keyboard's Done): applies what the entry field holds
+     * to the active step. This tap is the only way a bag, job or operator card gets into the
+     * draft, whether it was scanned or typed — the deliberate pause between a read and the next
+     * step that the scanner itself does not provide.
+     */
+    fun onScanEntryConfirmed() {
+        val raw = _scanEntry.value
+        if (raw.isBlank()) return
+        _scanEntry.value = ""
+        dispatch(wizardController.handleScannedValue(raw), raw)
     }
 
-    fun onOperatorIdSubmitted(raw: String) {
-        dispatch(wizardController.beginOperatorLookup(raw), raw)
+    /** A raw scanner read: held in the entry field for Confirm, refused on the spot, or dropped.
+     * [value] is what was read — a fail here is always a local refusal of it. */
+    private fun stage(result: ScanStageResult, value: String) {
+        sound(refusals.filter(value, ScanSounds.forStage(result)))
+        when (result) {
+            is ScanStageResult.Staged -> {
+                _scanEntry.value = result.value
+                _stepError.value = null
+            }
+            is ScanStageResult.Refused -> _stepError.value = result.error
+            ScanStageResult.Ignored -> Unit
+        }
     }
 
     /** [value] is what was scanned or typed: a fail here is always a local refusal of it. */
@@ -425,6 +454,8 @@ class WasteGatheringViewModel(
     }
 
     private fun syncFromController(error: String?) {
+        // A value read or typed for one step must never be confirmable on another.
+        if (_step.value != wizardController.step) _scanEntry.value = ""
         _step.value = wizardController.step
         _draft.value = wizardController.draft
         _stepError.value = error
